@@ -13,7 +13,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 
 // returns <svg> spacer in header element
 // color:string takes --color variable as an argument
-export function svgSpacer(color:string){
+function svgSpacer(color:string){
   return `<svg height="32" viewBox="0 0 32 32" width="32"><path d="M22 5L9 28" stroke="var(${color})" stroke-linecap="round" stroke-linejoin="round"></path></svg>`
 } 
 
