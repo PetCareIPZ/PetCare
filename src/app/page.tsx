@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 export default async function HomePage() {
+
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
 
@@ -18,10 +19,12 @@ export default async function HomePage() {
       {/* Główny komponent strony */}
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+
           {isAuthenticated
             ? <>Witaj <span className="text-[hsl(280,100%,70%)]">{user?.firstName}</span> {user?.lastName}</>
             : <>Create <span className="text-[hsl(280,100%,70%)]">T3</span> App</>
           }
+
         </h1>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
