@@ -21,7 +21,7 @@ export default async function HomePage() {
         <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
 
           {isAuthenticated
-            ? <>Witaj <span className="text-[hsl(280,100%,70%)]">{user?.firstName}</span> {user?.lastName}</>
+            ? <>Witaj <span className="text-[#cc66ffff]">{user?.firstName}</span> {user?.lastName}</>
             : <>Create <span className="text-[hsl(280,100%,70%)]">T3</span> App</>
           }
 

@@ -2,7 +2,9 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
+
 import Header from './components/Header';
+import SplitLogin from "./components/SplitLogin";
 
 export const metadata: Metadata = {
   title: "Petcare",
@@ -19,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="pl">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Header />
+          <SplitLogin />
           {children}
         </body>
       </html>
