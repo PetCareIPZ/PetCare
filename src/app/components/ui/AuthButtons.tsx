@@ -4,7 +4,7 @@ export function SignInBtn() {
   return (
     <SignInButton mode='modal'>
       <button className="text-1xl cursor-pointer hover:text-[#5930d1]">
-        Sign In
+        Zaloguj się
       </button>
     </SignInButton>
   );
@@ -14,7 +14,7 @@ export function SignUpBtn() {
   return (
     <SignUpButton mode='modal'>
       <button className="text-1xl bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer hover:bg-[#5930d1] transition-colors">
-        Sign Up
+        Utwórz konto
       </button>
     </SignUpButton>
   );
