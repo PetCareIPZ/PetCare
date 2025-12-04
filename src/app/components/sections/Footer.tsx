@@ -29,3 +29,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+{/* <a href="https://storyset.com/animal">Animal illustrations by Storyset</a> */}

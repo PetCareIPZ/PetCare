@@ -3,7 +3,7 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import ScrollDownArrow from "../ui/ScrollDownArrow";
-import { CTABtn } from "../ui/CTAButton";
+import SignupCTA from '../ui/SignUpCta';
 
 import dogImg from "public/img/dog.svg";
 
@@ -44,7 +44,7 @@ const Hero = () => {
           </p>
 
           <div className="mt-10">
-            <CTABtn action="sign-up" label="Dołącz do PetCare" />
+            <SignupCTA />
           </div>
         </motion.div>
 
