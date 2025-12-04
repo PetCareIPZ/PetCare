@@ -78,7 +78,7 @@ export default function Proccess() {
                 <p className="text-gray-600">{s.desc}</p>
               </div>
 
-              {/* punkt A/B/C */}
+              {/* punkty */}
               <div className="absolute md:left-1/2 left-0 md:transform md:-translate-x-1/2 -translate-x-0 
                               w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center 
                               text-white font-bold mt-4 md:mt-0">

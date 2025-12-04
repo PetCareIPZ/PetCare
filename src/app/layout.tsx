@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 
 import Nav from './components/sections/Nav';
 import ScrollToTop from './components/ui/ScrollToTop';
+import Footer from './components/sections/Footer';
 
 export const metadata: Metadata = {
   title: "Petcare",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Nav />
           {children}
+          <Footer />
           <ScrollToTop />
         </body>
       </html>
