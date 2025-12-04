@@ -19,12 +19,20 @@ export default function ScrollDownArrow({ className, targetId }: ScrollDownArrow
   };
 
   return (
-    <div
-      onClick={handleClick}
-      className={`flex flex-col items-center mt-2 animate-bounce cursor-pointer ${className || ''}`}
-    >
-      <span className="text-gray-600 mb-2 text-sm sm:text-base">Dowiedz się więcej</span>
-      <HiChevronDown size={40} className="text-gray-600" />
+    <div className="w-full flex justify-center mt-2">
+      <div
+        onClick={handleClick}
+        className={`inline-flex flex-col items-center cursor-pointer group ${className || ''}`}
+      >
+        <span className="text-gray-600 mb-2 text-sm sm:text-base">
+          Dowiedz się więcej
+        </span>
+
+        <HiChevronDown
+          size={40}
+          className="text-gray-600 animate-bounce"
+        />
+      </div>
     </div>
   );
 }
