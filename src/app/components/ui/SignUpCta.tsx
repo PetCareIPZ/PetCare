@@ -17,7 +17,7 @@ export default function SignupCTA() {
       >
         <span>Dołącz do PetCare</span>
 
-        {/* Łapka z rotacją przy hoverze i stałym y = -2 */}
+        {/* Łapka */}
         <motion.div
           className="w-5 h-5"
           animate={hovered ? { rotate: [-10, 5, -10], y: -2 } : { rotate: 0, y: -2 }}

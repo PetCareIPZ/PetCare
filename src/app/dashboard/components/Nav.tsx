@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { SignInBtn, SignUpBtn } from '../ui/AuthButtons';
+import { SignInBtn, SignUpBtn } from '../../components/ui/AuthButtons';
 
 export default function Nav() {
   return (
@@ -10,19 +10,10 @@ export default function Nav() {
       className="fixed top-0 left-0 w-full h-16 bg-white z-50 flex justify-between items-center px-6"
       style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
     >
-      {/* Logo */}
       <Link href="/">
         <h1 className="text-2xl font-bold cursor-pointer">PetCare</h1>
       </Link>
 
-      {/* Linki na środku */}
-      <nav className="absolute left-1/2 -translate-x-1/2 flex gap-8 text-lg">
-        <Link href="#section1" className="hover:text-blue-600 transition">Sekcja 1</Link>
-        <Link href="#section2" className="hover:text-blue-600 transition">Sekcja 2</Link>
-        <Link href="#section3" className="hover:text-blue-600 transition">Sekcja 3</Link>
-      </nav>
-
-      {/* Logowanie */}
       <div className="flex gap-4 items-center">
         <SignedOut>
           <SignInBtn />
