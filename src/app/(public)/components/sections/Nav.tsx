@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { SignInBtn, SignUpBtn } from '../ui/AuthButtons';
+import SmoothLink from '../ui/SmoothLink';
 
 export default function Nav() {
   return (
@@ -17,9 +18,15 @@ export default function Nav() {
 
       {/* Linki na środku */}
       <nav className="absolute left-1/2 -translate-x-1/2 flex gap-8 text-lg">
-        <Link href="#section1" className="hover:text-blue-600 transition">Sekcja 1</Link>
-        <Link href="#section2" className="hover:text-blue-600 transition">Sekcja 2</Link>
-        <Link href="#section3" className="hover:text-blue-600 transition">Sekcja 3</Link>
+        <SmoothLink href="#about" className="hover:text-blue-600 transition">
+          O nas
+        </SmoothLink>
+        <SmoothLink href="#proccess" className="hover:text-blue-600 transition">
+          Proces
+        </SmoothLink>
+        <SmoothLink href="#proccess" className="hover:text-blue-600 transition">
+          Link3
+        </SmoothLink>
       </nav>
 
       {/* Logowanie */}
