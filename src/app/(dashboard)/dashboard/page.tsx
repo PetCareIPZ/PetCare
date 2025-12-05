@@ -15,7 +15,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen pt-16 m-6">
+    <main className="m-6">
         <h1 className="text-3xl font-bold mb-8">Witaj, {user?.firstName}!</h1>
         <UserProfile user={user} />
         <section className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
