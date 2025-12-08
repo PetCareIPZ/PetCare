@@ -9,7 +9,7 @@ export default async function DashboardPage() {
   if (!isAuthenticated) {
     return (
       <div className="text-center mt-20 text-red-400">
-        Nie jesteś zalogowany. <a href="/">Zaloguj się</a>
+        <a href="/" style={{ textDecoration: "underline" }}>Zaloguj się</a> aby uzyskać dostęp do tej strony.
       </div>
     );
   }
