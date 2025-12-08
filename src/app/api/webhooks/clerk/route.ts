@@ -1,16 +1,18 @@
-import { Webhook } from "svix"; // weryfikacja webhooka
+import { Webhook } from "svix";
 import { headers } from "next/headers";
 
 import { db } from "~/server/db";
 import { users } from "~/server/db/schema";
 
 import { eq } from "drizzle-orm";
+import type { WebhookEvent } from "@clerk/backend"
+
 
 export async function POST(req: Request){
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET;
 
     const body = await req.text();
-
+    
     const headerPayload = await headers();
 
     const svixId = headerPayload.get("svix-id");
@@ -23,61 +25,66 @@ export async function POST(req: Request){
 
     const wh = new Webhook(WEBHOOK_SECRET!);
 
-    let event:any;
+    let event: WebhookEvent;
 
     try{
         event = wh.verify(body,{
             "svix-id": svixId,
             "svix-timestamp": svixTimestamp, 
             "svix-signature": svixSignature,
-        });
+        }) as WebhookEvent;
     }catch(err){
         console.log("Invalid signature", err);
         return new Response("Invalid signature", {status: 400});
     }
+    
+    try{
+        if (event.type === "user.created") {
+            const user = event.data
+            
+            await db.insert(users).values({
+            clerkId: user.id,
+            email: user.email_addresses?.[0]?.email_address ?? "",
+            firstName: user.first_name ?? "",
+            lastName: user.last_name ?? ""
+        });
+        console.log("User inserted:", user.id);
+        }
 
-    
-    const { type, data } = event; 
+        if (event.type === "user.updated") {
+            const user = event.data
+            await db
+            .update(users)
+            .set({
+            email:user.email_addresses?.[0]?.email_address ?? "",
+            firstName: user.first_name ?? "",
+            lastName: user.last_name ?? ""
+        })
+        .where(eq(users.clerkId, user.id));
 
-    const email = data.email_addresses?.[0]?.email_address ?? "";
-    const firstName = data.first_name ?? "";
-    const lastName = data.last_name ?? "";
-    
-    
-    if (type === "user.created") {
-        await db.insert(users).values({
-        clerkId: data.id,
-        email,
-        firstName,
-        lastName
-    });
-    console.log("User inserted:", data.id);
+        console.log("User updated:", user.id);
+        }
+
+    }catch(err){
+        console.log("Webhook db error:", err);
+
+        return new Response("Webhook error", {status: 500});
     }
 
-    if (type === "user.updated") {
-        await db
-        .update(users)
-        .set({
-        email,
-        firstName,
-        lastName
-    })
-    .where(eq(users.clerkId, data.id));
+    if (event.type === "user.deleted") {
+        const clerkId = event.data.id;
 
-    console.log("User updated:", data.id);
-    }
+        if(!clerkId){
+            console.log("Delete event without id");
+            return new Response("Bad request", {status: 400});
+        }
 
-
-    if (type === "user.deleted") {
         await db
         .delete(users)
-        .where(eq(users.clerkId, data.id));
+        .where(eq(users.clerkId, clerkId));
+        
+        console.log("User deleted:", clerkId);
     }
     
-
-    console.log("User deleted:", data.id);
-    
-
-
     return new Response("OK", { status: 200 });
 }
