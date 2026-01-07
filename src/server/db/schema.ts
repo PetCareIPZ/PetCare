@@ -1,19 +1,19 @@
 import {serial, text, integer, timestamp, numeric, date, varchar, pgTable,} from "drizzle-orm/pg-core";
 
 
-export const users = pgTable("users", {
-  userId: serial("id").primaryKey(),
-  clerkId: varchar("clerkId", { length: 255 }).unique().notNull(),
-  email: varchar("email", {length: 255}).notNull(),
-  firstName: varchar("firstName", {length: 255}).notNull(),
-  lastName: varchar("lastName", {length: 255}).notNull(),
-  createdAt: timestamp("createdAt").defaultNow(),
-});
+// export const users = pgTable("users", {
+//   userId: serial("id").primaryKey(),
+//   clerkId: varchar("clerkId", { length: 255 }).unique().notNull(),
+//   email: varchar("email", {length: 255}).notNull(),
+//   firstName: varchar("firstName", {length: 255}).notNull(),
+//   lastName: varchar("lastName", {length: 255}).notNull(),
+//   createdAt: timestamp("createdAt").defaultNow(),
+// });
 
 
 export const pets = pgTable("pets", {
   petId: serial("id").primaryKey(),
-  userId: integer("userId").notNull().references(() => users.userId), 
+  userId: varchar("userId", {length:255}).notNull(),
   petName: varchar("petName", {length:255}).notNull(),
   species: varchar("species", {length:255}).notNull(),
   race: varchar("race", {length:255}).notNull(),
@@ -21,8 +21,7 @@ export const pets = pgTable("pets", {
   birthDate: date("birthDate").notNull(),
   weight: numeric("weight").notNull(),
   chipNumber: varchar("chipNumber", {length: 15}),
-  note: text("note"),
-  imageUrl: text("imageUrl").notNull(),
+  imageUrl: text("imageUrl").notNull().default("svg/no-image.svg"),
   createdAt: timestamp("createdAt").defaultNow()
 });
 

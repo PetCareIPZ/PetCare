@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { motion } from "framer-motion";
 import ScrollDownArrow from "../ui/ScrollDownArrow";
 import SignupCTA from '../ui/SignUpCta';
-
+import Image from "next/image";
 import dogImg from "public/img/dog.svg";
 
 const Hero = () => {
@@ -19,8 +19,11 @@ const Hero = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <img
+          <Image 
             src={dogImg.src}
+            height={500}
+            width={500}
+            unoptimized
             alt="Ilustracja psa"
             className="w-full max-w-md object-contain opacity-90"
             loading="lazy"
