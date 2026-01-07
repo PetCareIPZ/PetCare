@@ -10,7 +10,7 @@ export default async function dodajPage(){
     if (!isAuthenticated) {
         return (
             <div className="text-center mt-20 text-red-400">
-            <a href="/" style={{ textDecoration: "underline" }}>Zaloguj się</a> aby uzyskać dostęp do tej strony.
+            <Link href="href"> <a style={{ textDecoration: "underline" }}>Zaloguj się</a><a> aby uzyskać dostęp do tej strony</a></Link> 
             </div>
         );
     }
@@ -110,7 +110,6 @@ export default async function dodajPage(){
                     required
                     />
                 </div>
-                
                 <div className="flex flex-row-reverse justify-start gap-3 pt-4">
                     <button
                         type="submit"

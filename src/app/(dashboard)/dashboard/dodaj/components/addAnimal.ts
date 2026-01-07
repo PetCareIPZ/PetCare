@@ -13,7 +13,7 @@ export async function addAnimal(formData: FormData){
     }
 
     const animal = {
-        userId: user?.id as string,
+        userId: user?.id! as string,
         name: formData.get('imie') as string,
         race: formData.get('rasa') as string,
         species: formData.get('gatunek') as string,
