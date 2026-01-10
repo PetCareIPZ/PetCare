@@ -6,7 +6,7 @@ export const pets = pgTable("pets", {
   petName: varchar("petName", {length:255}).notNull(),
   species: varchar("species", {length:255}).notNull(),
   race: varchar("race", {length:255}).notNull(),
-  sex: varchar("sex", {length:6}).notNull(),
+  sex: varchar("sex", {length:255}).notNull(),
   birthDate: date("birthDate").notNull(),
   weight: numeric("weight").notNull(),
   chipNumber: varchar("chipNumber", {length: 15}),

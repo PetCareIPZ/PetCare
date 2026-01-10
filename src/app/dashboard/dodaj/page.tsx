@@ -14,6 +14,7 @@ export default async function dodajPage(){
             </div>
         );
     }
+    
     return (
         <div className="h-screen flex items-center justify-center flex-col">
             <h1 className="text-3xl font-bold text-gray-900"> Formularz dodania Zwierzaka </h1>
@@ -107,6 +108,7 @@ export default async function dodajPage(){
                     type="text"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="15-cyfrowy numer chipu"
+                    maxLength={15}
                     required
                     />
                 </div>

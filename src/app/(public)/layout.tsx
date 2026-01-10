@@ -3,9 +3,9 @@ import { type Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import Nav from './components/sections/Nav';
-import ScrollToTop from './components/ui/ScrollToTop';
-import Footer from './components/sections/Footer';
+import Nav from '~/components/public/sections/Nav';
+import ScrollToTop from '~/components/public/ui/ScrollToTop';
+import Footer from '~/components/public/sections/Footer';
 
 export const metadata: Metadata = {
   title: "Petcare",

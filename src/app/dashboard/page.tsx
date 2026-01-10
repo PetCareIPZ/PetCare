@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import UserProfile from "./components/UserProfile";
-import StatsCard from "./components/StatsCard";
-import UserAnimalsCards from "./components/UserAnimalsCards";
+import UserProfile from "~/components/dashboard/UserProfile";
+import StatsCard from "~/components/dashboard/StatsCard";
+import UserAnimalsCards from "~/components/dashboard/UserAnimalsCards";
 import Link from "next/link";
 
 export default async function DashboardPage() {
@@ -21,9 +21,9 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-bold mb-8 ">Witaj, {user?.firstName}!</h1>
         <section className="text-2xl sm:text-3xl font-bold text-center sm:text-left mb-8 p-8">
            <h2 className="text-3xl font-bold mb-8">
-              Zwierzęta
+              Twoje zwierzaki
           </h2>
-          <div className="flex flex-wrap gap-6 w-full overflow-x-hidden">
+          <div className="flex flex-wrap gap-6 w-full overflow-x-hidden bg-white p-6 rounded-lg shadow-md">
             <UserAnimalsCards user={user}/>
             <Link href={"/dashboard/dodaj"}>
               <div className="flex flex-col items-center justify-center bg-white rounded-xl border-2 border-dashed border-gray-300 w-64 h-60 p-4 cursor-pointer transition hover:border-gray-400 hover:bg-gray-50">

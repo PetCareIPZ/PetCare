@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 
-import Hero from './components/sections/Hero';
-import About from './components/sections/About';
-import Proccess from './components/sections/Proccess';
+import Hero from '~/components/public/sections/Hero';
+import About from '~/components/public/sections/About';
+import Proccess from '~/components/public/sections/Proccess';
 
 export default function HomePage() {
   const router = useRouter();
