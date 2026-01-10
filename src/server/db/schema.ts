@@ -10,7 +10,7 @@ export const pets = pgTable("pets", {
   birthDate: date("birthDate").notNull(),
   weight: numeric("weight").notNull(),
   chipNumber: varchar("chipNumber", {length: 15}),
-  imageUrl: text("imageUrl").notNull().default("svg/no-image.svg"),
+  imageUrl: text("imageUrl").notNull(),
   createdAt: timestamp("createdAt").defaultNow()
 });
 

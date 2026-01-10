@@ -1,8 +1,8 @@
+"use server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { db } from "~/server/db/index";
 import { pets } from "../db/schema";
 import { eq } from 'drizzle-orm';
-
 
 export async function addAnimal(formData: FormData){
     const { isAuthenticated } = await auth();
@@ -11,6 +11,11 @@ export async function addAnimal(formData: FormData){
     if (!isAuthenticated){
         throw new Error("Zaloguj się aby móc wysłać formularz");
     }
+
+
+    // console.log("---------------------FORM DATA---------------------");
+    // console.log(formData);
+    // console.log("---------------------FORM DATA---------------------");
 
     const animal = {
         userId: user?.id! as string,
@@ -21,8 +26,13 @@ export async function addAnimal(formData: FormData){
         dateOfBirth: formData.get('data-urodzenia') as string,
         weight: formData.get('waga') as string,
         chipNumber: formData.get('czip') as string,
+        imageUrl: formData.get('imageUrl') == "" ? "/svg/no-image.svg" : formData.get('imageUrl' as string)
     };
-    
+    // console.log("---------------------ANIMAL---------------------");
+    // console.log(animal);
+    // console.log("---------------------ANIMAL---------------------");
+
+
     await db.insert(pets).values({
         userId: animal.userId,
         petName: animal.name,
@@ -32,7 +42,7 @@ export async function addAnimal(formData: FormData){
         birthDate: animal.dateOfBirth,
         weight: animal.weight,
         chipNumber: animal.chipNumber,
-        imageUrl: "/svg/no-image.svg"
+        imageUrl: animal.imageUrl as string
     });
 }
 

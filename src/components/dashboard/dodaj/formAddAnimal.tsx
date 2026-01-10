@@ -1,24 +1,13 @@
+"use client";
 import Link from "next/link";
-import Form from "next/form";
-import { addAnimal } from "./components/addAnimal";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import formHandler from "./formHandler";
+import { UploadZoneWidget } from "./uploadZone";
 
-export default async function dodajPage(){
-    const { isAuthenticated } = await auth();
-    const user = isAuthenticated ? await currentUser() : null;
-
-    if (!isAuthenticated) {
-        return (
-            <div className="text-center mt-20 text-red-400">
-            <Link href="href"> <a style={{ textDecoration: "underline" }}>Zaloguj się</a><a> aby uzyskać dostęp do tej strony</a></Link> 
-            </div>
-        );
-    }
-    
-    return (
-        <div className="h-screen flex items-center justify-center flex-col">
+export function AddAnimalFormWidget(){
+    return(
+        <div className="flex items-center justify-center flex-col">
             <h1 className="text-3xl font-bold text-gray-900"> Formularz dodania Zwierzaka </h1>
-            <Form action={addAnimal} className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 space-y-6">
+            <form action={formHandler} className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 space-y-6">
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                     Imie zwierzaka
@@ -112,6 +101,7 @@ export default async function dodajPage(){
                     required
                     />
                 </div>
+                    <UploadZoneWidget />
                 <div className="flex flex-row-reverse justify-start gap-3 pt-4">
                     <button
                         type="submit"
@@ -126,8 +116,7 @@ export default async function dodajPage(){
                          </button>
                     </Link>
                 </div>
-            </Form>
+            </form>
         </div>
-
     )
 }

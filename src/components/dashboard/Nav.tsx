@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { SignInBtn, SignUpBtn } from '../../../(public)/components/ui/AuthButtons';
 import { usePathname } from 'next/navigation';
+import { SignInBtn, SignUpBtn } from '../public/ui/AuthButtons';
 
 
 
