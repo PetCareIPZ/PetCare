@@ -1,0 +1,22 @@
+"use server";
+import { db } from "~/server/db/index";
+import { visits } from "~/server/db/schema";
+import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+export async function funt2(formData: FormData) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Brak autoryzacji");
+
+  await db.insert(visits).values({
+    petId: Number(formData.get("idzwierzaka")),
+    visitDate: formData.get("data") as string,
+    visitType: formData.get("rodzaj_wizyty") as string,
+    visitNote: formData.get("uwagi") as string,
+    visitAttachment:formData.get("załączniki") as string
+  });
+
+  revalidatePath("/dashboard/wizyty");
+  redirect("/dashboard/wizyty");
+}
