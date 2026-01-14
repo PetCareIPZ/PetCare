@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
-import formHandler from "./formHandler";
-import { UploadZoneWidget } from "./uploadZone";
+import formHandler from "~/components/dashboard/id/edytuj/formHandler";
+import { UploadZoneWidget } from "../../dodaj/uploadZone";
 
-export function AddAnimalFormWidget(){
-    return(
+export default function EditAnimalFormWidget({animal} : {animal : any}) {
+    return (
         <div className="flex items-center justify-center flex-col">
-            <h1 className="text-3xl font-bold text-gray-900"> Formularz dodania Zwierzaka </h1>
+            <h1 className="text-3xl font-bold text-gray-900"> Formularz edycji Zwierzaka </h1>
             <form action={formHandler} className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 space-y-6">
+                <input type="hidden" name="petId" value={animal.petId} />
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                     Imie zwierzaka
@@ -17,6 +18,7 @@ export function AddAnimalFormWidget(){
                     type="text"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="np. Nela"
+                    defaultValue={animal.petName}
                     required
                     />
                 </div>
@@ -29,6 +31,7 @@ export function AddAnimalFormWidget(){
                     name="data-urodzenia"
                     type="date"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    defaultValue={animal.birthDate}
                     required
                     />
                 </div>
@@ -42,6 +45,7 @@ export function AddAnimalFormWidget(){
                     type="text"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="np. Pies, Kot"
+                    defaultValue={animal.species}
                     required
                     />
                 </div>
@@ -55,6 +59,7 @@ export function AddAnimalFormWidget(){
                     type="text"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="np. Yorkshire Terrier, Labrador"
+                    defaultValue={animal.race}
                     required
                     />
                 </div>
@@ -64,7 +69,10 @@ export function AddAnimalFormWidget(){
                     Płeć
                     </label>
                     <select
-                    name="plec" className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-gray-400" required
+                    name="plec" 
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-gray-400" 
+                    defaultValue={animal.sex}
+                    required
                     >
                     <option value="">Wybierz płeć</option>
                     <option value="samiec">Samiec</option>
@@ -84,6 +92,7 @@ export function AddAnimalFormWidget(){
                     step="0.1"
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="np. 3.5"
+                    defaultValue={animal.weight}
                     required
                     />
                 </div>
@@ -98,10 +107,11 @@ export function AddAnimalFormWidget(){
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     placeholder="15-cyfrowy numer chipu"
                     maxLength={15}
+                    defaultValue={animal.chipNumber}
                     required
                     />
                 </div>
-                    <UploadZoneWidget existingImageUrl={"/svg/no-image.svg"} />
+                    <UploadZoneWidget existingImageUrl={animal.imageUrl} />
                 <div className="flex flex-row-reverse justify-start gap-3 pt-4">
                     <button
                         type="submit"
@@ -118,5 +128,6 @@ export function AddAnimalFormWidget(){
                 </div>
             </form>
         </div>
+
     )
 }

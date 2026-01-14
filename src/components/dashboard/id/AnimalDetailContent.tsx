@@ -14,12 +14,16 @@ export default function AnimalDetailContent(data : deleteAnimalProps) {
     const petData = data;
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+        <div className="min-h-screen from-slate-900 to-slate-800">
             <div className="container mx-auto px-4 py-8">
-                <Link href="/dashboard" className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
-                    ← Powrót
-                </Link>
-                
+                <div className="flex flex-row justify-between">
+                    <Link href="/dashboard" className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
+                        ← Powrót
+                    </Link>
+                    <Link href={`/dashboard/${petData?.animal.petId}/karta-zdrowia`} className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
+                        → Karta Zdrowia
+                    </Link>
+                </div>
                 <div className="bg-slate-700 rounded-lg shadow-lg p-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="flex items-center justify-center">
@@ -72,9 +76,12 @@ export default function AnimalDetailContent(data : deleteAnimalProps) {
                             </div>
 
                             <div className="mt-8 flex gap-4">
-                                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edytuj
-                                </button>
+                                <Link href={`/dashboard/${petData?.animal.petId}/edytuj`}>
+                                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Edytuj
+                                    
+                                    </button>
+                                </Link>
                                 <button 
                                     onClick={() => setShowConfirm(true)}
                                     className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

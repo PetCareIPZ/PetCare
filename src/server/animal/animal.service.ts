@@ -68,7 +68,34 @@ export async function deleteAnimal(petId: number){
     );
     // add error handling and response 
 }
+export async function updateAnimal(formData: FormData){
+    const { isAuthenticated } = await auth();
+    const user = isAuthenticated ? await currentUser() : null;
+    
+    if (!isAuthenticated){
+        throw new Error("Zaloguj się aby móc edytować zwierzę");
+    }
 
+    console.log("---------------------FORM DATA---------------------");
+    console.log(formData);
+    console.log("---------------------FORM DATA---------------------");
+
+    await db.update(pets).set({
+        petName: formData.get('imie') as string,
+        species: formData.get('gatunek') as string,
+        race: formData.get('rasa') as string,
+        sex: formData.get('plec') as string,
+        birthDate: formData.get('data-urodzenia') as string,
+        weight: formData.get('waga') as string,
+        chipNumber: formData.get('czip') as string
+    }).where(
+        and(
+            eq(pets.userId, user?.id!),
+            eq(pets.petId, parseInt(formData.get('petId')))
+        )
+    );
+    // add error handling and response
+}
 
 // add error handling and response
 export async function getAnimals(id : string){
