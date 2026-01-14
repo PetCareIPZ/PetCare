@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm";
 import AnimalDetailContent from "~/components/dashboard/id/AnimalDetailContent";
 
 
-export default async function animalDashboard({params}: {params: {id: string}}) {
+export default async function AnimalDetail({params}: {params: {id: string}}) {
     const {id} = await params; 
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;

@@ -1,9 +1,13 @@
 "use server";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { db } from "~/server/db/index";
-import { pets } from "../db/schema";
-import { eq } from 'drizzle-orm';
+import { pets } from "~/server/db/schema";
+import { and, eq } from 'drizzle-orm';
+////////////////////////////////////////////////////////////////
+// remove authentication from all methods and guard them via routes
+////////////////////////////////////////////////////////////////
 
+// change to use json as an argument
 export async function addAnimal(formData: FormData){
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
@@ -44,8 +48,29 @@ export async function addAnimal(formData: FormData){
         chipNumber: animal.chipNumber,
         imageUrl: animal.imageUrl as string
     });
+    // add error handling and response 
 }
 
+// change to use userId as an argument and prepare for usage in api route
+export async function deleteAnimal(petId: number){
+    const { isAuthenticated } = await auth();
+    const user = isAuthenticated ? await currentUser() : null;
+    
+    if (!isAuthenticated){
+        throw new Error("Zaloguj się aby móc usunąć zwierzę");
+    }
+
+    await db.delete(pets).where(
+        and(
+            eq(pets.userId, user?.id!),
+            eq(pets.petId, petId)
+        )
+    );
+    // add error handling and response 
+}
+
+
+// add error handling and response
 export async function getAnimals(id : string){
     return db.select().from(pets).where(eq(pets.userId,id));
 }
