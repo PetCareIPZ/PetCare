@@ -38,7 +38,11 @@ export default async function DashboardPage() {
           </div>
         </section>
         <section className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StatsCard title="Wizyty" value={12} />
+            <Link href={"/dashboard/wizyty"}>
+              <div className="cursor-pointer transition hover:opacity-80">
+              <StatsCard title="Wizyty" value={12} />    
+              </div>
+            </Link>
             <StatsCard title="Przypomnienia" value={5} />
             <StatsCard title="Notatki" value={8} />
         </section>
