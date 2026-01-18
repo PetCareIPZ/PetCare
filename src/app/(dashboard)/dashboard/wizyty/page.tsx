@@ -4,6 +4,9 @@ import { db } from "~/server/db/index";
 import { visits } from "~/server/db/schema";
 import {pets} from "~/server/db/schema";
 export default async function wizyty() {
+    const{userId}=await auth();
+    const currentUserId=userId;
+
     const pett_1=await db.select({
         
     })
@@ -20,7 +23,7 @@ export default async function wizyty() {
     <main>
         <section>
             <h1>Twoje wizyty {user?.firstName}</h1>
-            <p>{field1}</p>
+            <p>{currentUserId}</p>
             <Link href={"/dashboard/wizyty/rejestracja_wizyt"}>
             <p>Zarejestruj wizyte!!!</p>
             </Link>
