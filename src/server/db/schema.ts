@@ -46,13 +46,13 @@ export const visits = pgTable("visits",{
 
 export const facilities = pgTable("facilities",{
   facilityId: serial ("facilityId").primaryKey(),
-  osmId: bigint("osmId", { mode: "bigint" }).notNull().unique(),
+  osmId: bigint("osmId", { mode: "number" }).notNull().unique(),
   name: varchar("name", { length: 255 }).notNull(),
   facilityType: varchar("facilityType", {length:50}).notNull(),
   city: varchar("city", { length: 100 }).notNull(),
   street: varchar("street", { length: 255 }),
-  lat: numeric("lat", { precision: 9, scale: 6 }).notNull(),
-  lon: numeric("lon", { precision: 9, scale: 6 }).notNull(),
+  lat: numeric("lat", { precision: 9, scale: 6 }).$type<number>().notNull(),
+  lon: numeric("lon", { precision: 9, scale: 6 }).$type<number>().notNull(),
   phone: varchar("phone", { length: 50 }),
   email: varchar("email", { length: 255 }),
   website: text("website"),
