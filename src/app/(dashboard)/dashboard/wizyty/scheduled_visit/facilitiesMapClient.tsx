@@ -40,7 +40,7 @@ export default function FacilitiesMapClient({ facilities }: Props) {
       center={center}
       zoom={13}
       scrollWheelZoom
-      style={{ height: "500px", width: "100%" }}
+      style={{ height: "2160px", width: "100%" }}
     >
       <TileLayer
         attribution='&copy; OpenStreetMap contributors'
