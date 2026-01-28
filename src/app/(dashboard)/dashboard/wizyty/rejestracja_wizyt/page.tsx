@@ -29,7 +29,6 @@ export default async function formularz_w() {
         <label className="font-semibold text-gray-700 mb-1">Załącznik</label>
         <input type='text' name='załączniki' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none"/>
         </div>
-        
 
 
         <button 
