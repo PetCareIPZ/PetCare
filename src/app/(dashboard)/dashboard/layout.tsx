@@ -1,6 +1,8 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import "../../../styles/globals.css";
+
 import DashboardNav from '~/components/dashboard/Nav';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
