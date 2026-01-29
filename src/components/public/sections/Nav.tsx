@@ -36,9 +36,6 @@ export default function Nav() {
         <SmoothLink href="#proccess" className="hover:text-secondary transition">
           Proces
         </SmoothLink>
-        <SmoothLink href="#features" className="hover:text-secondary transition">
-          Link3
-        </SmoothLink>
       </nav>
 
       {/* Logowanie - Desktop */}
@@ -86,17 +83,6 @@ export default function Nav() {
               className="block px-6 py-4 border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer text-center"
             >
               Proces
-            </a>
-            <a 
-              href="#features" 
-              onClick={(e) => {
-                e.preventDefault();
-                closeMenu();
-                document.querySelector('#features')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="block px-6 py-4 border-b border-gray-100 hover:bg-gray-50 transition cursor-pointer text-center"
-            >
-              Link3
             </a>
 
             {/* Auth buttons w mobile menu */}
