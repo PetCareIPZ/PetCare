@@ -1,122 +1,123 @@
 'use client';
 
 import Link from "next/link";
-import { useState } from "react";
-import deleteAnimalHandler  from "~/components/dashboard/id/AnimalDeletionHandler";
+import { useState, useEffect } from "react";
+import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
 
-interface deleteAnimalProps {
-    animal: any;
+interface DeleteAnimalProps {
+  animal: any;
 }
 
-export default function AnimalDetailContent(data : deleteAnimalProps) {
-    const [showConfirm, setShowConfirm] = useState(false);
+export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-    const petData = data;
+  // Upewniamy się, że komponent jest zhydraturowany
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    return (
-        <div className="min-h-screen from-slate-900 to-slate-800">
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-row justify-between">
-                    <Link href="/dashboard" className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
-                        ← Powrót
-                    </Link>
-                    <Link href={`/dashboard/${petData?.animal.petId}/karta-zdrowia`} className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
-                        → Karta Zdrowia
-                    </Link>
-                </div>
-                <div className="bg-slate-700 rounded-lg shadow-lg p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="flex items-center justify-center">
-                            <img 
-                                src={petData?.animal.imageUrl} 
-                                alt={petData?.animal.petName}
-                                className="rounded-lg w-full max-w-sm h-auto object-cover"
-                            />
-                        </div>
-                        <div>
-                            <h1 className="text-4xl font-bold text-white mb-6">{petData?.animal.petName}</h1>
-                            
-                            <div className="space-y-4 text-gray-200">
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Gatunek:</span>
-                                    <span>{petData?.animal.species}</span>
-                                </div>
-                                
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Rasa:</span>
-                                    <span>{petData?.animal.race}</span>
-                                </div>
-                                
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Płeć:</span>
-                                    <span>{petData?.animal.sex}</span>
-                                </div>
-                                
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Data urodzenia:</span>
-                                    <span>{petData?.animal.birthDate}</span>
-                                </div>
-                                
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Waga:</span>
-                                    <span>{petData?.animal.weight} kg</span>
-                                </div>
+  if (!mounted) return null; // dopóki nie hydratowany, nic nie renderujemy
 
-                                {petData?.animal.chipNumber && (
-                                    <div className="flex justify-between border-b border-slate-600 pb-2">
-                                        <span className="font-semibold">Numer Chipa:</span>
-                                        <span>{petData?.animal.chipNumber}</span>
-                                    </div>
-                                )}
-                                
-                                <div className="flex justify-between border-b border-slate-600 pb-2">
-                                    <span className="font-semibold">Data dodania:</span>
-                                    <span>{new Date(petData?.animal.createdAt!).toLocaleDateString('pl-PL')}</span>
-                                </div>
-                            </div>
+  return (
+    <div className="bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
 
-                            <div className="mt-8 flex gap-4">
-                                <Link href={`/dashboard/${petData?.animal.petId}/edytuj`}>
-                                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Edytuj
-                                    
-                                    </button>
-                                </Link>
-                                <button 
-                                    onClick={() => setShowConfirm(true)}
-                                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Usuń
-                                </button>
-                            </div>
-                            {showConfirm && (
-                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                    <div className="bg-slate-700 rounded-lg p-6 max-w-sm shadow-lg">
-                                        <h2 className="text-xl font-bold text-white mb-4">Potwierdzenie usunięcia</h2>
-                                        <p className="text-gray-200 mb-6">
-                                            Czy na pewno chcesz usunąć zwierzę <strong>{petData?.animal.petName}</strong>? Ta operacja nie może być cofnięta.
-                                        </p>
-                                        <div className="flex gap-4">
-                                            <button
-                                                onClick={() => setShowConfirm(false)}
-                                                className="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-                                            >
-                                                Anuluj
-                                            </button>
-                                            <button
-                                                onClick={deleteAnimalHandler.bind(null, petData?.animal.userId, petData?.animal.petId)}
-                                                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                            >
-                                                Usuń
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {/* Nawigacja */}
+        <div className="flex justify-between mb-6 text-sm sm:text-base">
+          <Link
+            href="/dashboard"
+            className="text-primary hover:text-primary/80 font-medium transition"
+          >
+            ← Powrót
+          </Link>
+          <Link
+            href={`/dashboard/${animal.petId}/karta-zdrowia`}
+            className="text-primary hover:text-primary/80 font-medium transition"
+          >
+            Karta Zdrowia →
+          </Link>
         </div>
-    );
+
+        {/* Karta */}
+        <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col sm:flex-row transition hover:shadow-lg">
+
+          {/* Lewa kolumna: zdjęcie */}
+          <div className="w-full sm:w-1/2 h-48 sm:h-auto bg-gray-100 flex items-center justify-center">
+            <img
+              src={animal.imageUrl}
+              alt={animal.petName}
+              className="w-full h-full object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
+            />
+          </div>
+
+          {/* Prawa kolumna: informacje */}
+          <div className="w-full sm:w-1/2 p-4 sm:p-6 flex flex-col justify-between">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">{animal.petName}</h1>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-gray-600 text-sm">
+                {[
+                  ["Gatunek", animal.species],
+                  ["Rasa", animal.race],
+                  ["Płeć", animal.sex],
+                  ["Data urodzenia", animal.birthDate],
+                  ["Waga", animal.weight ? `${animal.weight} kg` : "-"],
+                  animal.chipNumber && ["Numer Chipa", animal.chipNumber],
+                  ["Data dodania", new Date(animal.createdAt).toLocaleDateString("pl-PL")]
+                ].filter(Boolean).map(([label, value]) => (
+                  <div key={label as string} className="flex flex-col">
+                    <span className="font-medium text-gray-400">{label}</span>
+                    <span className="font-semibold text-gray-800">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Akcje */}
+            <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
+              <Link href={`/dashboard/${animal.petId}/edytuj`} className="flex-1">
+                <button className="w-full bg-secondary/80 hover:bg-secondary text-white font-semibold py-2 rounded-xl shadow transition">
+                  Edytuj
+                </button>
+              </Link>
+              <button
+                onClick={() => setShowConfirm(true)}
+                className="flex-1 min-w-[120px] w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-xl shadow transition"
+              >
+                Usuń
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal potwierdzenia */}
+        {showConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-lg">
+              <h2 className="text-xl font-bold text-gray-800 mb-3">Potwierdzenie usunięcia</h2>
+              <p className="text-gray-600 mb-5">
+                Czy na pewno chcesz usunąć zwierzę <strong>{animal.petName}</strong>? Ta operacja nie może być cofnięta.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded-xl transition"
+                >
+                  Anuluj
+                </button>
+                <button
+                  onClick={deleteAnimalHandler.bind(null, animal.userId, animal.petId)}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-xl transition"
+                >
+                  Usuń
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
 }
