@@ -8,7 +8,7 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
     <div className="flex items-center justify-center py-8 bg-gray-50 min-h-screen">
       <div className="w-full max-w-3xl px-4">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-8">
-          Formularz edycji zwierzaka
+          Edytuj dane zwierzaka
         </h1>
 
         <form

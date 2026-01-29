@@ -6,7 +6,7 @@ import { UploadZoneWidget } from "../../add/uploadZone";
 export default function EditAnimalFormWidget({animal} : {animal : any}) {
     return (
         <div className="flex items-center justify-center flex-col">
-            <h1 className="text-3xl font-bold text-gray-900"> Formularz edycji Zwierzaka </h1>
+            <h1 className="text-3xl font-bold text-gray-900"> Edytuj dane zwierzaka </h1>
             <form action={formHandler} className="w-full max-w-2xl bg-white rounded-xl shadow-md p-6 space-y-6">
                 <input type="hidden" name="petId" value={animal.petId} />
                 <div>
