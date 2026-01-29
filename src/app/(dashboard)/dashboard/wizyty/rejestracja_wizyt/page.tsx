@@ -1,43 +1,85 @@
-import { funt2 } from "./base"; 
-export default async function formularz_w() {
+"use client";
+
+import { funt2 } from "./base";
+
+import "../../../../../styles/globals.css"
+
+export default function FormularzW() {
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg border border-gray-200">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-700">Nowa Wizyta</h2>
-      <form action={funt2}name='formularz' className="flex flex-col -4">
-        
-        <div className="flex flex-col">
-        <label className="font-semibold text-gray-700 mb-1">Podaj id Zwierzaka!</label>
-        <input type='number' name='idzwierzaka' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"  />
-        </div>
+    <div className="flex flex-col items-center justify-center py-8">
+      <div className="w-full max-w-2xl bg-white rounded-xl shadow-md border border-gray-200 p-6 space-y-6">
+        <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
+          Nowa Wizyta
+        </h2>
 
-        <div className="flex flex-col">
-        <label className="font-semibold text-gray-700 mb-1">Podaj date wizyty</label>
-        <input type='date' name='data' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 outline-none" />
-        </div>
-        
-        <div className="flex flex-col">
-        <label className="font-semibold text-gray-700 mb-1">Podaj typ wizyty</label>
-        <input type='text' name='rodzaj_wizyty' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 outline-none" />
-        </div>
-        
-        <div className="flex flex-col">
-        <label className="font-semibold text-gray-700 mb-1">Uwagi</label>
-        <input type='text' name='uwagi' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" />
-        </div>
+        <form action={funt2} name="formularz" className="flex flex-col gap-4">
+          {/* ID zwierzaka */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700 mb-1">ID Zwierzaka</label>
+            <input
+              type="number"
+              name="idzwierzaka"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-        <div className="flex flex-col">
-        <label className="font-semibold text-gray-700 mb-1">Załącznik</label>
-        <input type='text' name='załączniki' className="p-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 outline-none"/>
-        </div>
+          {/* Data wizyty */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700 mb-1">Data wizyty</label>
+            <input
+              type="date"
+              name="data"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
+          {/* Typ wizyty */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700 mb-1">Typ wizyty</label>
+            <input
+              type="text"
+              name="rodzaj_wizyty"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="np. Kontrola, Szczepienie"
+              required
+            />
+          </div>
 
-        <button 
-          type="submit" 
-          className="bg-blue-600 text-white font-bold py-3 px-6 rounded mt-4"
-        >
-          Zarejestruj wizytę w bazie
-        </button>
-      </form>
+          {/* Uwagi */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700 mb-1">Uwagi</label>
+            <input
+              type="text"
+              name="uwagi"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Opcjonalne uwagi"
+            />
+          </div>
+
+          {/* Załącznik */}
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-700 mb-1">Załącznik</label>
+            <input
+              type="text"
+              name="załączniki"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Link lub plik"
+            />
+          </div>
+
+          {/* Przyciski */}
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="submit"
+              className="bg-primary hover:bg-primary/80 text-white font-semibold py-2 px-4 rounded-lg transition"
+            >
+              Zarejestruj wizytę
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
