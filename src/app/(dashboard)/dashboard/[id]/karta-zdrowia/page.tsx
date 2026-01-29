@@ -4,6 +4,8 @@ import { db } from "~/server/db";
 import { pets, drugs, vaccinations, visits } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
+import "../../../../../styles/globals.css"
+
 export default async function HealthCardPage({ params }: { params: { id: string } }) {
     const { id } = await params;
     const { isAuthenticated } = await auth();
@@ -48,114 +50,120 @@ export default async function HealthCardPage({ params }: { params: { id: string 
     ]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
-            <div className="container mx-auto px-4 py-8">
-                <Link href={`/dashboard/${id}`} className="text-blue-400 hover:text-blue-300 mb-6 inline-block">
-                    ← Powrót do profilu
-                </Link>
+    <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-5xl mx-auto px-4">
 
-                <h1 className="text-4xl font-bold text-white mb-8">Karta Zdrowia - {petData?.petName}</h1>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Leki (Drugs) Column */}
-                    <div className="bg-slate-700 rounded-lg shadow-lg p-6">
-                        <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                             Leki
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {drugsData.length > 0 ? (
-                                drugsData.map((drug) => (
-                                    <div key={drug.drugId} className="bg-slate-600 rounded p-4 border-l-4 border-red-500">
-                                        <p className="text-white font-semibold">{drug.drugType}</p>
-                                        <p className="text-gray-300 text-sm">
-                                            <span className="font-medium">Data:</span> {new Date(drug.drugDate).toLocaleDateString('pl-PL')}
-                                        </p>
-                                        <p className="text-gray-300 text-sm">
-                                            <span className="font-medium">Dawka:</span> {drug.drugDose}
-                                        </p>
-                                        {drug.drugNote && (
-                                            <p className="text-gray-400 text-sm mt-2">
-                                                <span className="font-medium">Notatka:</span> {drug.drugNote}
-                                            </p>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-400 italic">Brak wpisów leków</p>
-                            )}
-                        </div>
-                        <button className="mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
-                            + Dodaj lek
-                        </button>
-                    </div>
-
-                    {/* Szczepionki (Vaccinations) Column */}
-                    <div className="bg-slate-700 rounded-lg shadow-lg p-6">
-                        <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                            Szczepionki
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {vaccinationsData.length > 0 ? (
-                                vaccinationsData.map((vaccination) => (
-                                    <div key={vaccination.vaccinationId} className="bg-slate-600 rounded p-4 border-l-4 border-blue-500">
-                                        <p className="text-white font-semibold">{vaccination.vaccinationType}</p>
-                                        <p className="text-gray-300 text-sm">
-                                            <span className="font-medium">Data:</span> {new Date(vaccination.vaccinationDate).toLocaleDateString('pl-PL')}
-                                        </p>
-                                        <p className="text-gray-300 text-sm">
-                                            <span className="font-medium">Dawka:</span> {vaccination.vaccinationDose}
-                                        </p>
-                                        {vaccination.vaccinationNote && (
-                                            <p className="text-gray-400 text-sm mt-2">
-                                                <span className="font-medium">Notatka:</span> {vaccination.vaccinationNote}
-                                            </p>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-400 italic">Brak wpisów szczepionek</p>
-                            )}
-                        </div>
-                        <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                            + Dodaj szczepionkę
-                        </button>
-                    </div>
-
-                    {/* Wizyty (Visits) Column */}
-                    <div className="bg-slate-700 rounded-lg shadow-lg p-6">
-                        <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                            Wizyty
-                        </h2>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {visitsData.length > 0 ? (
-                                visitsData.map((visit) => (
-                                    <div key={visit.visitId} className="bg-slate-600 rounded p-4 border-l-4 border-green-500">
-                                        <p className="text-white font-semibold">{visit.visitType}</p>
-                                        <p className="text-gray-300 text-sm">
-                                            <span className="font-medium">Data:</span> {new Date(visit.visitDate).toLocaleDateString('pl-PL')}
-                                        </p>
-                                        {visit.visitNote && (
-                                            <p className="text-gray-400 text-sm mt-2">
-                                                <span className="font-medium">Notatka:</span> {visit.visitNote}
-                                            </p>
-                                        )}
-                                        {visit.visitAttachment && (
-                                            <a href={visit.visitAttachment} className="text-blue-400 hover:text-blue-300 text-sm mt-2 block">
-                                                📎 Załącznik
-                                            </a>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-400 italic">Brak wpisów wizyt</p>
-                            )}
-                        </div>
-                        <button className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
-                            + Dodaj wizytę
-                        </button>
-                    </div>
-                </div>
-            </div>
+        {/* Nawigacja */}
+        <div className="flex justify-between mb-6 text-sm sm:text-base">
+            <Link
+            href={`/dashboard/${id}`}
+            className="text-primary hover:text-primary/80 font-medium transition"
+            >
+            ← Powrót do profilu
+            </Link>
         </div>
+
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+            Karta Zdrowia - {petData?.petName}
+        </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {/* Leki */}
+            <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Leki</h2>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+                {drugsData.length > 0 ? (
+                drugsData.map((drug) => (
+                    <div key={drug.drugId} className="bg-gray-100 rounded p-4 border-l-4 border-red-500">
+                    <p className="font-semibold text-gray-800">{drug.drugType}</p>
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-medium">Data:</span> {new Date(drug.drugDate).toLocaleDateString('pl-PL')}
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-medium">Dawka:</span> {drug.drugDose}
+                    </p>
+                    {drug.drugNote && (
+                        <p className="text-gray-500 text-sm mt-1">
+                        <span className="font-medium">Notatka:</span> {drug.drugNote}
+                        </p>
+                    )}
+                    </div>
+                ))
+                ) : (
+                <p className="text-gray-400 italic">Brak wpisów leków</p>
+                )}
+            </div>
+            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+                + Dodaj lek
+            </button>
+            </div>
+
+            {/* Szczepionki */}
+            <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Szczepionki</h2>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+                {vaccinationsData.length > 0 ? (
+                vaccinationsData.map((vaccine) => (
+                    <div key={vaccine.vaccinationId} className="bg-gray-100 rounded p-4 border-l-4 border-blue-500">
+                    <p className="font-semibold text-gray-800">{vaccine.vaccinationType}</p>
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-medium">Data:</span> {new Date(vaccine.vaccinationDate).toLocaleDateString('pl-PL')}
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-medium">Dawka:</span> {vaccine.vaccinationDose}
+                    </p>
+                    {vaccine.vaccinationNote && (
+                        <p className="text-gray-500 text-sm mt-1">
+                        <span className="font-medium">Notatka:</span> {vaccine.vaccinationNote}
+                        </p>
+                    )}
+                    </div>
+                ))
+                ) : (
+                <p className="text-gray-400 italic">Brak wpisów szczepionek</p>
+                )}
+            </div>
+            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+                + Dodaj szczepionkę
+            </button>
+            </div>
+
+            {/* Wizyty */}
+            <div className="bg-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Wizyty</h2>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+                {visitsData.length > 0 ? (
+                visitsData.map((visit) => (
+                    <div key={visit.visitId} className="bg-gray-100 rounded p-4 border-l-4 border-green-500">
+                    <p className="font-semibold text-gray-800">{visit.visitType}</p>
+                    <p className="text-gray-600 text-sm">
+                        <span className="font-medium">Data:</span> {new Date(visit.visitDate).toLocaleDateString('pl-PL')}
+                    </p>
+                    {visit.visitNote && (
+                        <p className="text-gray-500 text-sm mt-1">
+                        <span className="font-medium">Notatka:</span> {visit.visitNote}
+                        </p>
+                    )}
+                    {visit.visitAttachment && (
+                        <a href={visit.visitAttachment} className="text-blue-500 hover:text-blue-400 text-sm mt-1 block">
+                        📎 Załącznik
+                        </a>
+                    )}
+                    </div>
+                ))
+                ) : (
+                <p className="text-gray-400 italic">Brak wpisów wizyt</p>
+                )}
+            </div>
+            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+                + Dodaj wizytę
+            </button>
+            </div>
+
+        </div>
+        </div>
+    </div>
     );
+
 }
