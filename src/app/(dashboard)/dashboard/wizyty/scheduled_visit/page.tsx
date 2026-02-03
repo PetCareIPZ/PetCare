@@ -31,9 +31,19 @@ export default async function Page() {
   const facilities = await getFacilities();
 
   return (
-    <div>
-      <h1>Zaplanowane wizyty</h1>
-      <FacilitiesMap facilities={facilities} />
-    </div>
+    <main className="max-w-7xl mx-auto px-6 py-10 overflow-x-hidden">
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+          Zaplanowane wizyty
+        </h1>
+        <p className="text-gray-600">
+          Przeglądaj dostępne placówki weterynaryjne na mapie i umów wizytę dla swojego zwierzaka
+        </p>
+      </div>
+      
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <FacilitiesMap facilities={facilities} />
+      </div>
+    </main>
   );
 }
