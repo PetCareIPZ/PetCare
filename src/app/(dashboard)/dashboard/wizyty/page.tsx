@@ -60,17 +60,19 @@ export default async function WizytePage() {
             </div>
           </Link>
 
-          <div className="bg-gradient-to-br from-blue-50 to-blue-5 rounded-2xl shadow-md p-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Twoje zwierzaki</h3>
-                <p className="text-gray-600">
-                  {userPets.length === 0 ? "Brak zwierzaków" : `${userPets.length} ${pluralizeZwierze(userPets.length)}`}
-                </p>
-              </div>
-              <div className="text-4xl">🐾</div>
+          <Link href="/dashboard/zwierzaki">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-5 rounded-2xl shadow-md p-8">
+                <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Twoje zwierzaki</h3>
+                    <p className="text-gray-600">
+                    {userPets.length === 0 ? "Brak zwierzaków" : `${userPets.length} ${pluralizeZwierze(userPets.length)}`}
+                    </p>
+                </div>
+                <div className="text-4xl">🐾</div>
+                </div>
             </div>
-          </div>
+          </Link>
         </div>
       </AnimatedSection>
 
