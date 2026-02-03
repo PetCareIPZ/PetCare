@@ -17,22 +17,22 @@ export default async function UstawieniaPage() {
             <div className="space-y-6">
               <div className="border-b pb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Imię</label>
-                <p className="text-gray-900 text-lg p-3 rounded">{user?.firstName || "Brak danych"}</p>
+                <p className="text-gray-900 text-lg rounded">{user?.firstName || "Brak danych"}</p>
               </div>
 
               <div className="border-b pb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Nazwisko</label>
-                <p className="text-gray-900 text-lg p-3 rounded">{user?.lastName || "Brak danych"}</p>
+                <p className="text-gray-900 text-lg rounded">{user?.lastName || "Brak danych"}</p>
               </div>
 
               <div className="border-b pb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                <p className="text-gray-900 text-lg p-3 rounded">{user?.emailAddresses?.[0]?.emailAddress || "Brak danych"}</p>
+                <p className="text-gray-900 text-lg rounded">{user?.emailAddresses?.[0]?.emailAddress || "Brak danych"}</p>
               </div>
 
               <div className="pb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">ID Użytkownika</label>
-                <p className="text-gray-600 text-sm p-3 rounded break-all">{user?.id || "Brak danych"}</p>
+                <p className="text-gray-600 text-sm rounded break-all">{user?.id || "Brak danych"}</p>
               </div>
             </div>
           </div>
