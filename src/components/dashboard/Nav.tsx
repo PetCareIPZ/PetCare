@@ -24,6 +24,7 @@ export default function Nav() {
         <h1 className="text-2xl cursor-pointer">PetCare</h1>
       </Link>
 
+        {/* Debug */}
         {segments.map((segment, index) => (
           <span key={index} className="flex items-center gap-2">
             <span className="text-gray-400">/</span>
