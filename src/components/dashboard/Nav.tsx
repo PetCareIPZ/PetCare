@@ -16,7 +16,7 @@ export default function Nav() {
 
   return (
     <header
-      className="fixed top-0 left-0 w-full h-16 bg-white z-50 flex justify-between items-center px-6"
+      className="fixed top-0 left-0 w-full h-16 bg-white z-50 flex justify-between items-center px-6 z-[1002]"
       style={{ boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}
       >
       <div className="flex flex-wrap gap-2 ">

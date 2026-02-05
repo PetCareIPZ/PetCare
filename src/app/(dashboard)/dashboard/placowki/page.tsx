@@ -53,7 +53,7 @@ export default function SkllepyPage() {
         <div className="space-y-6">
           {/* Mapa */}
           <div>
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6 z-0">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Mapa</h2>
               {loading ? (
                 <div className="w-full h-64 sm:h-96 bg-gray-100 rounded-lg flex items-center justify-center">

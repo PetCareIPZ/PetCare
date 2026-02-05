@@ -25,7 +25,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden md:block w-64 bg-white shadow-md rounded-lg p-6 h-fit sticky top-24">
+    <aside className="hidden md:block w-64 bg-white shadow-md rounded-lg p-6 h-fit sticky top-24 z-[1001]">
       <nav className="space-y-2">
         {menuItems.map((item) => (
           <Link

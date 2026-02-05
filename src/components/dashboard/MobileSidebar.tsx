@@ -31,7 +31,7 @@ export default function MobileSidebar() {
       {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-40 bg-primary hover:bg-primary/80 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition md:hidden"
+        className="fixed bottom-6 right-6 z-1001 bg-primary hover:bg-primary/80 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition md:hidden"
         aria-label="Menu"
       >
         <svg
@@ -51,14 +51,14 @@ export default function MobileSidebar() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-1001 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg z-30 transform transition-transform duration-300 md:hidden ${
+        className={`fixed left-0 top-16 bottom-0 w-64 bg-white shadow-lg z-30 transform transition-transform duration-300 md:hidden z-[1001] ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
