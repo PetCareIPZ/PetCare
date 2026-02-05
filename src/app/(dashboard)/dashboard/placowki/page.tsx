@@ -87,36 +87,63 @@ export default function SkllepyPage() {
                 </select>
               </div>
 
-              {/* Lista */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                {loading ? (
-                  <p className="text-gray-500 text-center text-sm py-4 col-span-full">Ładowanie...</p>
-                ) : filteredShops.length === 0 ? (
-                  <p className="text-gray-500 text-center text-sm py-4 col-span-full">Brak wyników</p>
-                ) : (
-                  filteredShops.map((shop) => (
-                    <div
-                      key={shop.facilityId}
-                      onClick={() => setSelectedShopId(shop.facilityId)}
-                      className={`p-3 sm:p-4 rounded-lg cursor-pointer transition ${
-                        selectedShopId === shop.facilityId
-                          ? "bg-primary/10 border-2 border-primary"
-                          : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
-                      }`}
-                    >
-                      <p className="font-semibold text-gray-800 text-xs sm:text-sm line-clamp-2">{shop.name}</p>
-                      <p className="text-xs text-gray-600 mt-1">{shop.facilityType}</p>
-                      {shop.street && (
-                        <p className="text-xs text-gray-500 mt-1">
-                          {shop.street}, {shop.city}
-                        </p>
-                      )}
-                      {shop.phone && (
-                        <p className="text-xs text-primary font-medium mt-2">{shop.phone}</p>
-                      )}
-                    </div>
-                  ))
-                )}
+              {/* Lista z ograniczoną wysokością i wewnętrznym scrollem */}
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-6">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">Placówki Blisko Ciebie</h2>
+
+                {/* Filtry */}
+                <div className="mb-6">
+                  <p className="text-xs sm:text-sm font-medium text-gray-700 mb-3">Filtruj po kategorii:</p>
+                  <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-gray-800"
+                  >
+                    <option value="all">Wszystkie ({shops.length})</option>
+                    {shopTypes.map((type) => (
+                      <option key={type} value={type}>
+                        {type} ({shops.filter((s) => s.facilityType === type).length})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Kontener listy z ograniczoną wysokością */}
+                <div 
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 overflow-y-auto pr-2 custom-scrollbar"
+                  style={{ maxHeight: 'calc(2 * 145px + 1rem)' }} // Dynamiczna wysokość dla 2 rzędów + gap
+                >
+                  {loading ? (
+                    <p className="text-gray-500 text-center text-sm py-4 col-span-full">Ładowanie...</p>
+                  ) : filteredShops.length === 0 ? (
+                    <p className="text-gray-500 text-center text-sm py-4 col-span-full">Brak wyników</p>
+                  ) : (
+                    filteredShops.map((shop) => (
+                      <div
+                        key={shop.facilityId}
+                        onClick={() => setSelectedShopId(shop.facilityId)}
+                        className={`p-3 sm:p-4 rounded-lg cursor-pointer transition flex flex-col justify-between h-[145px] ${
+                          selectedShopId === shop.facilityId
+                            ? "bg-primary/10 border-2 border-primary shadow-sm"
+                            : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
+                        }`}
+                      >
+                        <div>
+                          <p className="font-semibold text-gray-800 text-xs sm:text-sm line-clamp-1">{shop.name}</p>
+                          <p className="text-[10px] sm:text-xs text-gray-600 mt-0.5 uppercase tracking-wider font-medium">{shop.facilityType}</p>
+                          {shop.street && (
+                            <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                              {shop.street}<br/>{shop.city}
+                            </p>
+                          )}
+                        </div>
+                        {shop.phone && (
+                          <p className="text-xs text-primary font-medium mt-auto pt-2">{shop.phone}</p>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
