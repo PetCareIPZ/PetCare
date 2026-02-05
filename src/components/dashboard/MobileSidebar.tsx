@@ -10,6 +10,7 @@ const menuItems = [
   { href: '/dashboard/wizyty', label: 'Wizyty', icon: '📅' },
   { href: '/dashboard/leki', label: 'Leki', icon: '💊' },
   { href: '/dashboard/przypomnienia', label: 'Przypomnienia', icon: '🔔' },
+  { href: '/dashboard/bazawiedzy', label: 'Baza Wiedzy', icon: '📚' },
   { href: '/dashboard/ustawienia', label: 'Ustawienia Konta', icon: '⚙️' },
   { href: '/dashboard/placowki', label: 'Placówki Blisko Ciebie', icon: '📍' },
 ];
