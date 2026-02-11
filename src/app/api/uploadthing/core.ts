@@ -22,6 +22,19 @@ export const ourFileRouter = {
       console.log("file url", file.ufsUrl);
       return { uploadedBy: metadata.userId };
     }),
+  visitAttachment:f({
+    pdf:{maxFileSize:"2MB"}
+  })
+    .middleware(async()=>{
+      const user =await auth();
+      if(!user) throw new UploadThingError("Unauthorized");
+      return {userId:user.userId};
+    })
+    .onUploadComplete(async ({metadata,file})=>{
+      console.log("PDF uploaded by:", metadata.userId);
+      console.log("PDF URL:",file.ufsUrl);
+      return {url: file.ufsUrl};
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
