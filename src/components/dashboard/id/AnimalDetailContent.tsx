@@ -107,7 +107,7 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
                   Anuluj
                 </button>
                 <button
-                  onClick={deleteAnimalHandler.bind(null, animal.userId, animal.petId)}
+                  onClick={deleteAnimalHandler(animal.petId)}
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-xl transition"
                 >
                   Usuń

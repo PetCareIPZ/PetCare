@@ -3,7 +3,7 @@
 import { funt2 } from "./base";
 import { useState,useEffect } from "react";
 import { UploadButton } from "src/utils/uploadthing"; 
-import ShopsMapClient from "~/components/dashboard/placowki/ShopsMapClient";
+import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import "@uploadthing/react/styles.css";
 
 interface Pet {
@@ -143,7 +143,7 @@ export default function FormularzW() {
           </div>
           {/* Przyciski */}
           <div className="flex justify-end gap-3 pt-4">
-            <button type="submit" disabled={!attachmentUrl || !selectedPetId} className="bg-primary hover:bg-primary/80 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" > Zarejestruj wizytę </button>
+            <button type="submit" disabled={!selectedPetId} className="bg-primary hover:bg-primary/80 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed" > Zarejestruj wizytę </button>
           </div>
         </form>
       </div>

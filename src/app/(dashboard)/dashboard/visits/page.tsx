@@ -70,7 +70,7 @@ export default async function wizyty() {
 
       <AnimatedSection>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <Link href="/dashboard/wizyty/rejestracja_wizyt">
+          <Link href="/dashboard/visits/visit-registration">
             <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl shadow-md p-8 hover:shadow-lg transition cursor-pointer h-full">
               <div className="flex items-center justify-between">
                 <div>

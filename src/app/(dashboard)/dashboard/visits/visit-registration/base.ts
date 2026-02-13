@@ -17,6 +17,6 @@ export async function funt2(formData: FormData) {
     visitAttachment:formData.get("załączniki") as string
   });
 
-  revalidatePath("/dashboard/wizyty");
-  redirect("/dashboard/wizyty");
+  revalidatePath("/dashboard/visits");
+  redirect("/dashboard/visits");
 }

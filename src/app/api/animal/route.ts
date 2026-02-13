@@ -3,14 +3,16 @@ import { addAnimal, getAnimals } from '~/server/animal/animal.service'
 import { auth } from '@clerk/nextjs/server'
 
 export async function GET() {
-	const { userId } = await auth()
-
-	if (!userId) {
+	const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
+	
+	if (!isAuthenticated) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 	}
-
-	const animals = await getAnimals(userId)
-	return NextResponse.json(animals)
+	try{
+		return NextResponse.json(await getAnimals(userId!))
+	}catch(error){
+		return NextResponse.json({ error: error }, { status: 500 })
+	}
 }
 
 export async function POST(req: Request) {

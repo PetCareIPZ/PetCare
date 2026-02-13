@@ -36,7 +36,7 @@ export default async function ZwierzakiPage() {
           >
             <UserAnimalsCards user={user} />
 
-            <Link href="/dashboard/dodaj" className="group">
+            <Link href="/dashboard/add" className="group">
               <div
                 className="
                   flex flex-col items-center justify-center

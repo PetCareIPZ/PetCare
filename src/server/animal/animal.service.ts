@@ -1,8 +1,9 @@
 "use server";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser, type User } from "@clerk/nextjs/server";
 import { db } from "~/server/db/index";
 import { pets } from "~/server/db/schema";
 import { and, eq } from 'drizzle-orm';
+import { NextResponse } from "next/server";
 ////////////////////////////////////////////////////////////////
 // remove authentication from all methods and guard them via routes
 ////////////////////////////////////////////////////////////////
@@ -16,11 +17,6 @@ export async function addAnimal(formData: FormData){
         throw new Error("Zaloguj się aby móc wysłać formularz");
     }
 
-
-    // console.log("---------------------FORM DATA---------------------");
-    // console.log(formData);
-    // console.log("---------------------FORM DATA---------------------");
-
     const animal = {
         userId: user?.id! as string,
         name: formData.get('imie') as string,
@@ -32,41 +28,35 @@ export async function addAnimal(formData: FormData){
         chipNumber: formData.get('czip') as string,
         imageUrl: formData.get('imageUrl') == "" ? "/svg/no-image.svg" : formData.get('imageUrl' as string)
     };
-    // console.log("---------------------ANIMAL---------------------");
-    // console.log(animal);
-    // console.log("---------------------ANIMAL---------------------");
 
+    try{
+        await db.insert(pets).values({
+            userId: animal.userId,
+            petName: animal.name,
+            species: animal.species,
+            race: animal.race,
+            sex: animal.sex,
+            birthDate: animal.dateOfBirth,
+            weight: animal.weight,
+            chipNumber: animal.chipNumber,
+            imageUrl: animal.imageUrl as string
+        });
+        return NextResponse.json({message: "Success",},{status: 200});
+    }catch(error){
+        return NextResponse.json({error: error,},{status: 500});
 
-    await db.insert(pets).values({
-        userId: animal.userId,
-        petName: animal.name,
-        species: animal.species,
-        race: animal.race,
-        sex: animal.sex,
-        birthDate: animal.dateOfBirth,
-        weight: animal.weight,
-        chipNumber: animal.chipNumber,
-        imageUrl: animal.imageUrl as string
-    });
-    // add error handling and response 
+    }
 }
 
 // change to use userId as an argument and prepare for usage in api route
-export async function deleteAnimal(petId: number){
-    const { isAuthenticated } = await auth();
-    const user = isAuthenticated ? await currentUser() : null;
-    
-    if (!isAuthenticated){
-        throw new Error("Zaloguj się aby móc usunąć zwierzę");
-    }
+export async function deleteAnimal(petId: number, userId :string){
 
     await db.delete(pets).where(
         and(
-            eq(pets.userId, user?.id!),
+            eq(pets.userId, userId),
             eq(pets.petId, petId)
         )
     );
-    // add error handling and response 
 }
 export async function updateAnimal(formData: FormData){
     const { isAuthenticated } = await auth();

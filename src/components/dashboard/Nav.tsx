@@ -6,19 +6,20 @@ import { usePathname, useParams} from 'next/navigation';
 import { SignInBtn, SignUpBtn } from '../public/ui/AuthButtons';
 
 const pathTranslations = {
-  add             : "dodaj",
-  animals         : "zwierzęta",
-  drugs           : "leki",
-  facilities      : "placówki blisko ciebie",
-  "konwledge-base"  : "baza wiedzy",
-  reminders       : "przypomnienia",
-  settings        : "ustawienia",
-  visits          : "wizyty",
-  edit            : "edytuj",
-  "health-card"   : "karta zdrowia",
-  "add-drug"      : "dodaj lek",
-  "add-vacc"      : "dodaj szczepionke",
-  "add-visit"     : "dodaj wizytę"
+  add                 : "dodaj",
+  animals             : "zwierzęta",
+  drugs               : "leki",
+  facilities          : "placówki blisko ciebie",
+  "konwledge-base"      : "baza wiedzy",
+  reminders           : "przypomnienia",
+  settings            : "ustawienia",
+  visits              : "wizyty",
+  edit                : "edytuj",
+  "health-card"       : "karta zdrowia",
+  "add-drug"          : "dodaj lek",
+  "add-vacc"          : "dodaj szczepionke",
+  "add-visit"         : "dodaj wizytę",
+  "visit-registration": "rejestracja wizyty"
 };
 
 
