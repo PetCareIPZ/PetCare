@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
-import ShopsMapClient from "~/components/dashboard/placowki/ShopsMapClient";
+import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 
 interface Shop {
   facilityId: number;

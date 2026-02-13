@@ -32,7 +32,7 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
             ← Powrót
           </Link>
           <Link
-            href={`/dashboard/${animal.petId}/karta-zdrowia`}
+            href={`/dashboard/${animal.petId}/health-card`}
             className="text-primary hover:text-primary/80 font-medium transition"
           >
             Karta Zdrowia →
@@ -76,7 +76,7 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
 
             {/* Akcje */}
             <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
-              <Link href={`/dashboard/${animal.petId}/edytuj`} className="flex-1">
+              <Link href={`/dashboard/${animal.petId}/edit`} className="flex-1">
                 <button className="w-full bg-secondary/80 hover:bg-secondary text-white font-semibold py-2 rounded-xl shadow transition">
                   Edytuj
                 </button>

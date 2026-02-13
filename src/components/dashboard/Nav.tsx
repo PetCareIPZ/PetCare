@@ -2,14 +2,29 @@
 
 import Link from 'next/link';
 import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams} from 'next/navigation';
 import { SignInBtn, SignUpBtn } from '../public/ui/AuthButtons';
 
+const pathTranslations = {
+  add             : "dodaj",
+  animals         : "zwierzęta",
+  drugs           : "leki",
+  facilities      : "placówki blisko ciebie",
+  "konwledge-base"  : "baza wiedzy",
+  reminders       : "przypomnienia",
+  settings        : "ustawienia",
+  visits          : "wizyty",
+  edit            : "edytuj",
+  "health-card"   : "karta zdrowia",
+  "add-drug"      : "dodaj lek",
+  "add-vacc"      : "dodaj szczepionke",
+  "add-visit"     : "dodaj wizytę"
+};
 
 
 export default function Nav() {
   const pathname = usePathname();
-  
+  const { petId } = useParams()
   const segments = pathname
     .split("/")
     .filter(Boolean);
@@ -24,15 +39,19 @@ export default function Nav() {
         <h1 className="text-2xl cursor-pointer">PetCare</h1>
       </Link>
 
-        {/* Debug */}
-        {segments.map((segment, index) => (
-          <span key={index} className="flex items-center gap-2">
-            <span className="text-gray-400">/</span>
-            <h1 className="text-2xl cursor-pointer">
-              {segment.replace(/-/g, " ")}
-            </h1>
-          </span>
-        ))}
+        {segments.map((segment : string, index) => {
+          const href = '/' + segments.slice(0, index + 1).join('/');
+          return (
+            <Link key={href} href={href} className="flex items-center gap-2">
+              <span className="text-gray-400">/</span>
+              <h1 className="text-2xl cursor-pointer">
+                {
+                  petId == segment ? "zwierzak" : pathTranslations[segment as keyof typeof pathTranslations] ?? segment.replace(/-/g, " ")
+                }
+              </h1>
+            </Link>
+          );
+        })}
 
       </div>
       <div className="flex gap-4 items-center">

@@ -76,15 +76,15 @@ export default async function DashboardPage() {
         <section className="mb-16">
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link href="/dashboard/zwierzaki" className="transition hover:opacity-80">
+            <Link href="/dashboard/animals" className="transition hover:opacity-80">
               <StatsCard title="Zwierzaki" value={userPets.length} />
             </Link>
 
-            <Link href="/dashboard/wizyty" className="transition hover:opacity-80">
+            <Link href="/dashboard/visits" className="transition hover:opacity-80">
               <StatsCard title="Wizyty" value={visitsCount} />
             </Link>
 
-            <Link href="/dashboard/leki" className="transition hover:opacity-80">
+            <Link href="/dashboard/drugs" className="transition hover:opacity-80">
               <StatsCard title="Leki" value={drugsCount} />
             </Link>
 
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
             <div className="bg-white rounded-lg shadow-md p-8 text-center">
               <p className="text-gray-600 mb-4">Nie masz jeszcze żadnych zwierząt</p>
               <Link
-                href="/dashboard/dodaj"
+                href="/dashboard/add"
                 className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition"
               >
                 + Dodaj zwierzaka

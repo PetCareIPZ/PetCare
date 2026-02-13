@@ -4,10 +4,8 @@ import { db } from "~/server/db";
 import { pets, drugs, vaccinations, visits } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
-import "../../../../../styles/globals.css"
-
-export default async function HealthCardPage({ params }: { params: { id: string } }) {
-    const { id } = await params;
+export default async function HealthCardPage({ params }: { params: { petId: string } }) {
+    const { petId } = await params;
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
 
@@ -26,7 +24,7 @@ export default async function HealthCardPage({ params }: { params: { id: string 
     const animal = await db.select().from(pets).where(
         and(
             eq(pets.userId, user?.id!),
-            eq(pets.petId, parseInt(id))
+            eq(pets.petId, parseInt(petId))
         )
     );
 
@@ -40,7 +38,6 @@ export default async function HealthCardPage({ params }: { params: { id: string 
     }
 
     const petData = animal[0];
-    const petId = parseInt(id);
 
     // Fetch all health data
     const [drugsData, vaccinationsData, visitsData] = await Promise.all([
@@ -56,7 +53,7 @@ export default async function HealthCardPage({ params }: { params: { id: string 
         {/* Nawigacja */}
         <div className="flex justify-between mb-6 text-sm sm:text-base">
             <Link
-            href={`/dashboard/${id}`}
+            href={`/dashboard/${petId}`}
             className="text-primary hover:text-primary/80 font-medium transition"
             >
             ← Powrót do profilu

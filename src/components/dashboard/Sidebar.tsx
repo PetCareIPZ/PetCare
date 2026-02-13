@@ -5,13 +5,13 @@ import { usePathname } from 'next/navigation';
 
 const menuItems = [
   { href: '/dashboard', label: 'Przegląd', icon: '📊' },
-  { href: '/dashboard/zwierzaki', label: 'Zwierzaki', icon: '🐾' },
-  { href: '/dashboard/wizyty', label: 'Wizyty', icon: '📅' },
-  { href: '/dashboard/leki', label: 'Leki', icon: '💊' },
-  { href: '/dashboard/przypomnienia', label: 'Przypomnienia', icon: '🔔' },
-  { href: '/dashboard/bazawiedzy', label: 'Baza Wiedzy', icon: '📚' },
-  { href: '/dashboard/ustawienia', label: 'Ustawienia Konta', icon: '⚙️' },
-  { href: '/dashboard/placowki', label: 'Placówki Blisko Ciebie', icon: '📍' },
+  { href: '/dashboard/animals', label: 'Zwierzaki', icon: '🐾' },
+  { href: '/dashboard/visits', label: 'Wizyty', icon: '📅' },
+  { href: '/dashboard/drugs', label: 'Leki', icon: '💊' },
+  { href: '/dashboard/reminders', label: 'Przypomnienia', icon: '🔔' },
+  { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: '📚' },
+  { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: '⚙️' },
+  { href: '/dashboard/facilities', label: 'Placówki Blisko Ciebie', icon: '📍' },
 ];
 
 export default function Sidebar() {

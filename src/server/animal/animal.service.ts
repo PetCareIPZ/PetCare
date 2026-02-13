@@ -91,7 +91,7 @@ export async function updateAnimal(formData: FormData){
     }).where(
         and(
             eq(pets.userId, user?.id!),
-            eq(pets.petId, parseInt(formData.get('petId')))
+            eq(pets.petId, parseInt(formData.get('petId') as string))
         )
     );
     // add error handling and response

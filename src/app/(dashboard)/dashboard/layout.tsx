@@ -1,8 +1,6 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import "../../../styles/globals.css";
-
 import DashboardNav from '~/components/dashboard/Nav';
 import Sidebar from '~/components/dashboard/Sidebar';
 import MobileSidebar from '~/components/dashboard/MobileSidebar';
