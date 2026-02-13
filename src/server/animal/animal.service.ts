@@ -66,9 +66,9 @@ export async function updateAnimal(formData: FormData){
         throw new Error("Zaloguj się aby móc edytować zwierzę");
     }
 
-    console.log("---------------------FORM DATA---------------------");
-    console.log(formData);
-    console.log("---------------------FORM DATA---------------------");
+    // console.log("---------------------FORM DATA---------------------");
+    // console.log(formData);
+    // console.log("---------------------FORM DATA---------------------");
 
     await db.update(pets).set({
         petName: formData.get('imie') as string,

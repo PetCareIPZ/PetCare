@@ -12,29 +12,15 @@ interface Pet {
   species: string;
   imageUrl: string;
 }
-interface Facility { 
-  facilityId: number; 
-  name: string; 
-  facilityType: string; 
-  city: string; 
-  street: string | null; 
-  lat: number; 
-  lon: number; 
-  phone: string | null; 
-  email: string | null; 
-  website: string | null; 
-  openingHours: string | null; 
-}
+
 export default function FormularzW() {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
   const[showMap,setShowMap]=useState(false);
-  const [facilities, setFacilities] = useState<Facility[]>([]);
-  const[visitCategroy, setVisitCategory]=useState<string |null>(null);
-  const[categoryOpen, setCategoryOpen]=useState(false)
+  const [facilities, setFacilities] = useState([]);
 
   const [animals, setAnimals] = useState<Pet[]>([]); 
   const [selectedPetId, setSelectedPetId] = useState<number | null>(null);
-  const filteredFacilities = visitCategroy ? facilities.filter((f) => f.facilityType === visitCategroy) : [];
+  
 
   useEffect(() => { fetch("/api/facilities")
     .then((res) => res.json()) 
@@ -102,57 +88,31 @@ export default function FormularzW() {
 
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700 mb-1">Typ wizyty</label>
-                <div className="flex items-center gap-2">
-  <div className="flex-1 relative">
-    <button
-      type="button"
-      onClick={() => setCategoryOpen(!categoryOpen)}
-      className="w-full text-left px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 transition"
-    >
-      {visitCategroy ? `Wybrano: ${visitCategroy}` : "Wybierz kategorię wizyty"}
-    </button>
-
-    {categoryOpen && (
-      <div className="absolute mt-1 w-full border border-gray-300 rounded-lg bg-white shadow-md overflow-hidden z-10">
-        {["Gabinet Weterynaryjny", "Groomer", "Sklep Zoologiczny"].map((cat) => (
-          <div
-            key={cat}
-            onClick={() => {
-              setVisitCategory(cat);
-              setCategoryOpen(false);
-            }}
-            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-          >
-            {cat}
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-  <button
-    type="button"
-    onClick={() => setShowMap(!showMap)}
-    disabled={!visitCategroy}
-    className={`px-4 py-2 rounded-lg border transition-colors ${
-      showMap
-        ? "bg-red-50 border-red-200 text-red-500"
-        : "bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-200"
-    }`}
-    title="Pokaż mapę placówek"
-  >
-    {showMap ? "✕" : "📍"}
-  </button>
-
-</div>
-            {!visitCategroy && ( 
-            <p className="text-xs text-amber-600 mt-1">Wybierz kategorię wizyty, aby zobaczyć mapę.</p> 
-            )} 
-             </div> 
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  name="rodzaj_wizyty" 
+                  placeholder="np. Kontrola, Szczepienie" 
+                  className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition" 
+                  required 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowMap(!showMap)} 
+                  className={`px-4 rounded-lg border transition-colors ${
+                    showMap ? "bg-red-50 border-red-200 text-red-500" : "bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-200"
+                  }`}
+                  title="Pokaż mapę placówek"
+                >
+                  {showMap ? "✕" : "📍"}
+                </button>
+              </div>
             </div>
+          </div>
 
           {showMap && (
             <div className="h-72 rounded-xl overflow-hidden border border-gray-300 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
-              <ShopsMapClient shops={filteredFacilities} />
+              <ShopsMapClient shops={facilities} />
             </div>
           )}
 
