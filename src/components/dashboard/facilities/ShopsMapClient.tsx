@@ -38,7 +38,7 @@ export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClient
     if (!L || !mapRef.current) return;
 
     if (!mapRef.current._leaflet_map) {
-      mapRef.current._leaflet_map = L.map(mapRef.current).setView([52.2297, 21.0122], 10);
+      mapRef.current._leaflet_map = L.map(mapRef.current).setView([53.4251, 14.5508], 10);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -54,12 +54,21 @@ export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClient
     });
     markersRef.current = {};
 
+
+    const icons: {[key: string]: string } ={
+      "Gabinet Weterynaryjny": "/leaflet/veterinarian.png",
+      "Groomer": "/leaflet/cat-bath.png",
+      "Sklep Zoologiczny": "/leaflet/pet-shop.png"
+    };
+
     // Dodaj nowe markery
     shops.forEach((shop) => {
-      const customIcon = L.divIcon({
-        className: "custom-marker",
-        html: `<div style="background-color: white; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">📍</div>`,
-        iconSize: [40, 40],
+
+      const iconUrl = icons[shop.facilityType];
+
+      const customIcon = L.icon({
+        iconUrl: iconUrl,
+        iconSize: [40,40],
         iconAnchor: [20, 20],
         popupAnchor: [0, -20],
       });
@@ -71,8 +80,14 @@ export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClient
             <p style="margin: 4px 0; font-size: 14px;"><strong>Typ:</strong> ${shop.facilityType}</p>
             ${shop.street ? `<p style="margin: 4px 0; font-size: 14px;">${shop.street}, ${shop.city}</p>` : `<p style="margin: 4px 0; font-size: 14px;">${shop.city}</p>`}
             ${shop.phone ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Tel:</strong> ${shop.phone}</p>` : ""}
-            ${shop.email ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> ${shop.email}</p>` : ""}
+            ${shop.email ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> <a href ="mailto:${shop.email}"> ${shop.email}</a></p>` : ""}
             ${shop.openingHours ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Godziny:</strong> ${shop.openingHours}</p>` : ""}
+            ${shop.name ? `<div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.name + ' ' + shop.street + ' ' + shop.city)}" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style="margin: 0 0 8px 0; font-weight: bold;">
+            Otwórz w Google Maps</a></div>` : ""}
           </div>`,
           { maxWidth: 300 }
         )
