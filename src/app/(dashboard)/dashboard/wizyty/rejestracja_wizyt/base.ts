@@ -10,7 +10,7 @@ export async function funt2(formData: FormData) {
   if (!userId) throw new Error("Brak autoryzacji");
 
   await db.insert(visits).values({
-    petId: Number(formData.get("idzwierzaka")),
+    petId: Number(formData.get("petId")),
     visitDate: formData.get("data") as string,
     visitType: formData.get("rodzaj_wizyty") as string,
     visitNote: formData.get("uwagi") as string,
