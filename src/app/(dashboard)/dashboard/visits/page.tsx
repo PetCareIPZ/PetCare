@@ -5,6 +5,8 @@ import { db } from "~/server/db/index";
 import { visits } from "~/server/db/schema";
 import { pets } from "~/server/db/schema";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import VisitGroup from "~/components/dashboard/visits/VisitGroup";
+import type { Visit } from "~/components/dashboard/visits/VisitGroup";
 
 export default async function wizyty() {
     const{userId}=await auth();
@@ -46,7 +48,10 @@ export default async function wizyty() {
        .where(inArray(visits.petId,listaId))
     }
     const idsZwierzakow=pet.map(z=>z.id);
-    const ids=idsZwierzakow.length > 0 ? await Wizyta(idsZwierzakow) : [];
+    const allVisits = idsZwierzakow.length > 0 ? await Wizyta(idsZwierzakow) : [];
+    const today: string = new Date().toISOString().slice(0, 10);
+    const ids = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate >= today) as Visit[];
+    const pastIds = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate < today) as Visit[];
     const {isAuthenticated}=await auth()
     if(!isAuthenticated){
 
@@ -106,66 +111,33 @@ export default async function wizyty() {
 
   <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100">
 
-    {pet.map((z) => {
-      const wizyty_danego_zwierzaka = ids.filter((w) => w.petID === z.id);
-
-      return (
-        <div key={z.id} className="mb-6">
-          <h4 className="text-lg font-bold text-gray-700 mb-3 flex items-center gap-2">
-            🐾 {z.petName}
-          </h4>
-
-          {wizyty_danego_zwierzaka.length > 0 ? (
-            <div className="space-y-4">
-              {wizyty_danego_zwierzaka.map((w) => (
-                <div
-                  key={w.visitID}
-                  className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-blue-300 transition-all"
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="font-bold text-blue-600 uppercase text-xs tracking-wider">
-                      {w.visitType}
-                    </span>
-                    <span className="text-sm font-medium text-gray-400">
-                      {w.visitDate}
-                    </span>
-                  </div>
-
-                  <div className="text-gray-700 space-y-2">
-                    <p className="text-sm leading-relaxed">
-                      <span className="font-semibold text-gray-800">Notatka:</span>{" "}
-                      {w.visitNote || "Brak"}
-                    </p>
-
-                    {w.visitAttachment && (
-                      <div className="flex items-center gap-2 text-xs text-blue-500 font-medium pt-2 border-t border-gray-200">
-                        📎 Pobierz
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-400 italic">
-              Brak zaplanowanych wizyt dla tego zwierzaka.
-            </p>
-          )}
-        </div>
-      );
-    })}
+    {pet.map((z) => (
+      <VisitGroup
+        key={z.id}
+        petName={z.petName}
+        visits={ids.filter((w) => w.petID === z.id)}
+      />
+    ))}
   </div>
 </section>
 
       </AnimatedSection>
 
+      {/* finished visits section */}
       <AnimatedSection delay={0.2}>
-        <section>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-6">Historia wizyt</h3>
-          <div className="bg-white rounded-2xl shadow-md p-8 text-center border border-gray-100">
-            <div className="text-5xl mb-4">✅</div>
-            <p className="text-gray-600 mb-2">Brak zakończonych wizyt</p>
-            <p className="text-sm text-gray-500">Ukończone wizyty pojawią się tutaj</p>
+        <section className="mb-8">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+            Zakończone wizyty
+          </h3>
+
+          <div className="bg-white rounded-2xl shadow-md p-8 border border-gray-100">
+            {pet.map((z) => (
+              <VisitGroup
+                key={z.id}
+                petName={z.petName}
+                visits={pastIds.filter((w) => w.petID === z.id)}
+              />
+            ))}
           </div>
         </section>
       </AnimatedSection>
