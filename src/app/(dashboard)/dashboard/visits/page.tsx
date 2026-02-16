@@ -87,7 +87,7 @@ export default async function wizyty() {
             </div>
           </Link>
 
-          <Link href="/dashboard/zwierzaki">
+          <Link href="/dashboard/animals">
             <div className="bg-gradient-to-br from-blue-50 to-blue-5 rounded-2xl shadow-md p-8">
                 <div className="flex items-center justify-between">
                 <div>
