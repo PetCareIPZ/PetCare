@@ -116,7 +116,6 @@ export default function KnowledgeBasePage() {
                 }}
                 className="group relative p-5 bg-blue-50/50 border border-blue-100 rounded-2xl cursor-pointer hover:bg-white hover:shadow-md transition-all border-l-4 border-l-blue-500"
               >
-                {/* ... reszta kodu (przycisk X, tytuł itd.) pozostaje bez zmian ... */}
                 <button 
                   onClick={(e) => removeSaved(art.id, e)}
                   className="absolute top-3 right-3 p-1 text-gray-400 hover:text-red-500 z-10"
@@ -155,20 +154,6 @@ export default function KnowledgeBasePage() {
             </div>
           </button>
         ))}
-      </div>
-
-      {/* Sekcja "Szybka pomoc" */}
-      <div className="mt-16 bg-blue-50 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between">
-        <div className="flex items-center space-x-4 mb-4 md:mb-0">
-          <div className="bg-blue-100 p-3 rounded-full shadow-inner"><Info className="text-blue-600 w-6 h-6" /></div>
-          <div>
-            <h4 className="text-lg font-bold text-blue-900">Nie znalazłeś odpowiedzi?</h4>
-            <p className="text-blue-700">Skontaktuj się z naszym weterynarzem przez czat.</p>
-          </div>
-        </div>
-        <button className="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all active:scale-95 shadow-lg shadow-blue-200">
-          Zadaj pytanie
-        </button>
       </div>
     </div>
   );
