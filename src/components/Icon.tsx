@@ -38,10 +38,10 @@ type IconName = keyof typeof icons;
 // RGBA colors mapped to each semantic icon name.  
 // These values correspond roughly to the Tailwind palette previously used.
 const defaultColors: Record<IconName, string> = {
-  bell: "rgba(99,102,241,1)",
+  bell: "rgba(234,179,8,1)",
   chart: "rgba(59,130,246,1)",
   paw: "rgba(16,185,129,1)",
-  calendar: "rgba(234,179,8,1)",
+  calendar: "rgba(99,102,241,1)",
   pills: "rgba(239,68,68,1)",
   book: "rgba(249,115,22,1)",
   cog: "rgba(107,114,128,1)",
