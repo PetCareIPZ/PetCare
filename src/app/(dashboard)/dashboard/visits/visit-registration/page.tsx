@@ -4,6 +4,7 @@ import { funt2 } from "./base";
 import { useState,useEffect } from "react";
 import { UploadButton } from "src/utils/uploadthing"; 
 import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
+import Icon from "~/components/Icon";
 import "@uploadthing/react/styles.css";
 
 interface Pet {
@@ -104,7 +105,7 @@ export default function FormularzW() {
                   }`}
                   title="Pokaż mapę placówek"
                 >
-                  {showMap ? "✕" : "📍"}
+                  {showMap ? <Icon name="times" /> : <Icon name="map" />}
                 </button>
               </div>
             </div>

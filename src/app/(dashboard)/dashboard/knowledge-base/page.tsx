@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, BookOpen, HeartPulse, GraduationCap, Utensils, Info, Bookmark, X, ArrowRight } from 'lucide-react';
+import Icon from '~/components/Icon';
 import CategoryDetailPage from './CategoryDetailPage';
 import { categoryData } from './data';
 
@@ -81,8 +82,10 @@ export default function KnowledgeBasePage() {
     <div className="max-w-6xl mx-auto px-4 py-8 animate-in fade-in duration-700">
       
       {/* Nagłówek i Wyszukiwarka */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Baza Wiedzy</h1>
+      <div className="mb-12 text-left">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <Icon name="book" /> Baza Wiedzy
+        </h1>
         <p className="text-lg text-gray-600 mb-8 font-light italic">Wszystko dla zdrowia i szczęścia Twojego pupila.</p>
         
         <div className="relative max-w-2xl mx-auto group">

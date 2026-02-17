@@ -1,10 +1,11 @@
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import Icon from "~/components/Icon";
 
 export default function PrzypomnieniePage() {
   return (
     <>
       <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        🔔 Przypomnienia
+        <Icon name="bell" /> Przypomnienia
       </h1>
 
       <AnimatedSection>

@@ -1,6 +1,5 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import Link from "next/link";
-import { db } from "~/server/db";
+import Link from "next/link";import Icon from "~/components/Icon";import { db } from "~/server/db";
 import { pets, drugs, vaccinations, visits } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
@@ -144,7 +143,7 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                     )}
                     {visit.visitAttachment && (
                         <a href={visit.visitAttachment} className="text-blue-500 hover:text-blue-400 text-sm mt-1 block">
-                        📎 Załącznik
+                        <Icon name="paperclip" /> Załącznik
                         </a>
                     )}
                     </div>

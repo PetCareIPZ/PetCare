@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Icon from '~/components/Icon';
 
 export interface Visit {
   visitID: number;
@@ -25,7 +26,7 @@ export default function VisitGroup({ petName, visits }: Props) {
   return (
     <div className="mb-6">
       <h4 className="text-lg font-bold text-gray-700 mb-3 flex items-center gap-2">
-        🐾 {petName}
+        <Icon name="paw" /> {petName}
       </h4>
 
       {visits.length === 0 ? (
@@ -55,7 +56,7 @@ export default function VisitGroup({ petName, visits }: Props) {
 
                   {w.visitAttachment && (
                     <div className="flex items-center gap-2 text-xs text-blue-500 font-medium pt-2 border-t border-gray-200">
-                      📎 Pobierz
+                      <Icon name="paperclip" /> Pobierz
                     </div>
                   )}
                 </div>

@@ -7,6 +7,7 @@ import { pets } from "~/server/db/schema";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
 import VisitGroup from "~/components/dashboard/visits/VisitGroup";
 import type { Visit } from "~/components/dashboard/visits/VisitGroup";
+import Icon from "~/components/Icon";
 
 export default async function wizyty() {
     const{userId}=await auth();
@@ -70,7 +71,7 @@ export default async function wizyty() {
   return (
     <>
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
-        📅 Wizyty
+        <Icon name="calendar" /> Wizyty
       </h1>
 
       <AnimatedSection>
@@ -82,7 +83,7 @@ export default async function wizyty() {
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">Nowa wizyta</h3>
                   <p className="text-gray-600">Zarejestruj wizytę weterynaryjną</p>
                 </div>
-                <div className="text-4xl">🗓️</div>
+                <div className="text-4xl"><Icon name="calendar" /></div>
               </div>
             </div>
           </Link>
@@ -96,7 +97,7 @@ export default async function wizyty() {
                     {pet.length === 0 ? "Brak zwierzaków" : `${pet.length} ${pluralizeZwierze(pet.length)}`}
                     </p>
                 </div>
-                <div className="text-4xl">🐾</div>
+                <div className="text-4xl"><Icon name="paw" /></div>
                 </div>
             </div>
           </Link>

@@ -3,16 +3,17 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import Icon from '~/components/Icon';
 
 const menuItems = [
-  { href: '/dashboard', label: 'Przegląd', icon: '📊' },
-  { href: '/dashboard/animals', label: 'Zwierzaki', icon: '🐾' },
-  { href: '/dashboard/visits', label: 'Wizyty', icon: '📅' },
-  { href: '/dashboard/drugs', label: 'Leki', icon: '💊' },
-  { href: '/dashboard/reminders', label: 'Przypomnienia', icon: '🔔' },
-  { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: '📚' },
-  { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: '⚙️' },
-  { href: '/dashboard/facilities', label: 'Placówki Blisko Ciebie', icon: '📍' },
+  { href: '/dashboard', label: 'Przegląd', icon: <Icon name="chart" /> },
+  { href: '/dashboard/animals', label: 'Zwierzaki', icon: <Icon name="paw" /> },
+  { href: '/dashboard/visits', label: 'Wizyty', icon: <Icon name="calendar" /> },
+  { href: '/dashboard/drugs', label: 'Leki', icon: <Icon name="pills" /> },
+  { href: '/dashboard/reminders', label: 'Przypomnienia', icon: <Icon name="bell" /> },
+  { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: <Icon name="book" /> },
+  { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: <Icon name="cog" /> },
+  { href: '/dashboard/facilities', label: 'Placówki Blisko Ciebie', icon: <Icon name="map" /> },
 ];
 
 export default function MobileSidebar() {
@@ -34,18 +35,11 @@ export default function MobileSidebar() {
         className="fixed bottom-6 right-6 z-1001 bg-primary hover:bg-primary/80 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition md:hidden"
         aria-label="Menu"
       >
-        <svg
-          className={`w-6 h-6 transition-transform ${isOpen ? 'rotate-45' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          {isOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          )}
-        </svg>
+        {isOpen ? (
+          <Icon name="xmark" className="w-6 h-6" />
+        ) : (
+          <Icon name="bars" className="w-6 h-6" />
+        )}
       </button>
 
       {/* Overlay */}

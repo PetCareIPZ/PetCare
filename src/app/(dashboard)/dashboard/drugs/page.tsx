@@ -1,10 +1,11 @@
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import Icon from "~/components/Icon";
 
 export default function LekiPage() {
   return (
     <>
       <h1 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        💊 Leki
+        <Icon name="pills" /> Leki
       </h1>
 
       <AnimatedSection>

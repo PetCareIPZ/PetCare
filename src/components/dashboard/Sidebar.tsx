@@ -2,16 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Icon from '~/components/Icon';
 
 const menuItems = [
-  { href: '/dashboard', label: 'Przegląd', icon: '📊' },
-  { href: '/dashboard/animals', label: 'Zwierzaki', icon: '🐾' },
-  { href: '/dashboard/visits', label: 'Wizyty', icon: '📅' },
-  { href: '/dashboard/drugs', label: 'Leki', icon: '💊' },
-  { href: '/dashboard/reminders', label: 'Przypomnienia', icon: '🔔' },
-  { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: '📚' },
-  { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: '⚙️' },
-  { href: '/dashboard/facilities', label: 'Placówki Blisko Ciebie', icon: '📍' },
+  { href: '/dashboard', label: 'Przegląd', icon: <Icon name="chart" /> },
+  { href: '/dashboard/animals', label: 'Zwierzaki', icon: <Icon name="paw" /> },
+  { href: '/dashboard/visits', label: 'Wizyty', icon: <Icon name="calendar" /> },
+  { href: '/dashboard/drugs', label: 'Leki', icon: <Icon name="pills" /> },
+  { href: '/dashboard/reminders', label: 'Przypomnienia', icon: <Icon name="bell" /> },
+  { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: <Icon name="book" /> },
+  { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: <Icon name="cog" /> },
+  { href: '/dashboard/facilities', label: 'Placówki Blisko Ciebie', icon: <Icon name="map" /> },
 ];
 
 export default function Sidebar() {

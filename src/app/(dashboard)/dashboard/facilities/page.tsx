@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
 import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
+import Icon from "~/components/Icon";
 
 interface Shop {
   facilityId: number;
@@ -46,7 +47,7 @@ export default function SkllepyPage() {
   return (
     <>
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-10 text-gray-800">
-        📍 Placówki Blisko Ciebie
+        <Icon name="map" /> Placówki Blisko Ciebie
       </h1>
 
       <AnimatedSection>

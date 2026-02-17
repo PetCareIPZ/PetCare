@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import StatsCard from "~/components/dashboard/StatsCard";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import Icon from "~/components/Icon";
 import { db } from "~/server/db";
 import { pets, visits, drugs, vaccinations } from "~/server/db/schema";
 import { eq, inArray, count } from "drizzle-orm";
@@ -65,7 +66,7 @@ export default async function DashboardPage() {
   return (
     <>
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
-        📊 Podsumowanie
+        <Icon name="chart" /> Podsumowanie
       </h1>
 
       {/* <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
@@ -111,11 +112,11 @@ export default async function DashboardPage() {
                 >
                   <div className="bg-white rounded-lg shadow-md p-6 transition duration-200 hover:shadow-lg hover:bg-gray-50 border border-transparent hover:border-purple-200 cursor-pointer">
                     <div className="text-2xl mb-2">
-                      {pet.species === "dog" && "🐕"}
-                      {pet.species === "cat" && "🐈"}
-                      {pet.species === "bird" && "🦜"}
-                      {pet.species === "rabbit" && "🐰"}
-                      {!["dog", "cat", "bird", "rabbit"].includes(pet.species || "") && "🐾"}
+                      {pet.species === "dog" && <Icon name="dog" />}
+                      {pet.species === "cat" && <Icon name="cat" />}
+                      {pet.species === "bird" && <Icon name="paw" />}
+                      {pet.species === "rabbit" && <Icon name="paw" />}
+                      {!["dog", "cat", "bird", "rabbit"].includes(pet.species || "") && <Icon name="paw" />}
                     </div>
                     <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-600">
                       {pet.petName}

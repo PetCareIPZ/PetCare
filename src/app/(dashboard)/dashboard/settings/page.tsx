@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import Icon from "~/components/Icon";
 
 export default async function UstawieniaPage() {
   const user = await currentUser();
@@ -7,7 +8,7 @@ export default async function UstawieniaPage() {
   return (
     <>
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
-        ⚙️ Ustawienia Konta
+        <Icon name="cog" /> Ustawienia Konta
       </h1>
 
       <AnimatedSection>
