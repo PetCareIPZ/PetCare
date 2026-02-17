@@ -35,38 +35,42 @@ const icons = {
 
 type IconName = keyof typeof icons;
 
+// RGBA colors mapped to each semantic icon name.  
+// These values correspond roughly to the Tailwind palette previously used.
 const defaultColors: Record<IconName, string> = {
-  bell: "text-indigo-500",
-  chart: "text-blue-500",
-  paw: "text-green-500",
-  calendar: "text-yellow-500",
-  pills: "text-red-500",
-  book: "text-orange-500",
-  cog: "text-gray-500",
-  map: "text-teal-500",
-  times: "text-gray-500",
-  dog: "text-gray-600",
-  cat: "text-gray-600",
-  paperclip: "text-yellow-500",
-  bars: "text-gray-600",
-  xmark: "text-gray-600",
+  bell: "rgba(99,102,241,1)",
+  chart: "rgba(59,130,246,1)",
+  paw: "rgba(16,185,129,1)",
+  calendar: "rgba(234,179,8,1)",
+  pills: "rgba(239,68,68,1)",
+  book: "rgba(249,115,22,1)",
+  cog: "rgba(107,114,128,1)",
+  map: "rgba(20,184,166,1)",
+  times: "rgba(107,114,128,1)",
+  dog: "rgba(75,85,99,1)",
+  cat: "rgba(75,85,99,1)",
+  paperclip: "rgba(234,179,8,1)",
+  bars: "rgba(75,85,99,1)",
+  xmark: "rgba(75,85,99,1)",
 };
 
 interface IconProps {
   name: IconName;
   /**
-   * Additional classes that will be appended after the color class.
-   * Use this for sizing, spacing, rotation etc.
+   * Additional classes for sizing, spacing, rotation, etc.
+   * These are appended to the rendered element but do not affect color.
    */
   className?: string;
   /**
-   * Override the default color mapping. Provide a Tailwind text-... class
-   * or any other color class you prefer.
+   * Override the default color mapping. Provide any valid CSS color string
+   * (hex, rgb, rgba, named color, etc.). If omitted, the component uses
+   * the RGBA value defined in `defaultColors` for the given icon.
    */
   color?: string;
 }
 
 export default function Icon({ name, className = "", color }: IconProps) {
-  const colorClass = color ?? defaultColors[name] ?? "";
-  return <FontAwesomeIcon icon={icons[name]} className={`${colorClass} ${className}`} />;
+  const colorValue = color ?? defaultColors[name] ?? "";
+  const style = colorValue ? { color: colorValue } : undefined;
+  return <FontAwesomeIcon icon={icons[name]} className={className} style={style} />;
 }
