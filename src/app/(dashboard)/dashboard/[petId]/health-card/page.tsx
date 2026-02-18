@@ -54,7 +54,7 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
         <div className="flex justify-between mb-6 text-sm sm:text-base">
             {/* Powrót */}
             <Link 
-            href="/dashboard/animals" 
+            href={`/dashboard/${petId}`} 
             className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
             >
                 <ArrowLeft 
@@ -96,9 +96,11 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                 <p className="text-gray-400 italic">Brak wpisów leków</p>
                 )}
             </div>
-            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+            <Link href={`/dashboard/drugs`}>
+              <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
                 + Dodaj lek
-            </button>
+              </button>
+            </Link>
             </div>
 
             {/* Szczepionki */}
@@ -126,9 +128,11 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                 <p className="text-gray-400 italic">Brak wpisów szczepionek</p>
                 )}
             </div>
-            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+            <Link href={`/dashboard/${petId}/vaccination-registration`}>
+              <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
                 + Dodaj szczepionkę
-            </button>
+              </button>
+            </Link>
             </div>
 
             {/* Wizyty */}
@@ -158,7 +162,7 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                 <p className="text-gray-400 italic">Brak wpisów wizyt</p>
                 )}
             </div>
-            <Link href={`/dashboard/visits/visit-registration?petId=${petId}`}>
+            <Link href={`/dashboard/visits`}>
               <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
                 + Dodaj wizytę
               </button>
