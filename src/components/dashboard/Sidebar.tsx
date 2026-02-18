@@ -9,6 +9,7 @@ const menuItems = [
   { href: '/dashboard/animals', label: 'Zwierzaki', icon: <Icon name="paw" /> },
   { href: '/dashboard/visits', label: 'Wizyty', icon: <Icon name="calendar" /> },
   { href: '/dashboard/drugs', label: 'Leki', icon: <Icon name="pills" /> },
+  { href: '/dashboard/vaccinations', label: 'Szczepienia', icon: <Icon name="syringe" /> },
   { href: '/dashboard/reminders', label: 'Przypomnienia', icon: <Icon name="bell" /> },
   { href: '/dashboard/knowledge-base', label: 'Baza Wiedzy', icon: <Icon name="book" /> },
   { href: '/dashboard/settings', label: 'Ustawienia Konta', icon: <Icon name="cog" /> },

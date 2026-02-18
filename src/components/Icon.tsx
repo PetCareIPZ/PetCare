@@ -14,6 +14,7 @@ import {
   faPaperclip,
   faBars,
   faXmark,
+  faSyringe,
 } from '@fortawesome/free-solid-svg-icons';
 
 const icons = {
@@ -31,6 +32,7 @@ const icons = {
   paperclip: faPaperclip,
   bars: faBars,
   xmark: faXmark,
+  syringe: faSyringe,
 };
 
 type IconName = keyof typeof icons;
@@ -52,6 +54,7 @@ const defaultColors: Record<IconName, string> = {
   paperclip: "rgba(234,179,8,1)",
   bars: "rgba(75,85,99,1)",
   xmark: "rgba(75,85,99,1)",
+  syringe: "rgb(193, 68, 239)",
 };
 
 interface IconProps {
