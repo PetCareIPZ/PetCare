@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 interface DeleteAnimalProps {
   animal: any;
@@ -25,17 +26,27 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
 
         {/* Nawigacja */}
         <div className="flex justify-between mb-6 text-sm sm:text-base">
-          <Link
-            href="/dashboard"
-            className="text-primary hover:text-primary/80 font-medium transition"
+          {/* Powrót */}
+          <Link 
+            href="/dashboard/animals" 
+            className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
           >
-            ← Powrót
+            <ArrowLeft 
+              className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" 
+              style={{ display: 'inline-block' }} 
+            />
+            <span>Powrót</span>
           </Link>
-          <Link
-            href={`/dashboard/${animal.petId}/health-card`}
-            className="text-primary hover:text-primary/80 font-medium transition"
+
+          {/* Karta Zdrowia */}
+          <Link 
+            href={`/dashboard/${animal.petId}/health-card`} 
+            className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
           >
-            Karta Zdrowia →
+            <span>Karta Zdrowia</span>
+            <div className="flex items-center transition-transform duration-300 ease-in-out group-hover:translate-x-1">
+              <ArrowRight className="w-5 h-5" />
+            </div>
           </Link>
         </div>
 
@@ -107,7 +118,7 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
                   Anuluj
                 </button>
                 <button
-                  onClick={deleteAnimalHandler(animal.petId)}
+                  onClick={() => deleteAnimalHandler(animal.petId)}
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-xl transition"
                 >
                   Usuń

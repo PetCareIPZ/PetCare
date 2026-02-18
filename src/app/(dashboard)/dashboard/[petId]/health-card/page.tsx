@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";import Icon from "~/components/Icon";import { db } from "~/server/db";
 import { pets, drugs, vaccinations, visits } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
+import { ArrowLeft} from 'lucide-react';
 
 export default async function HealthCardPage({ params }: { params: { petId: string } }) {
     const { petId } = await params;
@@ -51,11 +52,16 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
 
         {/* Nawigacja */}
         <div className="flex justify-between mb-6 text-sm sm:text-base">
-            <Link
-            href={`/dashboard/${petId}`}
-            className="text-primary hover:text-primary/80 font-medium transition"
+            {/* Powrót */}
+            <Link 
+            href="/dashboard/animals" 
+            className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
             >
-            ← Powrót do profilu
+                <ArrowLeft 
+                className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" 
+                style={{ display: 'inline-block' }} 
+                />
+                <span>Powrót</span>
             </Link>
         </div>
 
@@ -152,9 +158,11 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                 <p className="text-gray-400 italic">Brak wpisów wizyt</p>
                 )}
             </div>
-            <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
+            <Link href={`/dashboard/visits/visit-registration?petId=${petId}`}>
+              <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
                 + Dodaj wizytę
-            </button>
+              </button>
+            </Link>
             </div>
 
         </div>
