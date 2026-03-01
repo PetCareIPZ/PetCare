@@ -17,7 +17,7 @@ export const pets = pgTable("pets", {
 
 export const vaccinations = pgTable("vaccinations",{
   vaccinationId: serial("vaccinationId").primaryKey(),
-  petId: integer("petId").notNull().references(() => pets.petId),
+  petId: integer("petId").notNull().references(() => pets.petId, {onDelete: 'cascade'}),
   vaccinationDate: date("vaccinationDate").notNull(),
   vaccinationType: varchar("vaccinationType", {length: 255}).notNull(),
   vaccinationNote: text("vaccinationNote"),
@@ -27,7 +27,7 @@ export const vaccinations = pgTable("vaccinations",{
 
 export const drugs = pgTable("drugs",{
   drugId: serial("drugId").primaryKey(),
-  petId: integer("petId").notNull().references(() => pets.petId),
+  petId: integer("petId").notNull().references(() => pets.petId, {onDelete: 'cascade'}),
   drugDate: date("drugDate").notNull(),
   drugType: varchar("drugType", {length: 255}).notNull(),
   drugNote: text("drugNote"),
@@ -37,7 +37,7 @@ export const drugs = pgTable("drugs",{
 
 export const visits = pgTable("visits",{
   visitId: serial("visitId").primaryKey(),
-  petId: integer("petId").notNull().references(() => pets.petId),
+  petId: integer("petId").notNull().references(() => pets.petId, {onDelete: 'cascade'}),
   visitDate: date("visitDate").notNull(),
   visitType: varchar("visitType", {length: 255}).notNull(),
   visitNote: text("visitNote"),
