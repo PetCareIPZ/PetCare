@@ -1,56 +1,86 @@
 "use server";
-import { auth, currentUser, type User } from "@clerk/nextjs/server";
+
 import { db } from "~/server/db/index";
-import { pets } from "~/server/db/schema";
+import { drugs, pets, vaccinations } from "~/server/db/schema";
 import { and, eq } from 'drizzle-orm';
-import { NextResponse } from "next/server";
-////////////////////////////////////////////////////////////////
-// remove authentication from all methods and guard them via routes
-////////////////////////////////////////////////////////////////
 
-// change to use json as an argument
-export async function addAnimal(formData: FormData){
-    const { isAuthenticated } = await auth();
-    const user = isAuthenticated ? await currentUser() : null;
-    
-    if (!isAuthenticated){
-        throw new Error("Zaloguj się aby móc wysłać formularz");
-    }
-
-    const animal = {
-        userId: user?.id! as string,
-        name: formData.get('imie') as string,
-        race: formData.get('rasa') as string,
-        species: formData.get('gatunek') as string,
-        sex: formData.get('plec') as string,
-        dateOfBirth: formData.get('data-urodzenia') as string,
-        weight: formData.get('waga') as string,
-        chipNumber: formData.get('czip') as string,
-        imageUrl: formData.get('imageUrl') == "" ? "/svg/no-image.svg" : formData.get('imageUrl' as string)
-    };
-
-    try{
-        await db.insert(pets).values({
-            userId: animal.userId,
-            petName: animal.name,
-            species: animal.species,
-            race: animal.race,
-            sex: animal.sex,
-            birthDate: animal.dateOfBirth,
-            weight: animal.weight,
-            chipNumber: animal.chipNumber,
-            imageUrl: animal.imageUrl as string
-        });
-        return NextResponse.json({message: "Success",},{status: 200});
-    }catch(error){
-        return NextResponse.json({error: error,},{status: 500});
-
-    }
+interface AddDrugData {
+    petId: number;
+    drugType: string;
+    drugDate: string;
+    drugDose: string;
+    drugNote?: string;
 }
 
-// change to use userId as an argument and prepare for usage in api route
-export async function deleteAnimal(petId: number, userId :string){
+interface UpdateDrugData {
+    petId: number;
+    drugId: number;
+    drugType?: string;
+    drugDate?: string;
+    drugDose?: string;
+    drugNote?: string;
+}
 
+
+interface AddVaccData {
+    petId: number;
+    vaccType: string;
+    vaccDate: string;
+    vaccDose: string;
+    vaccNote: string;
+
+}
+
+interface UpdateVaccData {
+    petId: number;
+    vaccId: number;
+    vaccType?: string;
+    vaccDate?: string;
+    vaccDose?: string;
+    vaccNote?: string;
+}
+
+
+interface AddAnimalData {
+    userId: string;
+    name: string;
+    race: string;
+    species: string;
+    sex: string;
+    dateOfBirth: string;
+    weight: string;
+    chipNumber: string;
+    imageUrl: string | null;
+}
+
+interface UpdateAnimalData {
+    petId: number;
+    name?: string;
+    dateOfBirth?: string;
+    species?: string;
+    race?: string;
+    sex?: string;
+    weight?: string;
+    chipNumber?: string;
+    imageUrl?: string;
+}
+
+export async function addAnimal(formData: AddAnimalData){
+    const newPetId = await db.insert(pets).values({
+        userId: formData.userId,
+        petName: formData.name,
+        species: formData.species,
+        race: formData.race,
+        sex: formData.sex,
+        birthDate: formData.dateOfBirth,
+        weight: formData.weight,
+        chipNumber: formData.chipNumber,
+        imageUrl: formData.imageUrl!
+    }).returning({petId: pets.petId});
+    return newPetId;
+}
+
+export async function deleteAnimal(petId: number, userId :string){
     await db.delete(pets).where(
         and(
             eq(pets.userId, userId),
@@ -58,36 +88,125 @@ export async function deleteAnimal(petId: number, userId :string){
         )
     );
 }
-export async function updateAnimal(formData: FormData){
-    const { isAuthenticated } = await auth();
-    const user = isAuthenticated ? await currentUser() : null;
-    
-    if (!isAuthenticated){
-        throw new Error("Zaloguj się aby móc edytować zwierzę");
-    }
-
-    // console.log("---------------------FORM DATA---------------------");
-    // console.log(formData);
-    // console.log("---------------------FORM DATA---------------------");
-
+export async function updateAnimal(formData: UpdateAnimalData, userId: string){
     await db.update(pets).set({
-        petName: formData.get('imie') as string,
-        species: formData.get('gatunek') as string,
-        race: formData.get('rasa') as string,
-        sex: formData.get('plec') as string,
-        birthDate: formData.get('data-urodzenia') as string,
-        weight: formData.get('waga') as string,
-        chipNumber: formData.get('czip') as string
+        petName: formData.name,
+        birthDate: formData.dateOfBirth,
+        species: formData.species,
+        race: formData.race,
+        sex: formData.sex,
+        weight: formData.weight,
+        chipNumber: formData.chipNumber,
+        imageUrl: formData.imageUrl
     }).where(
         and(
-            eq(pets.userId, user?.id!),
-            eq(pets.petId, parseInt(formData.get('petId') as string))
+            eq(pets.userId, userId),
+            eq(pets.petId, formData.petId))
         )
-    );
-    // add error handling and response
+    ;
 }
 
-// add error handling and response
 export async function getAnimals(id : string){
     return db.select().from(pets).where(eq(pets.userId,id));
+}
+
+export async function getAnimalById(petId: number, userId: string){
+    return db.select().from(pets).where(
+        and(
+            eq(pets.petId, petId),
+            eq(pets.userId, userId)
+        )
+    );
+}
+
+export async function addDrug(userData: AddDrugData){
+    await db.insert(drugs).values({
+        petId: userData.petId,
+        drugType: userData.drugType,
+        drugDate: userData.drugDate,
+        drugDose: userData.drugDose,
+        drugNote: userData.drugNote
+    });
+}
+
+export async function deleteDrug(drugId: number, petId: number){
+    await db.delete(drugs).where(
+        and(
+            eq(drugs.drugId, drugId),
+            eq(drugs.petId, petId)
+        )
+    );
+}
+
+export async function getDrugs(petId: number){
+    return db.select().from(drugs).where(eq(drugs.petId, petId));
+}
+
+export async function getDrugById(drugId: number, petId: number){
+    return db.select().from(drugs).where(
+        and(
+            eq(drugs.drugId, drugId),
+            eq(drugs.petId, petId)
+        )
+    );
+}
+
+export async function updateDrug(drugData: UpdateDrugData){
+    await db.update(drugs).set({
+        drugType: drugData.drugType,
+        drugDate: drugData.drugDate,
+        drugDose: drugData.drugDose,
+        drugNote: drugData.drugNote
+    }).where(
+        and(
+            eq(drugs.drugId, drugData.drugId),
+            eq(drugs.petId, drugData.petId)
+        )
+    );
+}   
+
+export async function addVacc(vaccData: AddVaccData){
+    await db.insert(vaccinations).values({
+        petId: vaccData.petId,
+        vaccinationType: vaccData.vaccType,
+        vaccinationDate: vaccData.vaccDate,
+        vaccinationDose: vaccData.vaccDose,
+        vaccinationNote: vaccData.vaccNote
+    });
+}
+
+export async function updateVacc(vaccData: UpdateVaccData){
+    await db.update(vaccinations).set({
+        vaccinationType: vaccData.vaccType,
+        vaccinationDate: vaccData.vaccDate,
+        vaccinationDose: vaccData.vaccDose,
+        vaccinationNote: vaccData.vaccNote
+    }).where(
+        and(
+            eq(vaccinations.vaccinationId, vaccData.vaccId),
+            eq(vaccinations.petId, vaccData.petId)
+        )
+    );
+}
+
+export async function deleteVacc(vaccId: number, petId: number){
+    await db.delete(vaccinations).where(
+        and(
+            eq(vaccinations.vaccinationId, vaccId),
+            eq(vaccinations.petId, petId)
+        )
+    );
+}
+
+export async function getVaccs(petId: number){
+    return db.select().from(vaccinations).where(eq(vaccinations.petId, petId));
+}
+
+export async function getVaccById(vaccId: number, petId: number){
+    return db.select().from(vaccinations).where(
+        and(
+            eq(vaccinations.vaccinationId, vaccId),
+            eq(vaccinations.petId, petId)
+        )
+    );
 }

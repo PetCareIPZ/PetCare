@@ -7,7 +7,7 @@ import AnimalDetailContent from "~/components/dashboard/id/AnimalDetailContent";
 
 
 export default async function animalDashboard({params}: {params: {petId: string}}) {
-    const {petId} = await params; 
+    const {petId} = params; 
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     if (!isAuthenticated) {
@@ -20,7 +20,7 @@ export default async function animalDashboard({params}: {params: {petId: string}
 
     const animal = await db.select().from(pets).where(
         and(
-            eq(pets.userId, user?.id!),
+            eq(pets.userId, user.id),
             eq(pets.petId, parseInt(petId))
         )
     );

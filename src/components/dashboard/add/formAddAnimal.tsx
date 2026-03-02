@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
-import formHandler from "./formHandler";
 import { UploadZoneWidget } from "./uploadZone";
+import formAddAnimalHandler from "./formAddAnimalHandler";
 
 export function AddAnimalFormWidget() {
   return (
@@ -12,7 +12,7 @@ export function AddAnimalFormWidget() {
         </h1>
 
         <form
-          action={formHandler}
+          action={formAddAnimalHandler}
           className="bg-white rounded-2xl shadow-md p-6 sm:p-8 space-y-6 transition hover:shadow-lg"
         >
           {/* Imię */}

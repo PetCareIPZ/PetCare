@@ -19,6 +19,7 @@ export default async function DashboardPage() {
     );
   }
 
+
   const userId = user?.id!;
 
   // Pobierz zwierzęta

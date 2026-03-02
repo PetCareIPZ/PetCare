@@ -12,7 +12,7 @@ export default async function ZwierzakiPage() {
   if (!isAuthenticated) {
     return (
       <div className="text-center mt-20 text-red-400">
-        <a href="/" className="underline">Zaloguj się</a> aby uzyskać dostęp do tej strony.
+        <Link href="/" className="underline">Zaloguj się</Link> aby uzyskać dostęp do tej strony.
       </div>
     );
   }

@@ -2,10 +2,11 @@
 
 import { funt2 } from "./base";
 import { useState,useEffect } from "react";
-import { UploadButton } from "src/utils/uploadthing"; 
+import { UploadButton } from "src/utils/uploadthing";
 import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import Icon from "~/components/Icon";
 import "@uploadthing/react/styles.css";
+import React from "react";
 
 interface Pet {
   petId: number;
@@ -14,7 +15,7 @@ interface Pet {
   imageUrl: string;
 }
 
-export default function FormularzW() {
+export default function FormularzW( {searchParams} ) {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
   const[showMap,setShowMap]=useState(false);
   const [facilities, setFacilities] = useState([]);
@@ -34,6 +35,13 @@ export default function FormularzW() {
     .then((data) => setAnimals(data)); 
   }, []);
 
+  const params : any = React.use(searchParams); 
+
+  useEffect(() => {
+    if (params?.petId) {
+      setSelectedPetId(parseInt(params.petId));
+    }
+  }, [params]);
 
   return (
     <div className="flex flex-col items-center justify-center py-8">

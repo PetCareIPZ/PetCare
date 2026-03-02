@@ -1,7 +1,6 @@
 "use server";
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation'
-import { NextResponse } from 'next/server';
 import { deleteAnimal } from "~/server/animal/animal.service";
 
 export default async function(animalId : number){
@@ -12,9 +11,9 @@ export default async function(animalId : number){
         throw new Error("Zaloguj się aby móc usunąć zwierzę");
     }
     try{
-        deleteAnimal(animalId,user!.id);
+        await deleteAnimal(animalId,user!.id);
         redirect(`/dashboard`)
     }catch(error){
-        redirect('/dashboard')
+        redirect('/dashboard/error?message=' + (error as Error).message);
     }
 }

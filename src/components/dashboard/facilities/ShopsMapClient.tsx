@@ -24,7 +24,7 @@ interface ShopsMapClientProps {
 
 export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClientProps) {
   const mapRef = useRef<any>(null);
-  const markersRef = useRef<{ [key: number]: any }>({});
+  const markersRef = useRef<Record<number, any>>({});
   const [L, setL] = useState<any>(null);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClient
     markersRef.current = {};
 
 
-    const icons: {[key: string]: string } ={
+    const icons: Record<string, string> ={
       "Gabinet Weterynaryjny": "/leaflet/veterinarian.png",
       "Groomer": "/leaflet/cat-bath.png",
       "Sklep Zoologiczny": "/leaflet/pet-shop.png"

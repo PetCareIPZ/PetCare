@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest } from 'next/server';
 import { db } from '~/server/db';
 import { facilities } from '~/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 
 export async function GET(req: NextRequest) {
+
   const { searchParams } = new URL(req.url);
   const city = searchParams.get('city');
   const type = searchParams.get('facilityType');
@@ -16,7 +17,6 @@ export async function GET(req: NextRequest) {
     .select()
     .from(facilities)
     .where(filters.length > 0 ? and(...filters) : undefined);
-    // problem z serializacją biginta
   return new Response(JSON.stringify(data, (_key, value) =>
     typeof value === "bigint" ? value.toString() : value
 ), {

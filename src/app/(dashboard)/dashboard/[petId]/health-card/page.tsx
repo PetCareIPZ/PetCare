@@ -7,7 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { ArrowLeft } from 'lucide-react';
 
 export default async function HealthCardPage({ params }: { params: { petId: string } }) {
-  const { petId } = await params;
+  const { petId } = params;
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
 
@@ -25,7 +25,7 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
   // Verify animal exists and belongs to user
   const animal = await db.select().from(pets).where(
     and(
-      eq(pets.userId, user?.id!),
+      eq(pets.userId, user.id),
       eq(pets.petId, parseInt(petId))
     )
   );
@@ -99,7 +99,7 @@ export default async function HealthCardPage({ params }: { params: { petId: stri
                 <p className="text-gray-400 italic">Brak wpisów wizyt</p>
               )}
             </div>
-            <Link href={`/dashboard/${petId}/health-card/add-visit`}>
+            <Link href={`/dashboard/visits/visit-registration?petId=${petId}`}>
               <button className="mt-4 w-full bg-primary hover:bg-primary/80 text-white font-semibold py-2 rounded-xl shadow transition">
                 + Dodaj wizytę
               </button>
