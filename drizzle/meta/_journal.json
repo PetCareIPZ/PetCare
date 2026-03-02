@@ -8,6 +8,13 @@
       "when": 1772394819472,
       "tag": "0000_lethal_sentinels",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772407991895,
+      "tag": "0001_futuristic_cerebro",
+      "breakpoints": true
     }
   ]
 }

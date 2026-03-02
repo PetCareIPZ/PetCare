@@ -20,9 +20,10 @@ interface Shop {
 interface ShopsMapClientProps {
   shops: Shop[];
   selectedShopId?: number | null;
+  onSelectShop?: (shop: Shop) => void;
 }
 
-export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClientProps) {
+export default function ShopsMapClient({ shops, selectedShopId, onSelectShop }: ShopsMapClientProps) {
   const mapRef = useRef<any>(null);
   const markersRef = useRef<{ [key: number]: any }>({});
   const [L, setL] = useState<any>(null);
@@ -91,6 +92,9 @@ export default function ShopsMapClient({ shops, selectedShopId }: ShopsMapClient
           </div>`,
           { maxWidth: 300 }
         )
+        .on('click', () => {
+          if (onSelectShop) onSelectShop(shop);
+        })
         .addTo(map);
 
       markersRef.current[shop.facilityId] = marker;
