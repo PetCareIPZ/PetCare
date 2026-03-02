@@ -3,7 +3,7 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation'
 import { deleteAnimal } from "~/server/animal/animal.service";
 
-export default async function(animalId : number){
+export default async function animalDeletionHandler(animalId : number){
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     

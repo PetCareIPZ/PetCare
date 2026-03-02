@@ -14,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { petId: numbe
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
+    }).catch((error: Error) => {
         return NextResponse.json({ error: error }, { status: 500 });
     });
 
@@ -47,8 +47,8 @@ export async function DELETE(request: Request, { params }: { params: { petId: nu
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error: Error) => {
+        return NextResponse.json({ error: error.message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId) || Number.isNaN(params.drugId)) {
@@ -77,8 +77,8 @@ export async function PATCH(request: Request, { params }: { params: { petId: num
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error: Error) => {
+        return NextResponse.json({ error: error.message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId) || Number.isNaN(params.drugId)) {
@@ -89,19 +89,18 @@ export async function PATCH(request: Request, { params }: { params: { petId: num
     }
 
     try{
-        const body = await request.json();
-        const drugData = {
-            drugType: body.drugType ?? undefined,
-            drugDate: body.drugDate ?? undefined,
-            drugDose: body.drugDose ?? undefined,
-            drugNote: body.drugNote ?? undefined
-        }
+        const body = await request.json() as {
+            drugType: string;
+            drugDate: string;
+            drugDose: string;
+            drugNote?: string;
+        };
         await updateDrug({
-            ...drugData, drugId: params.drugId,
+            ...body, drugId: params.drugId,
             petId: params.petId
         });
         return NextResponse.json({ message: 'Drug updated successfully' }, { status: 200 });
     }catch(error){
-        return NextResponse.json({ error: error }, { status: 500 })
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 })
     }
 }

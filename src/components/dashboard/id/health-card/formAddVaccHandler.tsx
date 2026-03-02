@@ -2,16 +2,27 @@
 
 import { redirect } from 'next/navigation'
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { addVacc } from "~/server/animal/animal.service";
+import { addVacc, getAnimalById } from "~/server/animal/animal.service";
 
 export default async function formAddVaccHandler(vaccFormData : FormData){
-        const { isAuthenticated } = await auth();
-        const user = isAuthenticated ? await currentUser() : null;
+    const { isAuthenticated } = await auth();
+    const user = isAuthenticated ? await currentUser() : null;
 
+    
     if (!isAuthenticated) {
         redirect("/dashboard/error?message=Zaloguj się aby móc wysłać formularz")
     }
-    console.log("form data: ", vaccFormData);
+    
+    const petId = vaccFormData.get("petId") as string;
+    getAnimalById(parseInt(petId), user.id).then((animal) => {
+        if (!animal || animal.length === 0) {
+            redirect("/dashboard/error?message=Zwierzę nie zostało znalezione")
+        }
+    }).catch((error : unknown) => {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        redirect("/dashboard/error?message=" + message);
+    });
+
     try{
         await addVacc({
             petId: parseInt(vaccFormData.get("petId") as string),
@@ -24,5 +35,6 @@ export default async function formAddVaccHandler(vaccFormData : FormData){
         redirect("/dashboard/error?message=" + (error as Error).message);
     }
 
-    redirect("/dashboard/" + vaccFormData.get("petId") + "/health-card");
+
+    redirect("/dashboard/" +  petId + "/health-card");
 }

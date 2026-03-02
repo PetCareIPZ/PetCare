@@ -46,9 +46,18 @@ export async function PATCH(request: Request, { params }: { params: { petId: str
     }
 
     try{
-        const body = await request.json();
-        body.petId = petId;
-        await updateAnimal(body, userId!);
+        const body = await request.json() as { 
+            petId: number;
+            name?: string;
+            dateOfBirth?: string;
+            species?: string;
+            race?: string;
+            sex?: string;
+            weight?: string;
+            chipNumber?: string;
+            imageUrl?: string;
+        };  
+        await updateAnimal({...body, petId: petId}, userId!);
         return NextResponse.json({ message: 'Updated' }, { status: 200 });
     }catch(error){
         return NextResponse.json({error: error},{status: 500})

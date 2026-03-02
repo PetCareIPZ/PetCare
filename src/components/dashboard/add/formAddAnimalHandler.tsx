@@ -3,7 +3,7 @@
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation'
 import { addAnimal } from "~/server/animal/animal.service"; 
-export default async function(addAnimalFormData : FormData){
+export default async function addAnimalFormHandler(addAnimalFormData : FormData){
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     

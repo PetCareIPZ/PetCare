@@ -1,5 +1,5 @@
 import "@uploadthing/react/styles.css";
-import { UploadButton, UploadDropzone} from '~/utils/uploadthing'
+import {UploadDropzone} from '~/utils/uploadthing'
 
 export function UploadZoneWidget({existingImageUrl}: {existingImageUrl: string}) {
   return (
@@ -13,12 +13,11 @@ export function UploadZoneWidget({existingImageUrl}: {existingImageUrl: string})
                     'imageUrlId'
                 ) as HTMLInputElement
     
-                input.value = res?.[0]?.ufsUrl!;
-                window.alert("Sukces" + res?.[0]?.ufsUrl);
+                input.value = res[0].ufsUrl!;
             }}
             
             onUploadError={(error: Error) => 
-                window.alert(`ERROR! ${error.message}`)
+                window.alert(`Błąd podczas wysyłania: ${error.message}`)
             }
         />
     </div>

@@ -8,9 +8,9 @@ export async function GET() {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 	}
 	try{
-		return NextResponse.json(await getAnimals(userId))
+		return NextResponse.json(await getAnimals(userId as string), { status: 200 })
 	}catch(error){
-		return NextResponse.json({ error: error }, { status: 500 })
+		return NextResponse.json({ error: (error as Error).message }, { status: 500 })
 	}
 }
 
@@ -21,8 +21,8 @@ export async function POST(req: Request) {
 		return NextResponse.json({ error: 'Unauthorized' },{ status: 401 })
 	}
 
-	const body = await req.json()
-	const animal = await addAnimal({...body,ownerId: userId,})
+	const body = await req.json() as { name: string; dateOfBirth: string; species: string; race: string; sex: string; weight: string; chipNumber: string; imageUrl: string; };
+	const animal = await addAnimal({...body,userId: userId,})
 	return NextResponse.json(animal, { status: 201 })
 }
 

@@ -72,7 +72,7 @@ export function AddVaccForm({petId}: {petId: string}){
                         >
                         Wyślij
                     </button>
-                    <button className="w-full sm:w-auto px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition" onClick={router.back}>
+                    <button className="w-full sm:w-auto px-4 py-2 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition" onClick={() => router.back()}>
                         Odrzuć
                     </button>
                 </div>

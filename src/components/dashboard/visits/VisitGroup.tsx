@@ -51,7 +51,7 @@ export default function VisitGroup({ petName, visits }: Props) {
                 <div className="text-gray-700 space-y-2">
                   <p className="text-sm leading-relaxed">
                     <span className="font-semibold text-gray-800">Notatka:</span>{" "}
-                    {w.visitNote || "Brak"}
+                    {w.visitNote ?? "Brak"}
                   </p>
 
                   {w.visitAttachment && (

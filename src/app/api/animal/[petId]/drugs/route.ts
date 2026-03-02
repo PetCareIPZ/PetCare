@@ -13,8 +13,8 @@ export async function GET(request: Request, { params }: { params: { petId: numbe
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error : Error) => {
+        return NextResponse.json({ error: error.message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId)) {
@@ -50,22 +50,19 @@ export async function POST(request: Request, { params }: { params: {petId: numbe
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error : unknown) => {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+
+        return NextResponse.json({ error: message }, { status: 500 });
     });
 
     try{
-        const body = await request.json();
-        const drugData = {
-            petId: params.petId,
-            drugType: body.drugType,
-            drugDate: body.drugDate,
-            drugDose: body.drugDose,
-            drugNote: body.drugNote
-        }
-        await addDrug(drugData);
+        const body = await request.json() as { drugType: string; drugDate: string; drugDose: string; drugNote: string; };
+
+        await addDrug({...body, petId: params.petId});
         return NextResponse.json({ message: "Drug added successfully" }, { status: 201 });
-    }catch(error){
-        return NextResponse.json({ error: error }, { status: 500 })
+    }catch(error : unknown){
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return NextResponse.json({ error: message }, { status: 500 })
     }
 }

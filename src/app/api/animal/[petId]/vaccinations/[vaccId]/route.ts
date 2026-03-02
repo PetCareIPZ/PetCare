@@ -13,8 +13,9 @@ export async function GET(request: Request, { params }: { params: { petId: numbe
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error : unknown) => {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return NextResponse.json({ error: message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId) || Number.isNaN(params.vaccId)) {
@@ -46,8 +47,9 @@ export async function DELETE(request: Request, { params }: { params: { petId: nu
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error : unknown) => {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return NextResponse.json({ error: message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId) || Number.isNaN(params.vaccId)) {
@@ -76,8 +78,9 @@ export async function PATCH(request: Request, { params }: { params: { petId: num
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
-    }).catch((error) => {
-        return NextResponse.json({ error: error }, { status: 500 });
+    }).catch((error : unknown) => {
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return NextResponse.json({ error: message }, { status: 500 });
     });
 
     if (Number.isNaN(params.petId) || Number.isNaN(params.vaccId)) {
@@ -88,19 +91,14 @@ export async function PATCH(request: Request, { params }: { params: { petId: num
     }
 
     try{
-        const body = await request.json();
-        const vaccData = {
-            vaccType: body.vaccType ?? undefined,
-            vaccDate: body.vaccDate ?? undefined,
-            vaccDose: body.vaccDose ?? undefined,
-            vaccNote: body.vaccNote ?? undefined
-        }
+        const body = await request.json() as { vaccType?: string; vaccDate?: string; vaccDose?: string; vaccNote?: string; };
         await updateVacc({
-            ...vaccData, vaccId: params.vaccId,
+            ...body, vaccId: params.vaccId,
             petId: params.petId
         });
         return NextResponse.json({ message: 'Vaccination updated successfully' }, { status: 200 });
-    }catch(error){
-        return NextResponse.json({ error: error }, { status: 500 })
+    }catch(error : unknown){
+        const message = error instanceof Error ? error.message : "An unknown error occurred";
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
