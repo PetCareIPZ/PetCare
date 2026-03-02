@@ -1,7 +1,7 @@
 "use client";
 
 import { funt2 } from "./base";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useMemo } from "react";
 import { UploadButton } from "src/utils/uploadthing";
 import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import Icon from "~/components/Icon";
@@ -15,14 +15,45 @@ interface Pet {
   imageUrl: string;
 }
 
+interface Facility {
+  facilityId: number;
+  name: string;
+  facilityType: string;
+  city: string;
+  street: string | null;
+  lat: number;
+  lon: number;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  openingHours: string | null;
+}
+
+interface Facility {
+  facilityId: number;
+  name: string;
+  facilityType: string;
+  city: string;
+  street: string | null;
+  lat: number;
+  lon: number;
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  openingHours: string | null;
+}
+
 export default function FormularzW( {searchParams} ) {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
   const[showMap,setShowMap]=useState(false);
-  const [facilities, setFacilities] = useState([]);
+  const [facilities, setFacilities] = useState<Facility[]>([]);
 
   const [animals, setAnimals] = useState<Pet[]>([]); 
   const [selectedPetId, setSelectedPetId] = useState<number | null>(null);
   
+  const [selectedType, setSelectedType] = useState<string>("");
+
+  const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
 
   useEffect(() => { fetch("/api/facilities")
     .then((res) => res.json()) 
@@ -35,6 +66,19 @@ export default function FormularzW( {searchParams} ) {
     .then((data) => setAnimals(data)); 
   }, []);
 
+  const facilityTypes = useMemo(() => {
+    return Array.from(new Set(facilities.map((f) => f.facilityType)));
+  }, [facilities])
+
+  const filteredFacilities = useMemo(() => {
+    if (!selectedType) return []; 
+    return facilities.filter((f) => f.facilityType === selectedType);
+  }, [facilities, selectedType]);
+
+
+  const handleSelectFacility = (facility: Facility) => {
+    setSelectedFacility(facility);
+  };
   const params : any = React.use(searchParams); 
 
   useEffect(() => {
@@ -84,31 +128,38 @@ export default function FormularzW( {searchParams} ) {
           </div>
             
             {/* Szczegóły wizyty */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700 mb-1">Data wizyty</label>
               <input 
                 type="date" 
                 name="data" 
-                className="rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition" 
+                className="w-full h-[50px] rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition" 
                 required 
               />
             </div>
 
+            {/* Typ wizyty */}
             <div className="flex flex-col">
               <label className="font-semibold text-gray-700 mb-1">Typ wizyty</label>
               <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  name="rodzaj_wizyty" 
-                  placeholder="np. Kontrola, Szczepienie" 
-                  className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition" 
-                  required 
-                />
+                <select
+                  name="rodzaj_wizyty"
+                  value={selectedType}
+                  onChange={(e) => setSelectedType(e.target.value)}
+                  className="flex-1 h-[50px] rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-primary focus:outline-none transition" 
+
+                  required
+                >
+                  <option value="" disabled hidden>Wybierz placowke</option>
+                  {facilityTypes.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))}
+                </select>
                 <button 
                   type="button" 
                   onClick={() => setShowMap(!showMap)} 
-                  className={`px-4 rounded-lg border transition-colors ${
+                  className={`shrink-0 w-[50px] h-[50px] flex items-center justify-center rounded-lg border transition-colors ${
                     showMap ? "bg-red-50 border-red-200 text-red-500" : "bg-gray-50 border-gray-300 text-gray-600 hover:bg-gray-200"
                   }`}
                   title="Pokaż mapę placówek"
@@ -120,8 +171,30 @@ export default function FormularzW( {searchParams} ) {
           </div>
 
           {showMap && (
-            <div className="h-72 rounded-xl overflow-hidden border border-gray-300 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
-              <ShopsMapClient shops={facilities} />
+            <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+              {selectedFacility && (
+                <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-bold text-blue-800">Wybrano: {selectedFacility.name}</p>
+                    <p className="text-xs text-blue-600">{selectedFacility.street}, {selectedFacility.city}</p>
+                  </div>
+                  <button 
+                    type="button" 
+                    onClick={() => setSelectedFacility(null)}
+                    className="text-blue-400 hover:text-blue-600"
+                  >
+                    <Icon name="times" />
+                  </button>
+                </div>
+              )}
+              <div className="h-72 rounded-xl overflow-hidden border border-gray-300 shadow-md">
+                <ShopsMapClient 
+                  shops={filteredFacilities} 
+                  onSelectShop={handleSelectFacility}
+                  selectedShopId={selectedFacility?.facilityId}
+                />
+              </div>
+              <input type="hidden" name="facilityId" value={selectedFacility?.facilityId || ""} />
             </div>
           )}
 
