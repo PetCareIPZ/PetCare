@@ -29,7 +29,7 @@ export default function SkllepyPage() {
     const fetchShops = async () => {
       try {
         const response = await fetch("/api/facilities");
-        const data = await response.json();
+        const data = (await response.json()) as Shop[];
         setShops(data);
       } catch (error) {
         console.error("Błąd pobierania sklepów:", error);
@@ -38,7 +38,7 @@ export default function SkllepyPage() {
       }
     };
 
-    fetchShops();
+    void fetchShops();
   }, []);
 
   const filteredShops = filterType === "all" ? shops : shops.filter((s) => s.facilityType === filterType);

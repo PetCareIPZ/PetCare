@@ -40,15 +40,19 @@ export default function FormularzW() {
 
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
 
-  useEffect(() => { fetch("/api/facilities")
+  useEffect(() => { 
+    void fetch("/api/facilities")
     .then((res) => res.json()) 
-    .then((data) => setFacilities(data)); 
+    .then((data) => setFacilities(data as Facility[]))
+    .catch((err) => console.error("Błąd ładowania placówek:", err));
   },[]);
 
 
-  useEffect(() => { fetch("/api/animal") 
+  useEffect(() => {
+    void fetch("/api/animal") 
     .then((res) => res.json()) 
-    .then((data) => setAnimals(data)); 
+    .then((data) => setAnimals(data as Pet[]))
+    .catch((err) => console.error("Błąd ładowania zwierząt", err));
   }, []);
 
   const facilityTypes = useMemo(() => {
@@ -87,7 +91,7 @@ export default function FormularzW() {
                   `}
                 >
                   <img 
-                    src={pet.imageUrl || "/svg/no-image.svg"} 
+                    src={pet.imageUrl ?? "/svg/no-image.svg"} 
                     alt={pet.petName} 
                     className="w-12 h-12 rounded-full mb-2 object-cover border border-gray-200" 
                     
@@ -172,7 +176,7 @@ export default function FormularzW() {
                   selectedShopId={selectedFacility?.facilityId}
                 />
               </div>
-              <input type="hidden" name="facilityId" value={selectedFacility?.facilityId || ""} />
+              <input type="hidden" name="facilityId" value={selectedFacility?.facilityId ?? ""} />
             </div>
           )}
 
@@ -193,7 +197,7 @@ export default function FormularzW() {
             <UploadButton
             endpoint="visitAttachment"
             onClientUploadComplete={(res)=>{
-              if (res && res[0] && res[0].ufsUrl) { setAttachmentUrl(res[0].ufsUrl); } 
+              if (res?.[0]?.ufsUrl) { setAttachmentUrl(res[0].ufsUrl); } 
             }}
             onUploadError={(e) => {
             alert("Błąd uploadu: " + e.message);
