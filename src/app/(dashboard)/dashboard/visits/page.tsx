@@ -60,7 +60,7 @@ export default async function wizyty() {
 
     }
 
-    const user = await currentUser()
+    await currentUser()
 
   function pluralizeZwierze(n: number) {
     if (n === 1) return "zwierzę";

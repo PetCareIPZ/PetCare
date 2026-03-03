@@ -5,8 +5,8 @@ import { db } from "~/server/db";
 import { pets } from "~/server/db/schema";
 import { eq, and } from "drizzle-orm";
 
-export default async function edytujPage({params}: {params: {petId: string}}) {
-    const {petId} = await params; 
+export default async function editPage({params}: {params: {petId: string}}) {
+    const {petId} = params; 
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     if (!isAuthenticated) {
@@ -18,7 +18,7 @@ export default async function edytujPage({params}: {params: {petId: string}}) {
     }
     const animal = await db.select().from(pets).where(
         and(
-            eq(pets.userId, user?.id!),
+            eq(pets.userId, user.id),
             eq(pets.petId, parseInt(petId))
         )
     );
@@ -30,8 +30,9 @@ export default async function edytujPage({params}: {params: {petId: string}}) {
                 <Link href="/dashboard">Powrót do pulpitu</Link>
             </div>
         );
+    }else{
+        return (
+            <EditAnimalFormWidget animal={animal[0]!}/>
+        )
     }
-    return (
-        <EditAnimalFormWidget animal={animal[0]}/>
-    )
 }

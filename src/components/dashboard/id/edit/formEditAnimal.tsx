@@ -1,9 +1,23 @@
 'use client';
 import Link from "next/link";
-import formHandler from "~/components/dashboard/id/edit/formHandler";
-import { UploadZoneWidget } from "../../add/uploadZone";
+import FormEditHandler from "~/components/dashboard/id/edit/formEditHandler";
+import { UploadZoneWidget } from "~/components/dashboard/add/uploadZone";
 
-export default function EditAnimalFormWidget({ animal }: { animal: any }) {
+type animalData = {
+    petId: number;
+    userId: string;
+    petName: string;
+    species: string;
+    race: string;
+    sex: string;
+    birthDate: string;
+    weight: string;
+    chipNumber: string | null;
+    imageUrl: string;
+    createdAt: Date | null;
+}
+
+export default function EditAnimalFormWidget({animal}: {animal: animalData}) {
   return (
     <div className="flex items-center justify-center py-8 bg-gray-50 min-h-screen">
       <div className="w-full max-w-3xl px-4">
@@ -12,12 +26,10 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
         </h1>
 
         <form
-          action={formHandler}
+          action={FormEditHandler}
           className="bg-white rounded-2xl shadow-md p-6 sm:p-8 space-y-6 transition hover:shadow-lg"
         >
           <input type="hidden" name="petId" value={animal.petId} />
-
-          {/* Imię */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Imię zwierzaka
@@ -31,8 +43,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               required
             />
           </div>
-
-          {/* Data urodzenia */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Data urodzenia
@@ -45,8 +55,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               required
             />
           </div>
-
-          {/* Gatunek */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Gatunek
@@ -60,8 +68,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               required
             />
           </div>
-
-          {/* Rasa */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Rasa
@@ -75,8 +81,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               required
             />
           </div>
-
-          {/* Płeć */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Płeć
@@ -93,8 +97,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               <option value="jednopłciowy">Jednopłciowy</option>
             </select>
           </div>
-
-          {/* Waga */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Waga (kg)
@@ -110,8 +112,6 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               required
             />
           </div>
-
-          {/* Numer chipu */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Numer chipu
@@ -122,15 +122,11 @@ export default function EditAnimalFormWidget({ animal }: { animal: any }) {
               className="w-full rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50"
               placeholder="15-cyfrowy numer chipu"
               maxLength={15}
-              defaultValue={animal.chipNumber}
+              defaultValue={animal.chipNumber ?? ""}
               required
             />
           </div>
-
-          {/* Upload zdjęcia */}
           <UploadZoneWidget existingImageUrl={animal.imageUrl} />
-
-          {/* Akcje */}
           <div className="flex flex-col sm:flex-row-reverse gap-3 pt-4">
             <button
               type="submit"

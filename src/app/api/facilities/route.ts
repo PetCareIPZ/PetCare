@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest } from 'next/server';
 import { db } from '~/server/db';
 import { facilities } from '~/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 
 export async function GET(req: NextRequest) {
+
   const { searchParams } = new URL(req.url);
   const city = searchParams.get('city');
   const type = searchParams.get('facilityType');
