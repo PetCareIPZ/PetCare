@@ -87,10 +87,10 @@ export default async function DashboardPage() {
               <StatsCard title="Leki" value={drugsCount} />
             </Link>
 
-            <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center justify-center">
-              <h3 className="text-lg font-medium text-gray-700">Szczepionki</h3>
-              <p className="text-3xl font-bold text-gray-900 mt-2">{vaccinationsCount}</p>
-            </div>
+            <Link href="/dashboard/vaccinations" className="transition hover:opacity-80">
+              <StatsCard title="Szczepionki" value={vaccinationsCount} />
+            </Link>
+
           </div>
         </section>
       </AnimatedSection>
