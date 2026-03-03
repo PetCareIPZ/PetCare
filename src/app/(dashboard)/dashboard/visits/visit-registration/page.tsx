@@ -28,22 +28,12 @@ interface Facility {
   website: string | null;
   openingHours: string | null;
 }
-
-interface Facility {
-  facilityId: number;
-  name: string;
-  facilityType: string;
-  city: string;
-  street: string | null;
-  lat: number;
-  lon: number;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  openingHours: string | null;
+interface SearchParams {
+  petId?: string;
+  [key: string]: string | string[] | undefined;
 }
 
-export default function FormularzW( {searchParams} ) {
+export default function FormularzW( {searchParams}: {searchParams: Promise<SearchParams>} ) {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
   const[showMap,setShowMap]=useState(false);
   const [facilities, setFacilities] = useState<Facility[]>([]);
@@ -83,13 +73,13 @@ export default function FormularzW( {searchParams} ) {
   const handleSelectFacility = (facility: Facility) => {
     setSelectedFacility(facility);
   };
-  const params : any = React.use(searchParams); 
+  const params = React.use(searchParams); 
 
   useEffect(() => {
-    if (params?.petId) {
+    if (params.petId) {
       setSelectedPetId(parseInt(params.petId));
     }
-  }, [params]);
+  }, [params.petId]);
 
   return (
     <div className="flex flex-col items-center justify-center py-8">
