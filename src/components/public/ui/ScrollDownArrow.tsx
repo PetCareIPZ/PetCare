@@ -22,7 +22,7 @@ export default function ScrollDownArrow({ className, targetId }: ScrollDownArrow
     <div className="w-full flex justify-center mt-2">
       <div
         onClick={handleClick}
-        className={`inline-flex flex-col items-center cursor-pointer group ${className || ''}`}
+        className={`inline-flex flex-col items-center cursor-pointer group ${className ?? ''}`}
       >
         <span className="text-gray-600 mb-2 text-sm sm:text-base">
           Dowiedz się więcej

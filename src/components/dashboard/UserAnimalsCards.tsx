@@ -12,7 +12,7 @@ interface UserProfileProps {
 }
 
 export default async function UserAnimalsCards({ user }: UserProfileProps) {
-  const results = await getAnimals(user?.id!);
+  const results = await getAnimals(user.id);
 
   return results.map((animal) => (
     <Link

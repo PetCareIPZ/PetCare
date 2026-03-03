@@ -124,7 +124,7 @@ export default function FormularzW( {searchParams} ) {
               ))}
             </div>
             
-            <input type="hidden" name="petId" value={selectedPetId || ""} />
+            <input type="hidden" name="petId" value={selectedPetId ?? ""} />
             
             {selectedPetId === null && animals.length > 0 && (
               <p className="text-xs text-amber-600 mt-2">Musisz wybrać zwierzaka przed wysłaniem.</p>

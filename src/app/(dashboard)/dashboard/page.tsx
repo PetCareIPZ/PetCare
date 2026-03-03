@@ -19,9 +19,6 @@ export default async function DashboardPage() {
     );
   }
 
-
-  const userId = user?.id!;
-
   // Pobierz zwierzęta
   const userPets = await db
     .select({
@@ -30,7 +27,7 @@ export default async function DashboardPage() {
       species: pets.species,
     })
     .from(pets)
-    .where(eq(pets.userId, userId));
+    .where(eq(pets.userId, user.id));
 
   const petIds = userPets.map((p) => p.petId);
 
@@ -56,9 +53,9 @@ export default async function DashboardPage() {
           .where(inArray(vaccinations.petId, petIds)),
       ]);
       
-      visitsCount = visitsCounts[0]?.count || 0;
-      drugsCount = drugsCounts[0]?.count || 0;
-      vaccinationsCount = vaccinationsCounts[0]?.count || 0;
+      visitsCount = visitsCounts[0]?.count ?? 0;
+      drugsCount = drugsCounts[0]?.count ?? 0;
+      vaccinationsCount = vaccinationsCounts[0]?.count ?? 0;
     } catch (error) {
       console.error("Error fetching stats:", error);
     }
