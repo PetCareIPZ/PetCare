@@ -6,6 +6,7 @@ import Icon from "~/components/Icon";
 import { db } from "~/server/db";
 import { pets, visits, drugs, vaccinations } from "~/server/db/schema";
 import { eq, inArray, count } from "drizzle-orm";
+import SavedArticlesPreview from "~/app/(dashboard)/dashboard/SavedArticlesPreview";
 
 export default async function DashboardPage() {
   const { isAuthenticated } = await auth();
@@ -141,6 +142,10 @@ export default async function DashboardPage() {
             </div>
           )}
         </section>
+      </AnimatedSection>
+
+      <AnimatedSection delay={0.05}>
+         <SavedArticlesPreview />
       </AnimatedSection>
 
       <AnimatedSection delay={0.2}>
