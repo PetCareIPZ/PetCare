@@ -2,23 +2,39 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import type { Animal } from "~/types/animal";
 
 interface DeleteAnimalProps {
-  animal: any;
+  animal: Animal;
 }
 
 export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Upewniamy się, że komponent jest zhydraturowany
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // dopóki nie hydratowany, nic nie renderujemy
+  if (!mounted) return null;
+
+  // Przygotowanie danych do wyświetlenia z zachowaniem bezpieczeństwa typów
+  const details: [string, string | number][] = [
+    ["Gatunek", animal.species],
+    ["Rasa", animal.race],
+    ["Płeć", animal.sex],
+    ["Data urodzenia", typeof animal.birthDate === 'string' ? animal.birthDate : animal.birthDate.toLocaleDateString("pl-PL")],
+    ["Waga", animal.weight ? `${animal.weight} kg` : "-"],
+    ["Data dodania", new Date(animal.createdAt).toLocaleDateString("pl-PL")]
+  ];
+
+  // Opcjonalne dodanie numeru chipa przy użyciu nullish coalescing ??
+  if (animal.chipNumber) {
+    details.splice(5, 0, ["Numer Chipa", animal.chipNumber]);
+  }
 
   return (
     <div className="bg-gray-50 py-8">
@@ -26,19 +42,16 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
 
         {/* Nawigacja */}
         <div className="flex justify-between mb-6 text-sm sm:text-base">
-          {/* Powrót */}
           <Link 
             href="/dashboard/animals" 
             className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
           >
             <ArrowLeft 
               className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" 
-              style={{ display: 'inline-block' }} 
             />
             <span>Powrót</span>
           </Link>
 
-          {/* Karta Zdrowia */}
           <Link 
             href={`/dashboard/${animal.petId}/health-card`} 
             className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group"
@@ -54,11 +67,13 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
         <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col sm:flex-row transition hover:shadow-lg">
 
           {/* Lewa kolumna: zdjęcie */}
-          <div className="w-full sm:w-1/2 h-48 sm:h-auto bg-gray-100 flex items-center justify-center">
-            <img
-              src={animal.imageUrl}
+          <div className="w-full sm:w-1/2 h-48 sm:h-64 md:h-auto bg-gray-100 relative">
+            <Image
+              src={animal.imageUrl ?? "/img/placeholder-pet.png"} // Użycie ?? zamiast ||
               alt={animal.petName}
-              className="w-full h-full object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
+              fill
+              className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
+              sizes="(max-width: 640px) 100vw, 50vw"
             />
           </div>
 
@@ -68,16 +83,8 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
               <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">{animal.petName}</h1>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-gray-600 text-sm">
-                {[
-                  ["Gatunek", animal.species],
-                  ["Rasa", animal.race],
-                  ["Płeć", animal.sex],
-                  ["Data urodzenia", animal.birthDate],
-                  ["Waga", animal.weight ? `${animal.weight} kg` : "-"],
-                  animal.chipNumber && ["Numer Chipa", animal.chipNumber],
-                  ["Data dodania", new Date(animal.createdAt).toLocaleDateString("pl-PL")]
-                ].filter(Boolean).map(([label, value]) => (
-                  <div key={label as string} className="flex flex-col">
+                {details.map(([label, value]) => (
+                  <div key={label} className="flex flex-col">
                     <span className="font-medium text-gray-400">{label}</span>
                     <span className="font-semibold text-gray-800">{value}</span>
                   </div>

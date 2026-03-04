@@ -6,7 +6,7 @@ import Icon from '~/components/Icon';
 import CategoryDetailPage from './CategoryDetailPage';
 import { categoryData } from './data';
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
-import type { Category, CategoryUI, SavedArticle } from '../../../../types/knowledge-base';
+import type { Category, CategoryUI, SavedArticle } from '~/types/knowledge-base';
 
 const categories: CategoryUI[] = [
   { id: "zdrowie", title: "Zdrowie i profilaktyka", description: "Informacje o szczepieniach, odrobaczaniu i typowych dolegliwościach.", icon: <HeartPulse className="w-8 h-8 text-red-500" /> },

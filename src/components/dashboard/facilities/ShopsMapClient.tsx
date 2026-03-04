@@ -1,62 +1,54 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
-
-interface Shop {
-  facilityId: number;
-  name: string;
-  facilityType: string;
-  city: string;
-  street: string | null;
-  lat: number;
-  lon: number;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  openingHours: string | null;
-}
-
-interface ShopsMapClientProps {
-  shops: Shop[];
-  selectedShopId?: number | null;
-  onSelectShop?: (shop: Shop) => void;
-}
+import type * as LType from "leaflet";
+import type { Shop, ShopsMapClientProps } from "~/types/facilities";
 
 export default function ShopsMapClient({ shops, selectedShopId, onSelectShop }: ShopsMapClientProps) {
-  const mapRef = useRef<any>(null);
-  const markersRef = useRef<Record<number, any>>({});
-  const [L, setL] = useState<any>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  
+  const leafletMapRef = useRef<LType.Map | null>(null);
+  
+  const markersRef = useRef<Record<number, LType.Marker>>({});
+  
+  const [leafletLib, setLeafletLib] = useState<typeof LType | null>(null);
+
+  const handleSelect = useCallback((shop: Shop) => {
+    onSelectShop?.(shop);
+  }, [onSelectShop]);
 
   useEffect(() => {
-    // Import leaflet dynamicznie na kliencie
-    import("leaflet").then((leafletModule) => {
-      setL(leafletModule.default);
+    void import("leaflet").then((leafletModule) => {
+      setLeafletLib(leafletModule);
     });
   }, []);
 
   useEffect(() => {
-    if (!L || !mapRef.current) return;
+    if (!leafletLib || !mapRef.current) return;
 
-    if (!mapRef.current._leaflet_map) {
-      mapRef.current._leaflet_map = L.map(mapRef.current).setView([53.4251, 14.5508], 10);
+    const L = leafletLib;
+
+    if (!leafletMapRef.current && mapRef.current) {
+      const mapInstance = L.map(mapRef.current).setView([53.4251, 14.5508], 10);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19,
-      }).addTo(mapRef.current._leaflet_map);
+      }).addTo(mapInstance);
+
+      leafletMapRef.current = mapInstance;
     }
 
-    const map = mapRef.current._leaflet_map;
+    const map = leafletMapRef.current;
+    if (!map) return;
 
-    // Wyczyść stare markery
     Object.values(markersRef.current).forEach((marker) => {
       map.removeLayer(marker);
     });
     markersRef.current = {};
 
-
-    const icons: Record<string, string> ={
+    const icons: Record<string, string> = {
       "Gabinet Weterynaryjny": "/leaflet/veterinarian.png",
       "Groomer": "/leaflet/cat-bath.png",
       "Sklep Zoologiczny": "/leaflet/pet-shop.png"
@@ -64,12 +56,11 @@ export default function ShopsMapClient({ shops, selectedShopId, onSelectShop }: 
 
     // Dodaj nowe markery
     shops.forEach((shop) => {
-
-      const iconUrl = icons[shop.facilityType];
+      const iconUrl = icons[shop.facilityType] ?? "/leaflet/default.png";
 
       const customIcon = L.icon({
         iconUrl: iconUrl,
-        iconSize: [40,40],
+        iconSize: [40, 40],
         iconAnchor: [20, 20],
         popupAnchor: [0, -20],
       });
@@ -84,7 +75,7 @@ export default function ShopsMapClient({ shops, selectedShopId, onSelectShop }: 
             ${shop.email ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Email:</strong> <a href ="mailto:${shop.email}"> ${shop.email}</a></p>` : ""}
             ${shop.openingHours ? `<p style="margin: 4px 0; font-size: 14px;"><strong>Godziny:</strong> ${shop.openingHours}</p>` : ""}
             ${shop.name ? `<div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
-            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.name + ' ' + shop.street + ' ' + shop.city)}" 
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.name + ' ' + (shop.street ?? '') + ' ' + shop.city)}" 
             target="_blank" 
             rel="noopener noreferrer" 
             style="margin: 0 0 8px 0; font-weight: bold;">
@@ -93,23 +84,24 @@ export default function ShopsMapClient({ shops, selectedShopId, onSelectShop }: 
           { maxWidth: 300 }
         )
         .on('click', () => {
-          if (onSelectShop) onSelectShop(shop);
+          handleSelect(shop);
         })
         .addTo(map);
 
       markersRef.current[shop.facilityId] = marker;
     });
 
-    // Jeśli wybrany sklep, otwórz jego popup
+    // Obsługa wybranego sklepu
     if (selectedShopId && markersRef.current[selectedShopId]) {
-      markersRef.current[selectedShopId].openPopup();
-      map.setView(
-        [shops.find((s) => s.facilityId === selectedShopId)?.lat || 52.2297, 
-         shops.find((s) => s.facilityId === selectedShopId)?.lon || 21.0122],
-        15
-      );
+      const targetMarker = markersRef.current[selectedShopId];
+      targetMarker.openPopup();
+      
+      const shop = shops.find((s) => s.facilityId === selectedShopId);
+      if (shop) {
+        map.setView([shop.lat, shop.lon], 15);
+      }
     }
-  }, [L, shops, selectedShopId]);
+  }, [leafletLib, shops, selectedShopId, handleSelect]);
 
   return <div ref={mapRef} style={{ width: "100%", height: "400px" }} className="sm:h-96 md:h-96 rounded-lg" />;
 }
