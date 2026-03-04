@@ -95,11 +95,13 @@ export default function KnowledgeBasePage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto">
         <div className="mb-12 text-left">
+
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             <Icon name="book" /> Baza Wiedzy
           </h1>
+
           <p className="text-lg text-gray-600 mb-8 font-light italic">Wszystko dla zdrowia i szczęścia Twojego pupila.</p>
           
           <AnimatedSection delay={0.1}>
