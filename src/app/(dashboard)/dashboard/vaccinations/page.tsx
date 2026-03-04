@@ -49,7 +49,7 @@ export default async function HistoriaSzczepien() {
     return (
         <>
             <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
-                Historia Szczepień
+                <Icon name="syringe" /> Historia Szczepień
             </h1>
 
             <AnimatedSection>
@@ -61,7 +61,7 @@ export default async function HistoriaSzczepien() {
                                     <h3 className="text-xl font-semibold text-gray-800 mb-2">Dodaj szczepienie</h3>
                                     <p className="text-gray-600">Zarejestruj nową szczepionkę w systemie</p>
                                 </div>
-                                <div className="text-4xl"><Icon name="calendar" /></div>
+                                <div className="text-4xl"><Icon name="syringe" /></div>
                             </div>
                         </div>
                     </Link>

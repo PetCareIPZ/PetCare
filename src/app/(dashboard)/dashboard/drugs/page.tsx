@@ -49,7 +49,7 @@ export default async function HistoriaLekow() {
     return (
         <>
             <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
-                Historia Leków
+                <Icon name="pills" /> Historia Leków
             </h1>
 
             <AnimatedSection>
@@ -61,7 +61,7 @@ export default async function HistoriaLekow() {
                                     <h3 className="text-xl font-semibold text-gray-800 mb-2">Podaj lek</h3>
                                     <p className="text-gray-600">Zarejestruj nowy lek, tabletkę lub krople</p>
                                 </div>
-                                <div className="text-4xl"><Icon name="calendar" /></div>
+                                <div className="text-4xl"><Icon name="pills" /></div>
                             </div>
                         </div>
                     </Link>
