@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Search, BookOpen, HeartPulse, GraduationCap, Utensils, Info, Bookmark, X, ArrowRight } from 'lucide-react';
+import { Search, BookOpen, HeartPulse, GraduationCap, Utensils, Bookmark, X, ArrowRight } from 'lucide-react';
 import Icon from '~/components/Icon';
 import CategoryDetailPage from './CategoryDetailPage';
 import { categoryData } from './data';
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
+import type { Category, CategoryUI, SavedArticle } from '../../../../types/knowledge-base';
 
-const categories = [
+const categories: CategoryUI[] = [
   { id: "zdrowie", title: "Zdrowie i profilaktyka", description: "Informacje o szczepieniach, odrobaczaniu i typowych dolegliwościach.", icon: <HeartPulse className="w-8 h-8 text-red-500" /> },
   { id: "zywienie", title: "Żywienie", description: "Jak dobrać karmę i jakich produktów unikać w diecie pupila.", icon: <Utensils className="w-8 h-8 text-orange-500" /> },
   { id: "trening", title: "Wychowanie i trening", description: "Porady dotyczące behawiorystyki, nauki czystości i komend.", icon: <GraduationCap className="w-8 h-8 text-blue-500" /> },
@@ -17,22 +18,31 @@ const categories = [
 export default function KnowledgeBasePage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [savedArticles, setSavedArticles] = useState<any[]>([]);
+  const [savedArticles, setSavedArticles] = useState<SavedArticle[]>([]);
 
   const refreshSavedArticles = () => {
     const savedIdsString = localStorage.getItem('savedArticles');
     if (savedIdsString) {
-      const savedIds = JSON.parse(savedIdsString);
-      const allArticles: any[] = [];
-      
-      Object.values(categoryData).forEach((cat: any) => {
-        cat.articles.forEach((art: any) => {
-          if (savedIds.includes(art.id)) {
-            allArticles.push({ ...art, categoryTitle: cat.title, categorySlug: Object.keys(categoryData).find(key => (categoryData as any)[key] === cat) });
-          }
+      try {
+        const savedIds = JSON.parse(savedIdsString) as string[];
+        const allArticles: SavedArticle[] = [];
+        const data = categoryData as Record<string, Category>;
+        
+        Object.entries(data).forEach(([slug, cat]) => {
+          cat.articles.forEach((art) => {
+            if (savedIds.includes(art.id)) {
+              allArticles.push({ 
+                ...art, 
+                categoryTitle: cat.title, 
+                categorySlug: slug 
+              });
+            }
+          });
         });
-      });
-      setSavedArticles(allArticles);
+        setSavedArticles(allArticles);
+      } catch (e) {
+        console.error("Error parsing saved articles", e);
+      }
     } else {
       setSavedArticles([]);
     }
@@ -46,20 +56,27 @@ export default function KnowledgeBasePage() {
 
   const removeSaved = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const currentSaved = JSON.parse(localStorage.getItem('savedArticles') || '[]');
+    const saved = localStorage.getItem('savedArticles');
+    const currentSaved = saved ? (JSON.parse(saved) as string[]) : [];
     const newSaved = currentSaved.filter((savedId: string) => savedId !== id);
     localStorage.setItem('savedArticles', JSON.stringify(newSaved));
     refreshSavedArticles();
   };
 
   const filteredCategories = useMemo(() => {
+    const data = categoryData as Record<string, Category>;
     return categories.filter(category => {
       const searchLower = searchTerm.toLowerCase();
-      const categoryMatch = category.title.toLowerCase().includes(searchLower) || category.description.toLowerCase().includes(searchLower);
-      const content = (categoryData as any)[category.id];
-      const articleMatch = content?.articles.some((art: any) => 
-        art.title.toLowerCase().includes(searchLower) || art.content.toLowerCase().includes(searchLower)
-      );
+      const categoryMatch = 
+        category.title.toLowerCase().includes(searchLower) || 
+        category.description.toLowerCase().includes(searchLower);
+      
+      const content = data[category.id];
+      const articleMatch = content?.articles.some((art) => 
+        (art.title ?? "").toLowerCase().includes(searchLower) || 
+        (art.content ?? "").toLowerCase().includes(searchLower)
+      ) ?? false;
+
       return categoryMatch || articleMatch;
     });
   }, [searchTerm]);
@@ -79,8 +96,6 @@ export default function KnowledgeBasePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      
-      {/* Nagłówek i Wyszukiwarka */}
         <div className="mb-12 text-left">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             <Icon name="book" /> Baza Wiedzy
@@ -103,7 +118,6 @@ export default function KnowledgeBasePage() {
           </AnimatedSection>
         </div>
 
-      {/* --- SEKCJA: ZAPISANE ARTYKUŁY --- */}
       {savedArticles.length > 0 && !searchTerm && (
         <AnimatedSection delay={0.1}>
           <section className="mb-16">
@@ -143,7 +157,6 @@ export default function KnowledgeBasePage() {
       <AnimatedSection delay={0.2}>
         <hr className="my-12 border-gray-200" />
 
-        {/* Siatka Kategorii */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredCategories.map((category) => (
             <button

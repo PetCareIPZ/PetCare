@@ -4,8 +4,8 @@ import React, { memo } from "react";
 import { motion } from "framer-motion";
 import ScrollDownArrow from "../ui/ScrollDownArrow";
 import SignupCTA from '../ui/SignUpCta';
-import Image from "next/image";
 import dogImg from "public/img/dog.svg";
+import Image, { type StaticImageData } from "next/image";
 
 const Hero = () => {
   return (
@@ -20,7 +20,7 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Image 
-            src={dogImg.src}
+            src={dogImg as StaticImageData}
             height={500}
             width={500}
             unoptimized

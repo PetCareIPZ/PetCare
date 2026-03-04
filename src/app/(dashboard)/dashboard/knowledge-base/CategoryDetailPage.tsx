@@ -3,21 +3,25 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ArrowLeft, Clock, Search, CheckCircle2, Share2, Bookmark } from 'lucide-react';
 import { categoryData } from './data';
+import type { Category, DetailProps } from '../../../../../src/types/knowledge-base';
 
-interface DetailProps {
-  categorySlug: string;
-  initialSearch: string;
-  onBack: () => void;
-}
 
 export default function CategoryDetailPage({ categorySlug, initialSearch, onBack }: DetailProps) {
   const [localSearch, setLocalSearch] = useState(initialSearch);
   const [savedIds, setSavedIds] = useState<string[]>([]);
-  const data = (categoryData as any)[categorySlug];
+  
+  const data = (categoryData as Record<string, Category>)[categorySlug];
 
   useEffect(() => {
     const saved = localStorage.getItem('savedArticles');
-    if (saved) setSavedIds(JSON.parse(saved));
+    // Bezpieczne parsowanie JSON
+    if (saved) {
+      try {
+        setSavedIds(JSON.parse(saved) as string[]);
+      } catch (e) {
+        console.error("Failed to parse savedArticles", e);
+      }
+    }
   }, []);
 
   const toggleSave = (articleId: string) => {
@@ -26,17 +30,20 @@ export default function CategoryDetailPage({ categorySlug, initialSearch, onBack
       : [...savedIds, articleId];
     setSavedIds(newSaved);
     localStorage.setItem('savedArticles', JSON.stringify(newSaved));
-    window.dispatchEvent(new Event('storage')); // Powiadom stronę główną
+    window.dispatchEvent(new Event('storage'));
   };
 
   const filteredArticles = useMemo(() => {
     if (!data) return [];
     const searchLower = localSearch.toLowerCase();
-    return data.articles.filter((art: any) =>
-      art.title.toLowerCase().includes(searchLower) ||
-      art.content.toLowerCase().includes(searchLower) ||
-      art.points?.some((p: string) => p.toLowerCase().includes(searchLower))
-    );
+    
+    return data.articles.filter((art) => {
+      const titleMatch = (art.title ?? "").toLowerCase().includes(searchLower);
+      const contentMatch = (art.content ?? "").toLowerCase().includes(searchLower);
+      const pointsMatch = art.points?.some((p) => p.toLowerCase().includes(searchLower)) ?? false;
+      
+      return titleMatch || contentMatch || pointsMatch;
+    });
   }, [localSearch, data]);
 
   if (!data) return <div className="p-20 text-center font-bold">Kategoria nie istnieje.</div>;
@@ -67,7 +74,7 @@ export default function CategoryDetailPage({ categorySlug, initialSearch, onBack
 
       <div className="space-y-20">
         {filteredArticles.length > 0 ? (
-          filteredArticles.map((article: any) => {
+          filteredArticles.map((article) => {
             const isSaved = savedIds.includes(article.id);
             return (
               <article key={article.id} className="group animate-in slide-in-from-bottom-4 duration-500">
@@ -83,7 +90,7 @@ export default function CategoryDetailPage({ categorySlug, initialSearch, onBack
                   <div className="bg-white rounded-2xl p-6 mb-8 border border-gray-100 shadow-sm ring-1 ring-gray-50">
                     <h4 className="text-xs font-black text-gray-900 mb-4 uppercase tracking-widest">Warto wiedzieć:</h4>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {article.points.map((p: string, i: number) => (
+                      {article.points.map((p, i) => (
                         <li key={i} className="flex items-start text-sm text-gray-600 leading-snug">
                           <CheckCircle2 className={`w-4 h-4 mr-3 mt-0.5 ${data.color} flex-shrink-0`} />
                           {p}
