@@ -101,9 +101,6 @@ export default function CategoryDetailPage({ categorySlug, initialSearch, onBack
                 )}
 
                 <div className="flex items-center gap-6 pt-6 border-t border-gray-50">
-                  <button className="flex items-center text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">
-                    <Share2 className="w-4 h-4 mr-2" /> Udostępnij
-                  </button>
                   <button 
                     onClick={() => toggleSave(article.id)}
                     className={`flex items-center text-xs font-bold uppercase tracking-widest transition-all ${isSaved ? 'text-blue-600' : 'text-gray-400 hover:text-gray-700'}`}
