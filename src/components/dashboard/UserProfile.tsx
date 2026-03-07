@@ -1,11 +1,4 @@
-interface UserProfileProps {
-  user: {
-    firstName?: string | null;
-    lastName?: string | null;
-    id? : string | null;
-    emailAddresses?: { emailAddress: string }[];
-  } | null;
-}
+import type { UserProfileProps } from "~/types/user";
 
 export default function UserProfile({ user }: UserProfileProps) {
   if (!user) return null;

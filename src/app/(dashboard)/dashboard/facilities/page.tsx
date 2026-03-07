@@ -4,20 +4,7 @@ import { useState, useEffect } from "react";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
 import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import Icon from "~/components/Icon";
-
-interface Shop {
-  facilityId: number;
-  name: string;
-  facilityType: string;
-  city: string;
-  street: string | null;
-  lat: number;
-  lon: number;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  openingHours: string | null;
-}
+import type { Shop } from "~/types/shop";
 
 export default function SkllepyPage() {
   const [shops, setShops] = useState<Shop[]>([]);

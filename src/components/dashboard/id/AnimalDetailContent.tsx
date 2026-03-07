@@ -6,10 +6,7 @@ import Image from "next/image";
 import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import type { Animal } from "~/types/animal";
-
-interface DeleteAnimalProps {
-  animal: Animal;
-}
+import type { DeleteAnimalProps } from "~/types/animal";
 
 export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
   const [showConfirm, setShowConfirm] = useState(false);

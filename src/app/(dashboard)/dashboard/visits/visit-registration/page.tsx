@@ -7,31 +7,7 @@ import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import Icon from "~/components/Icon";
 import "@uploadthing/react/styles.css";
 import React from "react";
-
-interface Pet {
-  petId: number;
-  petName: string;
-  species: string;
-  imageUrl: string;
-}
-
-interface Facility {
-  facilityId: number;
-  name: string;
-  facilityType: string;
-  city: string;
-  street: string | null;
-  lat: number;
-  lon: number;
-  phone: string | null;
-  email: string | null;
-  website: string | null;
-  openingHours: string | null;
-}
-interface SearchParams {
-  petId?: string;
-  [key: string]: string | string[] | undefined;
-}
+import type { Pet, Facility, SearchParams } from "~/types/visits";
 
 export default function FormularzW( {searchParams}: {searchParams: Promise<SearchParams>} ) {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
