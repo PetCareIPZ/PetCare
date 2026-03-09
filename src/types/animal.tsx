@@ -10,3 +10,12 @@ export interface Animal {
   imageUrl?: string | null;
   createdAt: string | Date;
 }
+
+export interface PetOption {
+    petId: number;
+    petName: string;
+}
+
+export interface DeleteAnimalProps {
+  animal: Animal;
+}

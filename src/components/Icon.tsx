@@ -59,16 +59,7 @@ const defaultColors: Record<IconName, string> = {
 
 interface IconProps {
   name: IconName;
-  /**
-   * Additional classes for sizing, spacing, rotation, etc.
-   * These are appended to the rendered element but do not affect color.
-   */
   className?: string;
-  /**
-   * Override the default color mapping. Provide any valid CSS color string
-   * (hex, rgb, rgba, named color, etc.). If omitted, the component uses
-   * the RGBA value defined in `defaultColors` for the given icon.
-   */
   color?: string;
 }
 

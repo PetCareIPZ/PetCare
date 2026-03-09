@@ -3,11 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { addDrug } from "~/server/animal/animal.service";
-
-interface PetOption {
-    petId: number;
-    petName: string;
-}
+import type { PetOption } from "~/types/animal";
 
 export default function AddDrugForm({ pets }: { pets: PetOption[] }) {
     const router = useRouter();

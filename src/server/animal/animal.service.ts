@@ -3,67 +3,8 @@
 import { db } from "~/server/db/index";
 import { drugs, pets, vaccinations } from "~/server/db/schema";
 import { and, eq } from 'drizzle-orm';
+import type { AddAnimalData, UpdateAnimalData, AddDrugData, UpdateDrugData, AddVaccData, UpdateVaccData } from "~/types/services";
 
-interface AddDrugData {
-    petId: number;
-    drugType: string;
-    drugDate: string;
-    drugDose: string;
-    drugNote?: string;
-}
-
-interface UpdateDrugData {
-    petId: number;
-    drugId: number;
-    drugType?: string;
-    drugDate?: string;
-    drugDose?: string;
-    drugNote?: string;
-}
-
-
-interface AddVaccData {
-    petId: number;
-    vaccType: string;
-    vaccDate: string;
-    vaccDose: string;
-    vaccNote: string;
-
-}
-
-interface UpdateVaccData {
-    petId: number;
-    vaccId: number;
-    vaccType?: string;
-    vaccDate?: string;
-    vaccDose?: string;
-    vaccNote?: string;
-}
-
-
-interface AddAnimalData {
-    userId: string;
-    name: string;
-    race: string;
-    species: string;
-    sex: string;
-    dateOfBirth: string;
-    weight: string;
-    chipNumber: string;
-    imageUrl: string | null;
-}
-
-interface UpdateAnimalData {
-    petId: number;
-    name?: string;
-    dateOfBirth?: string;
-    species?: string;
-    race?: string;
-    sex?: string;
-    weight?: string;
-    chipNumber?: string;
-    imageUrl?: string;
-}
 
 export async function addAnimal(formData: AddAnimalData){
     const newPetId = await db.insert(pets).values({

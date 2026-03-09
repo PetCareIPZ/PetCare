@@ -1,15 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAnimals } from "~/server/animal/animal.service";
-
-interface UserProfileProps {
-  user: {
-    firstName?: string | null;
-    lastName?: string | null;
-    id?: string | null;
-    emailAddresses?: { emailAddress: string }[];
-  } | null;
-}
+import type { UserProfileProps } from "~/types/user";
 
 export default async function UserAnimalsCards({ user }: UserProfileProps) {
   const results = await getAnimals(user.id);

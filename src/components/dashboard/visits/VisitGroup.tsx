@@ -2,20 +2,7 @@
 
 import React, { useState } from 'react';
 import Icon from '~/components/Icon';
-
-export interface Visit {
-  visitID: number;
-  visitDate: string;
-  visitType: string;
-  visitAttachment?: string | null;
-  visitNote?: string | null;
-  petID: number;
-}
-
-interface Props {
-  petName: string;
-  visits: Visit[];
-}
+import type { Visit, Props } from '~/types/visits';
 
 export default function VisitGroup({ petName, visits }: Props) {
   const [expanded, setExpanded] = useState(false);
