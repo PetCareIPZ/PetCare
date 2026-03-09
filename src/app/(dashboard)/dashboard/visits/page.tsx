@@ -6,7 +6,7 @@ import { visits } from "~/server/db/schema";
 import { pets } from "~/server/db/schema";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
 import VisitGroup from "~/components/dashboard/visits/VisitGroup";
-import type { Visit } from "~/components/dashboard/visits/VisitGroup";
+import type { Visit } from "~/types/visits";
 import Icon from "~/components/Icon";
 
 export default async function wizyty() {
