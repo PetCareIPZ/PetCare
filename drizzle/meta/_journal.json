@@ -15,6 +15,13 @@
       "when": 1772407991895,
       "tag": "0001_futuristic_cerebro",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773093540317,
+      "tag": "0002_abnormal_loners",
+      "breakpoints": true
     }
   ]
 }

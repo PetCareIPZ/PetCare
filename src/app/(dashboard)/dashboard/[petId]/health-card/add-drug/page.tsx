@@ -5,14 +5,8 @@ import { and, eq } from "drizzle-orm";
 import { pets } from "~/server/db/schema";
 import { AddDrugForm } from "~/components/dashboard/id/health-card/formAddDrug";
 
-interface PageProps {
-  params: {
-    petId: string;
-  };
-}
-
-export default async function Page({params}: PageProps){
-  const { petId } = params;
+export default async function Page({ params }: { params: Promise<{ petId: string }> }){
+  const { petId } = await params;
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
 

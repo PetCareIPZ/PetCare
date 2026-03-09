@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server"
 import { deleteVacc, getAnimalById, getVaccById, updateVacc } from "~/server/animal/animal.service";
 
-export async function GET(request: Request, { params }: { params: { petId: number; vaccId: number } }) {
+export async function GET(request: NextRequest, context: any) {
+    const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
     if (!isAuthenticated) {
@@ -36,7 +37,8 @@ export async function GET(request: Request, { params }: { params: { petId: numbe
     }
 }
 
-export async function DELETE(request: Request, { params }: { params: { petId: number; vaccId: number } }) {
+export async function DELETE(request: NextRequest, context: any) {
+    const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
     if (!isAuthenticated) {
@@ -67,7 +69,8 @@ export async function DELETE(request: Request, { params }: { params: { petId: nu
     }
 }
 
-export async function PATCH(request: Request, { params }: { params: { petId: number; vaccId: number } }) {
+export async function PATCH(request: NextRequest, context: any) {
+    const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
     if (!isAuthenticated) {

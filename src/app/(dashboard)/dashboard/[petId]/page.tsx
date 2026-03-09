@@ -5,14 +5,8 @@ import { pets } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import AnimalDetailContent from "~/components/dashboard/id/AnimalDetailContent";
 
-interface PageProps {
-  params: {
-    petId: string;
-  };
-}
-
-export default async function animalDashboard({params}: PageProps) {
-    const {petId} = params; 
+export default async function animalDashboard({ params }: { params: Promise<{ petId: string }> }) {
+    const {petId} = await params; 
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     if (!isAuthenticated) {
