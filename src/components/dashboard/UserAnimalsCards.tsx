@@ -4,7 +4,7 @@ import { getAnimals } from "~/server/animal/animal.service";
 import type { UserProfileProps } from "~/types/user";
 
 export default async function UserAnimalsCards({ user }: UserProfileProps) {
-  const results = await getAnimals(user.id);
+  const results = await getAnimals(user?.id!);
 
   return results.map((animal) => (
     <Link

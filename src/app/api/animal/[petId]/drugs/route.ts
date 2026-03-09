@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { addDrug, getAnimalById, getDrugs } from '~/server/animal/animal.service';
 
-export async function GET(request: NextRequest, context: any) {
+export async function GET(context: any) {
     const { params } = context as { params: { petId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest, context: any) {
     const { params } = context as { params: { petId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest, context: any) {
         );
     }
 
-    const animal = await getAnimalById(petId, userId)
+    const animal = await getAnimalById(petId, userId!)
     if (!animal || animal.length === 0) {
         return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
     }

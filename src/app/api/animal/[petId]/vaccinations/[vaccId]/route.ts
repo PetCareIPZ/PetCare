@@ -2,15 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server"
 import { deleteVacc, getAnimalById, getVaccById, updateVacc } from "~/server/animal/animal.service";
 
-export async function GET(request: NextRequest, context: any) {
+export async function GET(context: any) {
     const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if(!userId){
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    getAnimalById(params.petId, userId).then((animal) => {
+    if (!isAuthenticated || !userId) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    getAnimalById(parseInt(params.petId), userId).then((animal) => {
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
@@ -27,7 +31,7 @@ export async function GET(request: NextRequest, context: any) {
     }
 
     try{
-        const vacc = await getVaccById(params.vaccId, params.petId);
+        const vacc = await getVaccById(parseInt(params.vaccId), parseInt(params.petId));
         if (!vacc || vacc.length === 0) {
             return NextResponse.json({ error: 'Vaccination not found' }, { status: 404 });
         }
@@ -37,15 +41,15 @@ export async function GET(request: NextRequest, context: any) {
     }
 }
 
-export async function DELETE(request: NextRequest, context: any) {
+export async function DELETE(context: any) {
     const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    getAnimalById(params.petId, userId).then((animal) => {
+    getAnimalById(parseInt(params.petId), userId).then((animal) => {
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
@@ -62,7 +66,7 @@ export async function DELETE(request: NextRequest, context: any) {
     }
 
     try{
-        await deleteVacc(params.vaccId, params.petId);
+        await deleteVacc(parseInt(params.vaccId), parseInt(params.petId));
         return NextResponse.json({ message: 'Vaccination deleted successfully' }, { status: 200 });
     }catch(error){
         return NextResponse.json({ error: error }, { status: 500 })
@@ -73,11 +77,11 @@ export async function PATCH(request: NextRequest, context: any) {
     const { params } = context as { params: { petId: string; vaccId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    getAnimalById(params.petId, userId).then((animal) => {
+    getAnimalById(parseInt(params.petId), userId).then((animal) => {
         if (!animal || animal.length === 0) {
             return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
         }
@@ -96,8 +100,8 @@ export async function PATCH(request: NextRequest, context: any) {
     try{
         const body = await request.json() as { vaccType?: string; vaccDate?: string; vaccDose?: string; vaccNote?: string; };
         await updateVacc({
-            ...body, vaccId: params.vaccId,
-            petId: params.petId
+            ...body, vaccId: parseInt(params.vaccId),
+            petId: parseInt(params.petId)
         });
         return NextResponse.json({ message: 'Vaccination updated successfully' }, { status: 200 });
     }catch(error : unknown){

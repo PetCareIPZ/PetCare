@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import type { Animal } from "~/types/animal";
 import type { DeleteAnimalProps } from "~/types/animal";
 
 export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {

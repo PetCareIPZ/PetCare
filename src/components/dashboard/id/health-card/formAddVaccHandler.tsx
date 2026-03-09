@@ -9,7 +9,7 @@ export default async function formAddVaccHandler(vaccFormData : FormData){
     const user = isAuthenticated ? await currentUser() : null;
 
     
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !user) {
         redirect("/dashboard/error?message=Zaloguj się aby móc wysłać formularz")
     }
     

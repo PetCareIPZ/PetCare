@@ -7,7 +7,7 @@ export default async function addAnimalFormHandler(addAnimalFormData : FormData)
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     
-    if(!isAuthenticated){
+    if(!isAuthenticated || !user){
         redirect("/dashboard/error?message=Zaloguj się aby móc wysłać formularz")
     }
     let newPetId = 0;

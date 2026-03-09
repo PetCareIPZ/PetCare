@@ -13,7 +13,7 @@ export function UploadZoneWidget({existingImageUrl}: {existingImageUrl: string})
                     'imageUrlId'
                 ) as HTMLInputElement
     
-                input.value = res[0].ufsUrl!;
+                input.value = res[0]?.ufsUrl!;
             }}
             
             onUploadError={(error: Error) => 

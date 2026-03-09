@@ -15,8 +15,6 @@ export async function GET(req: Request): Promise<Response> {
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-
-  const tomorrowDate = tomorrow.toISOString().split("T")[0];
     const upcomingVisits = await db
     .select({
         visitId: visits.visitId,

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Icon from '~/components/Icon';
-import type { Visit, Props } from '~/types/visits';
+import type { Props } from '~/types/visits';
 
 export default function VisitGroup({ petName, visits }: Props) {
   const [expanded, setExpanded] = useState(false);

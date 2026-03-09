@@ -8,7 +8,7 @@ export default async function formAddDrugHandler(drugFormData : FormData){
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !user) {
         redirect("/dashboard/error?message=Zaloguj się aby móc wysłać formularz")
     }
 

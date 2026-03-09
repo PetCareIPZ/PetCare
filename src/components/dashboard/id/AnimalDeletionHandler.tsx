@@ -7,7 +7,7 @@ export default async function animalDeletionHandler(animalId : number){
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
     
-    if (!isAuthenticated){
+    if (!isAuthenticated || !user){
         throw new Error("Zaloguj się aby móc usunąć zwierzę");
     }
     try{

@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: Promise<{ petId: string
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return (
       <div className="text-center mt-20 text-red-400">
         <Link href="/" className="underline">

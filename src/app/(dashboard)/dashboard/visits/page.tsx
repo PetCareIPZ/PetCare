@@ -54,7 +54,7 @@ export default async function wizyty() {
     const ids = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate >= today) as Visit[];
     const pastIds = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate < today) as Visit[];
     const {isAuthenticated}=await auth()
-    if(!isAuthenticated){
+    if(!isAuthenticated || !userId){
 
         return <div>Sign in to view this DashboardPage</div>
 

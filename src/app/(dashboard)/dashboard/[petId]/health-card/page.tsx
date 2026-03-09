@@ -11,7 +11,7 @@ export default async function HealthCardPage(props: { params: Promise<{ petId: s
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return (
       <div className="text-center mt-20 text-red-400">
         <Link href="/" className="underline">
@@ -25,7 +25,7 @@ export default async function HealthCardPage(props: { params: Promise<{ petId: s
   // Verify animal exists and belongs to user
   const animal = await db.select().from(pets).where(
     and(
-      eq(pets.userId, user.id),
+      eq(pets.userId, user?.id!),
       eq(pets.petId, parseInt(petId))
     )
   );
@@ -43,9 +43,9 @@ export default async function HealthCardPage(props: { params: Promise<{ petId: s
 
   // Fetch all health data
   const [drugsData, vaccinationsData, visitsData] = await Promise.all([
-    db.select().from(drugs).where(eq(drugs.petId, petId)),
-    db.select().from(vaccinations).where(eq(vaccinations.petId, petId)),
-    db.select().from(visits).where(eq(visits.petId, petId)),
+    db.select().from(drugs).where(eq(drugs.petId, parseInt(petId))),
+    db.select().from(vaccinations).where(eq(vaccinations.petId, parseInt(petId))),
+    db.select().from(visits).where(eq(visits.petId, parseInt(petId))),
   ]);
 
   return (

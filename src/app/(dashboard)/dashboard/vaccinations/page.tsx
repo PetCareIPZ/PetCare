@@ -10,7 +10,7 @@ export default async function HistoriaSzczepien() {
     const { userId } = await auth();
     const { isAuthenticated } = await auth();
     
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return <div>Zaloguj się, aby wyświetlić tę stronę</div>;
     }
     

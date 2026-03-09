@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { deleteAnimal, getAnimalById, updateAnimal} from "~/server/animal/animal.service";
 
 
-export async function GET(request: NextRequest, context: any) {
+export async function GET(context: any) {
     const { params } = context as { params: { petId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -34,7 +34,7 @@ export async function PATCH(request: NextRequest, context: any){
     const { params } = context as { params: { petId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -71,7 +71,7 @@ export async function DELETE(request: NextRequest, context: any) {
     const { params } = context as { params: { petId: string } }
     const { isAuthenticated, userId } = await auth({ acceptsToken: 'api_key' })
     
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

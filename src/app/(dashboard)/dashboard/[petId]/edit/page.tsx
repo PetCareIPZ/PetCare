@@ -9,7 +9,8 @@ export default async function editPage({ params }: { params: Promise<{ petId: st
     const { petId } = await params;
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;
-    if (!isAuthenticated) {
+    
+    if (!isAuthenticated || !user) {
         return (
             <div className="text-center mt-20 text-red-400">
             <Link href="href"> <a style={{ textDecoration: "underline" }}>Zaloguj się</a><a> aby uzyskać dostęp do tej strony</a></Link> 
@@ -18,7 +19,7 @@ export default async function editPage({ params }: { params: Promise<{ petId: st
     }
     const animal = await db.select().from(pets).where(
         and(
-            eq(pets.userId, user.id),
+            eq(pets.userId, user?.id!),
             eq(pets.petId, parseInt(petId))
         )
     );

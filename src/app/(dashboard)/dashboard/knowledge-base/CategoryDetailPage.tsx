@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { ArrowLeft, Clock, Search, CheckCircle2, Share2, Bookmark } from 'lucide-react';
+import { ArrowLeft, Clock, Search, CheckCircle2, Bookmark } from 'lucide-react';
 import { categoryData } from './data';
 import type { Category, DetailProps } from '../../../../../src/types/knowledge-base';
 
