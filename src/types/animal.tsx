@@ -1,14 +1,15 @@
 export interface Animal {
-  petId: number;
-  petName: string;
-  species: string;
-  race: string;
-  sex: string;
-  birthDate: string | Date;
-  weight: number;
-  chipNumber?: string | null;
-  imageUrl?: string | null;
-  createdAt: string | Date;
+    petId: number;
+    userId: string;
+    petName: string;
+    species: string;
+    race: string;
+    sex: string;
+    birthDate: string;
+    weight: string;
+    chipNumber: string | null;
+    imageUrl: string;
+    createdAt: Date | null;
 }
 
 export interface PetOption {

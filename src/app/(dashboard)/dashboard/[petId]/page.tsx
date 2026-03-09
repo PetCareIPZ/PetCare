@@ -35,5 +35,14 @@ export default async function animalDashboard({ params }: { params: Promise<{ pe
 
     const petData = animal[0];
 
+    if(!petData){
+        return (
+            <div className="text-center mt-20 text-red-400">
+                <p>Zwierzę nie znalezione</p>
+                <Link href="/dashboard">Powrót do pulpitu</Link>
+            </div>
+        );
+    }
+
     return <AnimalDetailContent animal={petData} />;
 }

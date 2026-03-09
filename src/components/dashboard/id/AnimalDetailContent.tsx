@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import deleteAnimalHandler from "~/components/dashboard/id/AnimalDeletionHandler";
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import type { DeleteAnimalProps } from "~/types/animal";
+import type { Animal } from "~/types/animal";
 
-export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
+export default function AnimalDetailContent({ animal }: { animal: Animal }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -22,9 +22,9 @@ export default function AnimalDetailContent({ animal }: DeleteAnimalProps) {
     ["Gatunek", animal.species],
     ["Rasa", animal.race],
     ["Płeć", animal.sex],
-    ["Data urodzenia", typeof animal.birthDate === 'string' ? animal.birthDate : animal.birthDate.toLocaleDateString("pl-PL")],
+    ["Data urodzenia", new Date(animal.birthDate).toLocaleDateString("pl-PL")],
     ["Waga", animal.weight ? `${animal.weight} kg` : "-"],
-    ["Data dodania", new Date(animal.createdAt).toLocaleDateString("pl-PL")]
+    ["Data dodania", animal.createdAt?.toLocaleDateString("pl-PL") ?? ""]
   ];
 
   // Opcjonalne dodanie numeru chipa przy użyciu nullish coalescing ??
