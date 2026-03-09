@@ -6,6 +6,7 @@ import { usePathname, useParams} from 'next/navigation';
 import { SignInBtn, SignUpBtn } from '../public/ui/AuthButtons';
 
 const pathTranslations = {
+  "dashboard"         : "Podsumowanie",
   add                 : "dodaj",
   animals             : "zwierzęta",
   drugs               : "leki",

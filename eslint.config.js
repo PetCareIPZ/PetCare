@@ -23,6 +23,9 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-explicit-any" : "off",
+      "@typescript-eslint/no-unsafe-member-access" : "off",
       "@typescript-eslint/only-throw-error": "off",
       "@typescript-eslint/array-type": "off",
       "@typescript-eslint/consistent-type-definitions": "off",

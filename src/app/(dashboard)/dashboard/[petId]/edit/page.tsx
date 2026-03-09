@@ -5,7 +5,13 @@ import { db } from "~/server/db";
 import { pets } from "~/server/db/schema";
 import { eq, and } from "drizzle-orm";
 
-export default async function editPage({params}: {params: {petId: string}}) {
+interface PageProps {
+  params: {
+    petId: string;
+  };
+}
+
+export default async function editPage({params}: PageProps) {
     const {petId} = params; 
     const { isAuthenticated } = await auth();
     const user = isAuthenticated ? await currentUser() : null;

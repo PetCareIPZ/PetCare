@@ -12,8 +12,8 @@ export default async function animalDeletionHandler(animalId : number){
     }
     try{
         await deleteAnimal(animalId,user!.id);
-        redirect(`/dashboard`)
     }catch(error){
         redirect('/dashboard/error?message=' + (error as Error).message);
     }
+    redirect(`/dashboard`)
 }

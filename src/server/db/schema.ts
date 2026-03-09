@@ -1,4 +1,4 @@
-import {serial, text, integer, timestamp, numeric, date, varchar, pgTable, bigint} from "drizzle-orm/pg-core";
+import {serial, text, integer, timestamp, numeric, date, varchar, pgTable, bigint, boolean} from "drizzle-orm/pg-core";
 
 export const pets = pgTable("pets", {
   petId: serial("id").primaryKey(),
@@ -42,7 +42,8 @@ export const visits = pgTable("visits",{
   visitDate: date("visitDate").notNull(),
   visitType: varchar("visitType", {length: 255}).notNull(),
   visitNote: text("visitNote"),
-  visitAttachment: text("visitAttachment")
+  visitAttachment: text("visitAttachment"),
+  isNotified: boolean("isNotified").notNull().default(false)
 })
 
 export const facilities = pgTable("facilities",{
@@ -58,4 +59,18 @@ export const facilities = pgTable("facilities",{
   email: varchar("email", { length: 255 }),
   website: text("website"),
   openingHours: text("openingHours")
+});
+
+export const notificationSettings = pgTable("notification_settings", {
+  userId: varchar("userId", { length: 255 }).primaryKey(),
+  mailEnabled: boolean("mailEnabled").notNull().default(true),
+  pushEnabled: boolean("pushEnabled").notNull().default(true),
+})
+
+export const pushSubscriptions = pgTable("push_subscriptions", {
+  userId: text("user_id").notNull(),
+  endpoint: text("endpoint").notNull().unique(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull()
 });

@@ -6,7 +6,13 @@ import { pets, drugs, vaccinations, visits } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { ArrowLeft } from 'lucide-react';
 
-export default async function HealthCardPage({ params }: { params: { petId: string } }) {
+interface PageProps {
+  params: {
+    petId: string;
+  };
+}
+
+export default async function HealthCardPage({ params }: PageProps) {
   const { petId } = params;
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
