@@ -8,6 +8,7 @@ import Icon from "~/components/Icon";
 import "@uploadthing/react/styles.css";
 import React from "react";
 import type { Pet, Facility, SearchParams } from "~/types/visits";
+import type { Shop } from "~/types/facilities";
 
 export default function FormularzW( {searchParams}: {searchParams: Promise<SearchParams>} ) {
   const [attachmentUrl, setAttachmentUrl]=useState<string | null>(null);
@@ -19,7 +20,7 @@ export default function FormularzW( {searchParams}: {searchParams: Promise<Searc
   
   const [selectedType, setSelectedType] = useState<string>("");
 
-  const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
+  const [selectedFacility, setSelectedFacility] = useState<Shop | null>(null);
 
   useEffect(() => { 
     void fetch("/api/facilities")
@@ -46,7 +47,7 @@ export default function FormularzW( {searchParams}: {searchParams: Promise<Searc
   }, [facilities, selectedType]);
 
 
-  const handleSelectFacility = (facility: Facility) => {
+  const handleSelectFacility = (facility: Shop) => {
     setSelectedFacility(facility);
   };
   const params = React.use(searchParams); 
