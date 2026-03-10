@@ -13,7 +13,7 @@ export default async function addAnimalFormHandler(addAnimalFormData : FormData)
     let newPetId = 0;
     try{
         const newPet = await addAnimal({
-            userId: user!.id,
+            userId: user.id,
             name: addAnimalFormData.get('imie') as string,
             race: addAnimalFormData.get('rasa') as string,
             species: addAnimalFormData.get('gatunek') as string,

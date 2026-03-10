@@ -19,7 +19,7 @@ export default async function editPage({ params }: { params: Promise<{ petId: st
     }
     const animal = await db.select().from(pets).where(
         and(
-            eq(pets.userId, user?.id!),
+            eq(pets.userId, user.id),
             eq(pets.petId, parseInt(petId))
         )
     );

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAnimals } from "~/server/animal/animal.service";
-import type { UserProfileProps } from "~/types/user";
 
-export default async function UserAnimalsCards({ user }: UserProfileProps) {
-  const results = await getAnimals(user?.id!);
+export default async function UserAnimalsCards({ userId }: { userId: string }) {
+
+  const results = await getAnimals(userId);
 
   return results.map((animal) => (
     <Link

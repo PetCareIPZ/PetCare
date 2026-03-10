@@ -13,7 +13,13 @@ export function UploadZoneWidget({existingImageUrl}: {existingImageUrl: string})
                     'imageUrlId'
                 ) as HTMLInputElement
     
-                input.value = res[0]?.ufsUrl!;
+                if(!res || res.length === 0){
+                    window.alert("Nie udało się przesłać pliku.")
+                    return;
+                }
+                if(input && res[0]) {
+                    input.value = res[0].ufsUrl ?? "/svg/no-image.svg";
+                }
             }}
             
             onUploadError={(error: Error) => 

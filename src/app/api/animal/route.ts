@@ -8,7 +8,7 @@ export async function GET() {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 	}
 	try{
-		return NextResponse.json(await getAnimals(userId as string), { status: 200 })
+		return NextResponse.json(await getAnimals(userId), { status: 200 })
 	}catch(error){
 		return NextResponse.json({ error: (error as Error).message }, { status: 500 })
 	}

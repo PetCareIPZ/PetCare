@@ -35,7 +35,7 @@ export default async function ZwierzakiPage() {
               bg-gray-50 p-6 rounded-2xl shadow-md
             "
           >
-            <UserAnimalsCards user={user} />
+            <UserAnimalsCards userId={user.id} />
 
             <Link href="/dashboard/add" className="group">
               <div

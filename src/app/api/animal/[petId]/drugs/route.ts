@@ -49,7 +49,7 @@ export async function POST(request: NextRequest, context: any) {
         );
     }
 
-    const animal = await getAnimalById(petId, userId!)
+    const animal = await getAnimalById(petId, userId)
     if (!animal || animal.length === 0) {
         return NextResponse.json({ error: 'Animal not found' }, { status: 404 });
     }

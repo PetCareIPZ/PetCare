@@ -22,7 +22,7 @@ export async function GET(context: any) {
     }
 
     try{
-        const animal = await getAnimalById(petId, userId!);
+        const animal = await getAnimalById(petId, userId);
         return NextResponse.json(animal, { status: 200 });
     }catch(error){
         return NextResponse.json({error: error},{status: 500})
@@ -59,7 +59,7 @@ export async function PATCH(request: NextRequest, context: any){
             chipNumber?: string;
             imageUrl?: string;
         };  
-        await updateAnimal({...body, petId: petId}, userId!);
+        await updateAnimal({...body, petId: petId}, userId);
         return NextResponse.json({ message: 'Updated' }, { status: 200 });
     }catch(error){
         return NextResponse.json({error: error},{status: 500})
@@ -84,7 +84,7 @@ export async function DELETE(request: NextRequest, context: any) {
         );
     }
     try{
-        await deleteAnimal(petId,userId!);
+        await deleteAnimal(petId,userId);
         return NextResponse.json({message: "Success"},{status: 200})
     }catch(error){
         return NextResponse.json({error: error},{status: 500})

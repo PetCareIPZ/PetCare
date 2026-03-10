@@ -11,7 +11,7 @@ export default async function animalDeletionHandler(animalId : number){
         throw new Error("Zaloguj się aby móc usunąć zwierzę");
     }
     try{
-        await deleteAnimal(animalId,user!.id);
+        await deleteAnimal(animalId,user.id);
     }catch(error){
         redirect('/dashboard/error?message=' + (error as Error).message);
     }

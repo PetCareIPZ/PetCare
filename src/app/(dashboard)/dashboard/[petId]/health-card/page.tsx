@@ -25,7 +25,7 @@ export default async function HealthCardPage(props: { params: Promise<{ petId: s
   // Verify animal exists and belongs to user
   const animal = await db.select().from(pets).where(
     and(
-      eq(pets.userId, user?.id!),
+      eq(pets.userId, user.id),
       eq(pets.petId, parseInt(petId))
     )
   );
