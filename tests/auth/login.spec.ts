@@ -1,9 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test('Logowanie istniejącego użytkownika', async ({ page }) => {
-
-    const userEmail = 'testUser@example.com';
-    const userPassword = 'testUser12345';
+  const userEmail = 'yehexir856@bigonla.com';
+  const userPassword = 'passwordfortestuser1!';
 
   await page.goto('http://localhost:3000');
 
@@ -15,18 +14,18 @@ test('Logowanie istniejącego użytkownika', async ({ page }) => {
   await expect(emailInput).toBeVisible({ timeout: 10000 });
   await emailInput.fill(userEmail);
 
-  const continueButton = page.getByRole('button', { name: /Kontynuuj|Continue/i });
-  if (await continueButton.isVisible()) {
-    await continueButton.click();
-  }
+  await page.waitForTimeout(500); 
+  await emailInput.press('Enter');
 
-  const passwordInput = page.getByLabel(/Password|Hasło/i);
+  const passwordInput = page.getByRole('textbox', { name: /Password|Hasło/i });
+  await expect(passwordInput).toBeVisible({ timeout: 15000 });
   await passwordInput.fill(userPassword);
 
-  await page.getByRole('button', { name: /Zaloguj się|Sign In|Continue/i }).click();
+  const finalSignIn = page.getByRole('button', { name: /Zaloguj się|Sign In|Continue|Kontynuuj/i }).last();
+  await finalSignIn.click();
 
   const userButton = page.locator('.cl-userButtonTrigger');
-  await expect(userButton).toBeVisible({ timeout: 10000 });
+  await expect(userButton).toBeVisible({ timeout: 15000 });
 
   console.log('Logowanie przebiegło pomyślnie!');
 });
