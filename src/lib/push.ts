@@ -4,7 +4,7 @@ import { pushSubscriptions } from "~/server/db/schema";
 import { eq } from "drizzle-orm";
 
 webpush.setVapidDetails(
-  "mailto:admin@example.com",
+  "https://pet-care-ipz.vercel.app",
   process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
   process.env.VAPID_PRIVATE_KEY!
 );
