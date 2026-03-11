@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Pełny proces rejestracji użytkownika', async ({ page }) => {
+test('Rejestracja użytkownika', async ({ page }) => {
   
   const uniqueEmail = `testuser_${Date.now()}@example.com`;
 
