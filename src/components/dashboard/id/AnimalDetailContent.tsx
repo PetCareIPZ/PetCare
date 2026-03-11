@@ -68,6 +68,7 @@ export default function AnimalDetailContent({ animal }: { animal: Animal }) {
               src={animal.imageUrl ?? "/img/placeholder-pet.png"} // Użycie ?? zamiast ||
               alt={animal.petName}
               fill
+              unoptimized
               className="object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
               sizes="(max-width: 640px) 100vw, 50vw"
             />
