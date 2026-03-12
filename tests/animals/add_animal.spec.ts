@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Dodawania zwierzaka', async ({ page }) => {
+test('Dodawanie zwierzaka', async ({ page }) => {
   
     await page.goto('http://localhost:3000/dashboard/animals');
 
