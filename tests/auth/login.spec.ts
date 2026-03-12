@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Czyścimy stan autoryzacji tylko dla tego testu
+// Czyścimy stan autoryzacji
 test.use({ storageState: { cookies: [], origins: [] } });
 
 test('Logowanie istniejącego użytkownika', async ({ page }) => {
