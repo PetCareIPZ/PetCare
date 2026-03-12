@@ -1,59 +1,64 @@
 import { test, expect } from '@playwright/test';
 
-test('Dodawanie zwierzaka', async ({ page }) => {
+// Korzystamy z zapisanej sesji użytkownika (Global Setup)
+test.use({ storageState: 'playwright/.auth/user.json' });
+
+test('Dodawanie zwierzaka - pełny proces', async ({ page }) => {
   
-    await page.goto('http://localhost:3000/dashboard/animals');
+  // 1. Nawigacja do listy zwierząt
+  await page.goto('/dashboard/animals');
 
-    // Kliknięcie w link dodawania
-    const addAnimalLink = page.getByRole('link', { name: 'Dodaj zwierzaka' });
-    await expect(addAnimalLink).toBeVisible({ timeout: 10000 });
-    await addAnimalLink.click();
+  // 2. Kliknięcie w przycisk dodawania
+  // Regex /i zapewnia odporność na wielkość liter i dodatkowe znaki (np. "+")
+  const addAnimalLink = page.getByRole('link', { name: /Dodaj zwierzaka/i });
+  
+  // Własny komunikat błędu ułatwia debugowanie w raportach
+  await expect(addAnimalLink, 'Błąd: Nie znaleziono przycisku dodawania. Sprawdź czy sesja jest aktywna.')
+    .toBeVisible({ timeout: 10000 });
+  
+  await addAnimalLink.click();
 
-    // Imię
-    await page.getByPlaceholder('np. Nela').fill('Burek');
+  // Czekamy, aż router aplikacji faktycznie przejdzie na stronę formularza
+  await expect(page).toHaveURL('/dashboard/add', { timeout: 10000 });
 
-    // Data urodzenia
-    const dateInput = page.locator('input[name="data-urodzenia"]');
-    await expect(dateInput).toBeVisible();
-    await dateInput.fill('2020-03-11');
+  // 3. Wypełnianie formularza danych zwierzaka
+  // Używamy placeholderów zgodnie z Twoim UI
+  await page.getByPlaceholder('np. Nela').fill('Burek');
 
-    // Gatunek
-    await page.getByPlaceholder('np. Pies, Kot').fill('Pies');
+  // Pole typu date wymaga formatu YYYY-MM-DD
+  const dateInput = page.locator('input[name="data-urodzenia"]');
+  await dateInput.fill('2020-03-11');
 
-    // Rasa
-    await page.getByPlaceholder('np. Yorkshire Terrier, Labrador').fill('Mieszaniec');
+  await page.getByPlaceholder('np. Pies, Kot').fill('Pies');
+  await page.getByPlaceholder('np. Yorkshire Terrier, Labrador').fill('Mieszaniec');
 
-    // Płeć (wybór z listy rozwijanej)
-    await page.getByRole('combobox').selectOption({ label: 'Samiec' });
+  // Wybór z listy rozwijanej (Combobox / Select)
+  await page.getByRole('combobox').selectOption({ label: 'Samiec' });
 
-    // Waga
-    await page.getByPlaceholder('np. 3.5').fill('12.5');
+  await page.getByPlaceholder('np. 3.5').fill('12.5');
+  await page.getByPlaceholder('15-cyfrowy numer chipu').fill('123456789012345');
 
-    // Numer chipu
-    await page.getByPlaceholder('15-cyfrowy numer chipu').fill('123456789012345');
+  // 4. Zapisanie danych
+  const submitButton = page.getByRole('button', { name: /Wyślij/i });
+  await submitButton.click();
 
-    // --- ZAPIS I WERYFIKACJA ---
+  // 5. Weryfikacja przekierowania na kartę zwierzaka
+  // Aplikacja przechodzi na /dashboard/[ID], więc używamy regex \d+ (cyfry)
+  await expect(page).toHaveURL(/\/dashboard\/\d+/);
+  
+  // Sprawdzamy, czy imię zwierzaka pojawia się jako główny nagłówek strony
+  const animalHeading = page.getByRole('heading', { name: 'Burek', level: 1 });
+  await expect(animalHeading).toBeVisible({ timeout: 15000 });
 
-    const submitButton = page.getByRole('button', { name: /Wyślij/i });
+  // 6. Powrót na główny dashboard i ostateczne sprawdzenie
+  // Kliknięcie w logo/nazwę aplikacji zazwyczaj prowadzi do strony głównej panelu
+  await page.getByRole('link', { name: 'PetCare' }).first().click();
+  
+  // Sprawdzamy czy URL to /dashboard lub /dashboard/
+  await expect(page).toHaveURL(/\/dashboard(\/)?$/);
+  
+  // Weryfikujemy, czy "Burek" widnieje w sekcji "Twoje zwierzęta" na dashboardzie
+  await expect(page.getByText('Burek').first()).toBeVisible({ timeout: 10000 });
 
-    await submitButton.click();
-
-    // sprawdz animals
-    await page.goto('http://localhost:3000/dashboard/animals');
-    
-    const successMessage = page.getByText('Burek').first();
-    await expect(successMessage).toBeVisible({ timeout: 15000 });
-
-    console.log('Sukces: Zwierzak dodany poprawnie!');
-
-    // Sprawdz dashboard
-
-    await page.getByRole('link', { name: 'Przegląd' }).click();
-
-    await expect(page).toHaveURL(/.*dashboard$/);
-
-    const dashboardElement = page.getByText('Burek').first();
-    await expect(dashboardElement).toBeVisible({ timeout: 10000 });
-
-    console.log('Sukces: Zwierzak widoczny na dashboard!');
+  console.log('Sukces: Zwierzak został poprawnie dodany i zweryfikowany na dashboardzie.');
 });

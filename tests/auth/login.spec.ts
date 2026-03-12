@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 
+// Czyścimy stan autoryzacji tylko dla tego testu
+test.use({ storageState: { cookies: [], origins: [] } });
+
 test('Logowanie istniejącego użytkownika', async ({ page }) => {
   const userEmail = 'yehexir856@bigonla.com';
   const userPassword = 'passwordfortestuser1!';
 
-  await page.goto('http://localhost:3000');
+  await page.goto('/');
 
   const signInButton = page.getByRole('button', { name: /Zaloguj się|Sign In/i });
   await expect(signInButton).toBeVisible();
