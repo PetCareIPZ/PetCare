@@ -13,6 +13,9 @@ export default async function Page(){
     }
 
     return (
-        <AddAnimalFormWidget />
+        <div className="w-full">
+            {/* <AddAnimalFormWidget /> */}
+            <h1>Hydracja dziala bez formularza</h1>
+        </div>
     )
 }
