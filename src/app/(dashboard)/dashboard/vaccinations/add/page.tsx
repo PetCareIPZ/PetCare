@@ -21,9 +21,6 @@ export default async function AddVaccinationPage() {
 
     return (
         <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-            <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-gray-800">
-                Rejestracja nowego szczepienia
-            </h1>
 
             {userPets.length > 0 ? (
                 <AddVaccinationForm pets={userPets} />

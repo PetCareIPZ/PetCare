@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import formAddAnimalHandler from "./formAddAnimalHandler";
+import { defaultColors } from "~/components/Icon";
 
 const UploadZoneWidget = dynamic(() => import("./uploadZone").then(mod => mod.UploadZoneWidget), { 
   ssr: false,
@@ -17,8 +18,15 @@ export function AddAnimalFormWidget() {
     setMounted(true);
   }, []);
 
+  // Kolor bazowy pobrany z ikony 'paw'
+  const primaryColor = defaultColors.paw;
+  // Subtelny kolor dla efektu focus (zmniejszone krycie do 20%)
+  const focusRingColor = primaryColor.replace('1)', '0.2)');
+
   const labelStyle = "block text-gray-700 font-semibold mb-2";
-  const inputStyle = "w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition";
+  
+  // Styl dla inputów (używamy zmiennej dla koloru focusa)
+  const inputStyle = "w-full p-3 border border-gray-300 rounded-lg outline-none transition focus:border-transparent";
 
   return (
     <div className="w-full py-8 px-4">
@@ -26,7 +34,7 @@ export function AddAnimalFormWidget() {
         <h1 className="text-3xl font-bold text-gray-900">Dodaj zwierzaka</h1>
       </div>
 
-      <form action={formAddAnimalHandler} className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-6 sm:gap-8">
+      <form action={formAddAnimalHandler} className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-8">
         {!mounted ? (
           <div className="space-y-6 animate-pulse">
             <div className="h-12 bg-gray-100 rounded-lg w-full" />
@@ -35,11 +43,17 @@ export function AddAnimalFormWidget() {
           </div>
         ) : (
           <>
-            {/* Sekcja: Imię i Data */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className={labelStyle}>Imię zwierzaka *</label>
-                <input name="imie" type="text" className={inputStyle} placeholder="np. Nela" required />
+                <input 
+                  name="imie" 
+                  type="text" 
+                  className={inputStyle} 
+                  style={{'--tw-focus-ring-color': focusRingColor} as any}
+                  placeholder="np. Nela" 
+                  required 
+                />
               </div>
               <div>
                 <label className={labelStyle}>Data urodzenia *</label>
@@ -47,8 +61,7 @@ export function AddAnimalFormWidget() {
               </div>
             </div>
 
-            {/* Sekcja: Gatunek i Rasa */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className={labelStyle}>Gatunek *</label>
                 <input name="gatunek" type="text" className={inputStyle} placeholder="np. Pies" required />
@@ -59,8 +72,7 @@ export function AddAnimalFormWidget() {
               </div>
             </div>
 
-            {/* Sekcja: Płeć i Waga */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className={labelStyle}>Płeć *</label>
                 <select name="plec" className={inputStyle} defaultValue="" required>
@@ -75,36 +87,42 @@ export function AddAnimalFormWidget() {
               </div>
             </div>
 
-            {/* Sekcja: Chip */}
             <div>
               <label className={labelStyle}>Numer chipu</label>
               <input name="czip" type="text" className={inputStyle} placeholder="Opcjonalny 15-cyfrowy numer" maxLength={15} />
             </div>
 
-            {/* Sekcja: Zdjęcie */}
             <div className="pt-2">
               <label className={labelStyle}>Zdjęcie pupila</label>
               <UploadZoneWidget existingImageUrl="/svg/no-image.svg" />
             </div>
 
-            {/* Przyciski */}
-            <div className="mt-4 flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-100 pt-6">
+            <div className="mt-4 flex flex-col sm:flex-row justify-end gap-4 border-t border-gray-100 pt-8">
               <Link 
                 href="/dashboard" 
-                className="w-full px-6 py-3 border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-center"
+                className="w-full px-10 py-4 border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-center"
               >
                 Anuluj
               </Link>
               <button 
                 type="submit" 
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-sm"
+                style={{ backgroundColor: primaryColor }}
+                className="w-full text-white font-bold py-4 px-14 rounded-xl transition hover:opacity-90 shadow-md shadow-gray-200"
               >
-                Zapisz
+                Zapisz dane
               </button>
             </div>
           </>
         )}
       </form>
+      
+      {/* Dynamiczny styl dla focusa we wszystkich polach formularza */}
+      <style jsx>{`
+        input:focus, select:focus, textarea:focus {
+          box-shadow: 0 0 0 4px ${focusRingColor};
+          border-color: ${primaryColor};
+        }
+      `}</style>
     </div>
   );
 }

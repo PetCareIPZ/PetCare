@@ -26,10 +26,8 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* 1. Pusty div-widmo, który rezerwuje miejsce w układzie strony (md:ml) */}
       <div className="hidden md:block w-64 flex-shrink-0" />
 
-      {/* 2. Właściwy Sidebar wyśrodkowany pionowo */}
       <aside className="hidden md:block w-64 bg-white shadow-md rounded-lg p-6 fixed top-1/2 -translate-y-1/2 z-[1001] h-fit ml-0">
         <nav className="space-y-2">
           {menuItems.map((item) => (

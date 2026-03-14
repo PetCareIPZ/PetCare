@@ -3,21 +3,11 @@
 import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { funt2 } from "./base";
-import Icon from "~/components/Icon";
+import Icon, { defaultColors } from "~/components/Icon";
 import React from "react";
 import type { Pet, Facility, SearchParams } from "~/types/visits";
 import type { Shop } from "~/types/facilities";
 import Link from "next/link";
-
-const colors = {
-  primary: "green-600",
-  primaryHover: "green-700",
-  primaryLight: "green-50",
-  primaryRing: "ring-green-500/20",
-  primaryBorder: "border-green-600",
-  primaryShadow: "shadow-green-100",
-  primaryText: "text-green-600"
-};
 
 const ShopsMapClient = dynamic(() => import("~/components/dashboard/facilities/ShopsMapClient"), { 
   ssr: false,
@@ -40,6 +30,10 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
 
   const params = React.use(searchParams);
 
+  const primaryColor = defaultColors.calendar;
+  const lightBg = primaryColor.replace('1)', '0.08)');
+  const focusRing = primaryColor.replace('1)', '0.2)');
+
   useEffect(() => {
     setMounted(true);
     void fetch("/api/facilities").then(res => res.json()).then(data => setFacilities(data as Facility[]));
@@ -57,7 +51,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
   }, [facilities, selectedType]);
 
   const labelStyle = "block text-gray-700 font-semibold mb-2";
-  const inputStyle = `w-full p-3 border border-gray-300 rounded-lg focus:ring-4 focus:${colors.primaryRing} focus:border-${colors.primary} outline-none transition bg-white`;
+  const inputStyle = "w-full p-3 border border-gray-300 rounded-lg outline-none transition bg-white";
 
   return (
     <div className="w-full py-8 px-4">
@@ -82,14 +76,14 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                   <div
                     key={pet.petId}
                     onClick={() => setSelectedPetId(pet.petId)}
-                    className={`cursor-pointer p-4 rounded-xl border-2 transition-all flex flex-col items-center text-center ${
-                      selectedPetId === pet.petId 
-                        ? `${colors.primaryBorder} bg-${colors.primaryLight} shadow-sm` 
-                        : "border-gray-100 bg-white hover:border-gray-300"
-                    }`}
+                    style={{ 
+                      borderColor: selectedPetId === pet.petId ? primaryColor : '#F3F4F6',
+                      backgroundColor: selectedPetId === pet.petId ? lightBg : 'transparent'
+                    }}
+                    className="cursor-pointer p-4 rounded-xl border-2 transition-all flex flex-col items-center text-center"
                   >
                     <img src={pet.imageUrl ?? "/svg/no-image.svg"} alt={pet.petName} className="w-16 h-16 rounded-full mb-3 object-cover border-2 border-white shadow-sm" />
-                    <span className={`font-bold ${selectedPetId === pet.petId ? `text-${colors.primary}` : "text-gray-800"}`}>{pet.petName}</span>
+                    <span className="font-bold" style={{ color: selectedPetId === pet.petId ? primaryColor : '#1F2937' }}>{pet.petName}</span>
                     <span className="text-xs text-gray-500">{pet.species}</span>
                   </div>
                 ))}
@@ -123,14 +117,14 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                   <button
                     type="button"
                     onClick={() => setShowMap(!showMap)}
-                    className={`shrink-0 w-[52px] h-[52px] flex items-center justify-center rounded-lg border-2 transition-all ${
-                      showMap 
-                        ? `bg-${colors.primary} border-${colors.primary} text-white shadow-md ${colors.primaryShadow}` 
-                        : "border-gray-300 bg-white text-gray-500 hover:bg-gray-100"
-                    }`}
+                    style={{ 
+                      backgroundColor: showMap ? primaryColor : 'white',
+                      borderColor: showMap ? primaryColor : '#D1D5DB',
+                      color: showMap ? 'white' : '#6B7280'
+                    }}
+                    className="shrink-0 w-[52px] h-[52px] flex items-center justify-center rounded-lg border-2 transition-all"
                   >
-                    {/* Zmieniono "times" na "xmark", jeśli "times" też powodowało błąd */}
-                    <Icon name={showMap ? "xmark" : "map"} />
+                    <Icon name={showMap ? "xmark" : "map"} color={showMap ? "white" : undefined} />
                   </button>
                 </div>
               </div>
@@ -139,13 +133,13 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
             {showMap && (
               <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
                 {selectedFacility && (
-                  <div className="bg-green-50 border border-green-100 p-4 rounded-xl flex justify-between items-center">
+                  <div style={{ backgroundColor: lightBg, borderColor: primaryColor }} className="border p-4 rounded-xl flex justify-between items-center">
                     <div>
-                      <p className="text-sm font-bold text-green-800">Wybrano: {selectedFacility.name}</p>
-                      <p className="text-xs text-green-600">{selectedFacility.street}, {selectedFacility.city}</p>
+                      <p className="text-sm font-bold" style={{ color: primaryColor }}>Wybrano: {selectedFacility.name}</p>
+                      <p className="text-xs opacity-80" style={{ color: primaryColor }}>{selectedFacility.street}, {selectedFacility.city}</p>
                     </div>
-                    <button type="button" onClick={() => setSelectedFacility(null)} className="text-green-500 hover:text-green-700">
-                      <Icon name="xmark" />
+                    <button type="button" onClick={() => setSelectedFacility(null)} style={{ color: primaryColor }}>
+                      <Icon name="xmark" color={primaryColor} />
                     </button>
                   </div>
                 )}
@@ -170,7 +164,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <UploadButton
                 endpoint="visitAttachment"
                 appearance={{
-                    button: `ut-ready:bg-${colors.primary} ut-uploading:opacity-50 rounded-xl bg-gray-800 text-sm font-bold h-[52px] w-full transition-all shadow-sm`,
+                    button: `ut-ready:bg-slate-800 ut-uploading:opacity-50 rounded-xl bg-gray-800 text-sm font-bold h-[52px] w-full transition-all shadow-sm`,
                     container: "w-full",
                     allowedContent: "hidden"
                 }}
@@ -182,7 +176,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                 }}
               />
               <input type="hidden" name="załączniki" value={attachmentUrl ?? ""} />
-              {attachmentUrl && <p className={`text-sm ${colors.primaryText} font-bold mt-2 flex items-center gap-1`}>✓ Załącznik został dodany</p>}
+              {attachmentUrl && <p style={{ color: primaryColor }} className="text-sm font-bold mt-2 flex items-center gap-1">✓ Załącznik został dodany</p>}
             </div>
 
             <div className="mt-4 flex flex-col sm:flex-row justify-end gap-4 border-t border-gray-100 pt-8">
@@ -195,7 +189,8 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <button 
                 type="submit" 
                 disabled={!selectedPetId}
-                className={`w-full bg-${colors.primary} hover:bg-${colors.primaryHover} text-white font-bold py-4 px-14 rounded-xl transition shadow-md ${colors.primaryShadow} disabled:opacity-50 disabled:cursor-not-allowed`}
+                style={{ backgroundColor: primaryColor }}
+                className="w-full text-white font-bold py-4 px-14 rounded-xl transition hover:opacity-90 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Zarejestruj wizytę
               </button>
@@ -203,6 +198,13 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
           </form>
         )}
       </div>
+
+      <style jsx>{`
+        input:focus, select:focus, textarea:focus {
+          box-shadow: 0 0 0 4px ${focusRing};
+          border-color: ${primaryColor} !important;
+        }
+      `}</style>
     </div>
   );
 }
