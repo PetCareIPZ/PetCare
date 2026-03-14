@@ -144,7 +144,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                   </div>
                 )}
                 <div className="h-72 rounded-xl overflow-hidden border border-gray-300 shadow-inner">
-                  <ShopsMapClient shops={filteredFacilities} onSelectShop={(f) => setSelectedFacility(f as Shop)} selectedShopId={selectedFacility?.facilityId} />
+                  <ShopsMapClient shops={filteredFacilities} onSelectShop={(f) => setSelectedFacility(f)} selectedShopId={selectedFacility?.facilityId} />
                 </div>
                 <input type="hidden" name="facilityId" value={selectedFacility?.facilityId ?? ""} />
               </div>
