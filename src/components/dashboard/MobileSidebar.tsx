@@ -33,13 +33,13 @@ export default function MobileSidebar() {
       {/* Hamburger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-1001 bg-primary hover:bg-primary/80 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition md:hidden"
+        className="fixed bottom-6 right-6 z-[1002] bg-primary hover:bg-primary/80 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition md:hidden"
         aria-label="Menu"
       >
         {isOpen ? (
-          <Icon name="xmark" className="w-6 h-6" />
+          <Icon name="xmark" className="w-6 h-6" color="white" />
         ) : (
-          <Icon name="bars" className="w-6 h-6" />
+          <Icon name="bars" className="w-6 h-6" color="white" />
         )}
       </button>
 
