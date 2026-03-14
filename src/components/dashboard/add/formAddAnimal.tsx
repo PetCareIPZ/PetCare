@@ -7,7 +7,7 @@ import formAddAnimalHandler from "./formAddAnimalHandler";
 
 const UploadZoneWidget = dynamic(() => import("./uploadZone").then(mod => mod.UploadZoneWidget), { 
   ssr: false,
-  loading: () => <div className="h-32 w-full bg-gray-50 border-2 border-dashed rounded-xl animate-pulse" />
+  loading: () => <div className="h-32 w-full bg-gray-50 border border-dashed rounded-lg animate-pulse" />
 });
 
 export function AddAnimalFormWidget() {
@@ -17,84 +17,94 @@ export function AddAnimalFormWidget() {
     setMounted(true);
   }, []);
 
-  // WAŻNE: Renderujemy ZAWSZE ten sam kontener zewnętrzny. 
-  // Sidebar znikał, bo React myślał, że cała sekcja dzieci (children) została usunięta.
+  const labelStyle = "block text-gray-700 font-semibold mb-2";
+  const inputStyle = "w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition";
+
   return (
-    <div className="w-full flex flex-col items-center justify-center py-8">
-      <div className="w-full max-w-3xl px-4">
-        <h1 className="text-3xl font-bold text-gray-900 text-center mb-8">
-          Dodaj zwierzaka
-        </h1>
-
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10 min-h-[500px]">
-          {!mounted ? (
-            /* To widzi SERWER i przeglądarka przez pierwszą milisekundę */
-            <div className="space-y-6 animate-pulse">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-14 bg-gray-50 rounded-xl" />
-                ))}
-              </div>
-              <div className="h-32 bg-gray-50 rounded-xl w-full" />
-            </div>
-          ) : (
-            /* To pojawia się po "nawodnieniu" (hydration) */
-            <form action={formAddAnimalHandler} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Imię zwierzaka</label>
-                  <input name="imie" type="text" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="np. Nela" required />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Data urodzenia</label>
-                  <input name="data-urodzenia" type="date" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" required />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Gatunek</label>
-                  <input name="gatunek" type="text" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="np. Pies" required />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Rasa</label>
-                  <input name="rasa" type="text" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="np. Labrador" required />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Płeć</label>
-                  <select name="plec" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" required>
-                    <option value="">Wybierz płeć</option>
-                    <option value="samiec">Samiec</option>
-                    <option value="samica">Samica</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Waga (kg)</label>
-                  <input name="waga" type="number" step="0.1" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" required />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-gray-400 ml-1 uppercase">Numer chipu</label>
-                <input name="czip" type="text" className="w-full h-[52px] rounded-xl border-gray-200 bg-gray-50/50 px-4 focus:ring-2 focus:ring-blue-500 outline-none" maxLength={15} />
-              </div>
-
-              <UploadZoneWidget existingImageUrl="/svg/no-image.svg" />
-
-              <div className="flex flex-col sm:flex-row-reverse gap-3 pt-6">
-                <button type="submit" className="px-10 py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg">
-                  Zapisz dane
-                </button>
-                <Link href="/dashboard" className="px-10 py-4 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-center font-semibold">
-                  Anuluj
-                </Link>
-              </div>
-            </form>
-          )}
-        </div>
+    <div className="w-full py-8 px-4">
+      <div className="max-w-2xl mx-auto mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-900">Dodaj zwierzaka</h1>
       </div>
+
+      <form action={formAddAnimalHandler} className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-6 sm:gap-8">
+        {!mounted ? (
+          <div className="space-y-6 animate-pulse">
+            <div className="h-12 bg-gray-100 rounded-lg w-full" />
+            <div className="h-12 bg-gray-100 rounded-lg w-full" />
+            <div className="h-32 bg-gray-100 rounded-lg w-full" />
+          </div>
+        ) : (
+          <>
+            {/* Sekcja: Imię i Data */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div>
+                <label className={labelStyle}>Imię zwierzaka *</label>
+                <input name="imie" type="text" className={inputStyle} placeholder="np. Nela" required />
+              </div>
+              <div>
+                <label className={labelStyle}>Data urodzenia *</label>
+                <input name="data-urodzenia" type="date" className={inputStyle} required />
+              </div>
+            </div>
+
+            {/* Sekcja: Gatunek i Rasa */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div>
+                <label className={labelStyle}>Gatunek *</label>
+                <input name="gatunek" type="text" className={inputStyle} placeholder="np. Pies" required />
+              </div>
+              <div>
+                <label className={labelStyle}>Rasa *</label>
+                <input name="rasa" type="text" className={inputStyle} placeholder="np. Labrador" required />
+              </div>
+            </div>
+
+            {/* Sekcja: Płeć i Waga */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              <div>
+                <label className={labelStyle}>Płeć *</label>
+                <select name="plec" className={inputStyle} defaultValue="" required>
+                  <option value="" disabled>-- Wybierz płeć --</option>
+                  <option value="samiec">Samiec</option>
+                  <option value="samica">Samica</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelStyle}>Waga (kg) *</label>
+                <input name="waga" type="number" step="0.1" className={inputStyle} placeholder="np. 12.5" required />
+              </div>
+            </div>
+
+            {/* Sekcja: Chip */}
+            <div>
+              <label className={labelStyle}>Numer chipu</label>
+              <input name="czip" type="text" className={inputStyle} placeholder="Opcjonalny 15-cyfrowy numer" maxLength={15} />
+            </div>
+
+            {/* Sekcja: Zdjęcie */}
+            <div className="pt-2">
+              <label className={labelStyle}>Zdjęcie pupila</label>
+              <UploadZoneWidget existingImageUrl="/svg/no-image.svg" />
+            </div>
+
+            {/* Przyciski */}
+            <div className="mt-4 flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-100 pt-6">
+              <Link 
+                href="/dashboard" 
+                className="w-full px-6 py-3 border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-center"
+              >
+                Anuluj
+              </Link>
+              <button 
+                type="submit" 
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-sm"
+              >
+                Zapisz
+              </button>
+            </div>
+          </>
+        )}
+      </form>
     </div>
   );
 }
