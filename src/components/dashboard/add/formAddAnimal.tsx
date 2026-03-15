@@ -36,7 +36,7 @@ export function AddAnimalFormWidget() {
         router.push(`/dashboard/${result.petId}`);
       }, 2000);
     } else {
-      alert(result?.error || "Wystąpił błąd");
+      alert(result?.error ?? "Wystąpił błąd");
       setIsPending(false);
     }
   }

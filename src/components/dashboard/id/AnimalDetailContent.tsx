@@ -30,7 +30,7 @@ export default function AnimalDetailContent({ animal }: { animal: Animal }) {
         router.replace("/dashboard/animals");
       }, 4000);
     } else {
-      alert(result?.error || "Wystąpił nieoczekiwany błąd");
+      alert(result?.error ?? "Wystąpił nieoczekiwany błąd");
       setIsDeleting(false);
       setShowConfirm(false);
     }
