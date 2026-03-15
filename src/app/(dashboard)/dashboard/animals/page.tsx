@@ -25,10 +25,7 @@ export default async function ZwierzakiPage() {
 
       <AnimatedSection>
       <section className="mb-16">
-        {/* kontener strony */}
         <div className="max-w-6xl mx-auto px-4">
-          
-          {/* kontener kafelków */}
           <div
             className="
               flex flex-wrap justify-center gap-6

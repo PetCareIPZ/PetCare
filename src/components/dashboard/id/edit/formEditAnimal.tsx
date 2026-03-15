@@ -27,7 +27,6 @@ export default function EditAnimalFormWidget({animal}: {animal: animalData}) {
   const [isPending, setIsPending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Pobranie koloru paw i przygotowanie wariantu focus
   const primaryColor = defaultColors.paw;
   const focusRingColor = primaryColor.replace('1)', '0.2)');
 
@@ -54,7 +53,6 @@ export default function EditAnimalFormWidget({animal}: {animal: animalData}) {
     <div className="flex items-center justify-center py-8 bg-white min-h-screen font-sans">
       <div className="w-full max-w-3xl px-4">
         
-        {/* PEŁNOEKRANOWY KOMUNIKAT SUKCESU */}
         {isSuccess && (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-500">
             <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />

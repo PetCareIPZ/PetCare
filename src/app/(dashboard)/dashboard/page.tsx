@@ -21,7 +21,6 @@ export default async function DashboardPage() {
     );
   }
 
-  // Pobierz zwierzęta
   const userPets = await db
     .select({
       petId: pets.petId,
