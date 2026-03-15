@@ -108,6 +108,7 @@ export function AddAnimalFormWidget() {
                   <option value="" disabled>-- Wybierz płeć --</option>
                   <option value="samiec">Samiec</option>
                   <option value="samica">Samica</option>
+                  <option value="jednopłciowe">Jednopłciowe</option>
                 </select>
               </div>
               <div>
