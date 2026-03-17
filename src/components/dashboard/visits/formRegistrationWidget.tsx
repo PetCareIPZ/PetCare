@@ -33,6 +33,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
   const [selectedPetId, setSelectedPetId] = useState<number | null>(null);
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedFacility, setSelectedFacility] = useState<Shop | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   const params = React.use(searchParams);
 
@@ -67,10 +68,11 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
     }
   }
 
-  const facilityTypes = useMemo(() => Array.from(new Set(facilities.map(f => f.facilityType))), [facilities]);
+  const facilityTypes = useMemo(() => Array.from(new Set(facilities.map(f => f.facilityType))).filter(type => type !== "Sklep Zoologiczny"), [facilities]);
   const filteredFacilities = useMemo(() => {
     if (!selectedType) return [];
-    return facilities.filter(f => f.facilityType === selectedType) as unknown as Shop[];
+    return facilities.filter(f => f.facilityType === selectedType && 
+    f.facilityType !== "Sklep Zoologiczny") as unknown as Shop[];
   }, [facilities, selectedType]);
 
   const labelStyle = "block text-gray-700 font-semibold mb-2";
@@ -145,7 +147,8 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex flex-col gap-2">
                   <label className={labelStyle}>Data wizyty *</label>
-                  <input type="date" name="data" className={inputStyle} required />
+                  <input type="date" name="data" className={inputStyle} required value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)} />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -237,7 +240,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                 </Link>
                 <button 
                   type="submit" 
-                  disabled={!selectedPetId || isPending}
+                  disabled={!selectedPetId || !selectedDate || !selectedFacility || isPending}
                   style={{ backgroundColor: primaryColor }}
                   className="w-full text-white font-bold py-4 px-14 rounded-xl transition hover:opacity-90 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
