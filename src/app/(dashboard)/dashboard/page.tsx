@@ -21,7 +21,6 @@ export default async function DashboardPage() {
     );
   }
 
-  // Pobierz zwierzęta
   const userPets = await db
     .select({
       petId: pets.petId,
@@ -33,7 +32,6 @@ export default async function DashboardPage() {
 
   const petIds = userPets.map((p) => p.petId);
 
-  // Pobierz liczbę wizyt, leków i szczepionek
   let visitsCount = 0;
   let drugsCount = 0;
   let vaccinationsCount = 0;
@@ -152,27 +150,50 @@ export default async function DashboardPage() {
 
       <AnimatedSection delay={0.2}>
         <section className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Co nowego?
-          </h2>
-          <div className="space-y-4 text-gray-600">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+          Co nowego?
+        </h2>
+        <div className="flex flex-col gap-4">
+          {/* Link do Wizyt */}
+          <Link 
+            href="/dashboard/visits" 
+            className="group flex items-center text-gray-600 transition-colors"
+          >
+            <span className="mr-2 text-gray-400">•</span>
             {visitsCount === 0 ? (
-              <p>• Nie masz zaplanowanych wizyt</p>
+              <p>Nie masz zaplanowanych wizyt</p>
             ) : (
-              <p>• Masz {visitsCount} {visitsCount === 1 ? "wizytę" : "wizyt"}</p>
+              <p>Masz <span>{visitsCount}</span> {visitsCount === 1 ? "wizytę" : "wizyt"}</p>
             )}
+          </Link>
+
+          {/* Link do Leków */}
+          <Link 
+            href="/dashboard/drugs" 
+            className="group flex items-center text-gray-600 transition-colors"
+          >
+            <span className="mr-2 text-gray-400">•</span>
             {drugsCount === 0 ? (
-              <p>• Nie masz wpisanych leków</p>
+              <p>Nie masz wpisanych leków</p>
             ) : (
-              <p>• Podajesz {drugsCount} {drugsCount === 1 ? "lek" : "leki"}</p>
+              <p>Podajesz <span>{drugsCount}</span> {drugsCount === 1 ? "lek" : "leki"}</p>
             )}
+          </Link>
+
+          {/* Link do Szczepień */}
+          <Link 
+            href="/dashboard/vaccinations" 
+            className="group flex items-center text-gray-600 transition-colors"
+          >
+            <span className="mr-2 text-gray-400">•</span>
             {vaccinationsCount === 0 ? (
-              <p>• Nie masz zanotowanych szczepionek</p>
+              <p>Nie masz zanotowanych szczepionek</p>
             ) : (
-              <p>• Zwierzęta mają {vaccinationsCount} {vaccinationsCount === 1 ? "szczepionkę" : "szczepionek"}</p>
+              <p>Zwierzęta mają <span>{vaccinationsCount}</span> {vaccinationsCount === 1 ? "szczepionkę" : "szczepionek"}</p>
             )}
-          </div>
-        </section>
+          </Link>
+        </div>
+      </section>
       </AnimatedSection>
     </>
   );
