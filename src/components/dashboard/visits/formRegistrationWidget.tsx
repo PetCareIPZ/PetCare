@@ -79,7 +79,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
   const inputStyle = "w-full p-3 border border-gray-300 rounded-lg outline-none transition bg-white";
 
   return (
-    <div className="w-full py-8 px-4 font-sans">
+    <div className="w-full py-8 px-4 font-sans" data-testid="registration-page">
       <div className="max-w-2xl mx-auto mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900">Zarejestruj wizytę</h1>
       </div>
@@ -87,10 +87,12 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
       <div className="bg-white rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto overflow-hidden relative">
         
       {isSuccess && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-500">
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-500"
+          data-testid="success-modal"
+        >
           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" />
           
-          {/* Biała karta z komunikatem */}
           <div className="relative bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
               <CheckCircle2 className="w-12 h-12 animate-bounce" />
@@ -101,8 +103,6 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
             <p className="text-gray-500">
               Dane zostały zapisane pomyślnie. Zaraz wrócisz do listy wizyt.
             </p>
-            
-            {/* Opcjonalny pasek postępu ładowania */}
             <div className="mt-6 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
               <div className="h-full bg-green-500 animate-progress origin-left" />
             </div>
@@ -117,9 +117,8 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <div className="h-12 bg-gray-50 rounded-xl w-full" />
             </div>
           ) : (
-            <form action={handleSubmit} className="flex flex-col gap-8">
+            <form action={handleSubmit} className="flex flex-col gap-8" data-testid="visit-form">
               
-              {/* Wybór zwierzaka */}
               <div>
                 <label className={labelStyle}>Wybierz pacjenta *</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -127,6 +126,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                     <div
                       key={pet.petId}
                       onClick={() => setSelectedPetId(pet.petId)}
+                      data-testid={`pet-tile-${pet.petName}`}
                       style={{ 
                         borderColor: selectedPetId === pet.petId ? primaryColor : '#F3F4F6',
                         backgroundColor: selectedPetId === pet.petId ? lightBg : 'transparent'
@@ -147,8 +147,15 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex flex-col gap-2">
                   <label className={labelStyle}>Data wizyty *</label>
-                  <input type="date" name="data" className={inputStyle} required value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)} />
+                  <input 
+                    type="date" 
+                    name="data" 
+                    data-testid="input-date"
+                    className={inputStyle} 
+                    required 
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)} 
+                  />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -156,6 +163,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                   <div className="flex gap-2">
                     <select
                       name="rodzaj_wizyty"
+                      data-testid="select-type"
                       value={selectedType}
                       onChange={(e) => setSelectedType(e.target.value)}
                       className={`${inputStyle} appearance-none cursor-pointer`}
@@ -168,6 +176,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                     </select>
                     <button
                       type="button"
+                      data-testid="button-toggle-map"
                       onClick={() => setShowMap(!showMap)}
                       style={{ 
                         backgroundColor: showMap ? primaryColor : 'white',
@@ -183,9 +192,13 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               </div>
 
               {showMap && (
-                <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
+                <div className="space-y-4 animate-in slide-in-from-top-2 duration-300" data-testid="map-container">
                   {selectedFacility && (
-                    <div style={{ backgroundColor: lightBg, borderColor: primaryColor }} className="border p-4 rounded-xl flex justify-between items-center">
+                    <div 
+                      data-testid="selected-facility-info"
+                      style={{ backgroundColor: lightBg, borderColor: primaryColor }} 
+                      className="border p-4 rounded-xl flex justify-between items-center"
+                    >
                       <div>
                         <p className="text-sm font-bold" style={{ color: primaryColor }}>Wybrano: {selectedFacility.name}</p>
                         <p className="text-xs opacity-80" style={{ color: primaryColor }}>{selectedFacility.street}, {selectedFacility.city}</p>
@@ -206,6 +219,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                 <label className={labelStyle}>Uwagi do wizyty</label>
                 <textarea 
                   name="uwagi" 
+                  data-testid="textarea-notes"
                   className={`${inputStyle} h-auto min-h-[100px] py-3 resize-none`} 
                   placeholder="np. Powód wizyty, objawy..."
                 ></textarea>
@@ -213,20 +227,22 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
 
               <div className="flex flex-col gap-2">
                 <label className={labelStyle}>Załącznik</label>
-                <UploadButton
-                  endpoint="visitAttachment"
-                  appearance={{
-                      button: `ut-ready:bg-slate-800 ut-uploading:opacity-50 rounded-xl bg-gray-800 text-sm font-bold h-[52px] w-full transition-all shadow-sm`,
-                      container: "w-full",
-                      allowedContent: "hidden"
-                  }}
-                  content={{
-                      button({ ready }) { return ready ? "Dodaj dokument" : "Przygotowanie..."; }
-                  }}
-                  onClientUploadComplete={(res) => {
-                    if (res?.[0]?.ufsUrl) setAttachmentUrl(res[0].ufsUrl);
-                  }}
-                />
+                <div data-testid="upload-section">
+                  <UploadButton
+                    endpoint="visitAttachment"
+                    appearance={{
+                        button: `ut-ready:bg-slate-800 ut-uploading:opacity-50 rounded-xl bg-gray-800 text-sm font-bold h-[52px] w-full transition-all shadow-sm`,
+                        container: "w-full",
+                        allowedContent: "hidden"
+                    }}
+                    content={{
+                        button({ ready }) { return ready ? "Dodaj dokument" : "Przygotowanie..."; }
+                    }}
+                    onClientUploadComplete={(res) => {
+                      if (res?.[0]?.ufsUrl) setAttachmentUrl(res[0].ufsUrl);
+                    }}
+                  />
+                </div>
                 <input type="hidden" name="załączniki" value={attachmentUrl ?? ""} />
                 {attachmentUrl && <p style={{ color: primaryColor }} className="text-sm font-bold mt-2 flex items-center gap-1">✓ Załącznik został dodany</p>}
               </div>
@@ -234,12 +250,14 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
               <div className="mt-4 flex flex-col sm:flex-row justify-end gap-4 border-t border-gray-100 pt-8">
                 <Link 
                   href="/dashboard/visits" 
+                  data-testid="button-cancel"
                   className="w-full px-10 py-4 border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-center"
                 >
                   Anuluj
                 </Link>
                 <button 
                   type="submit" 
+                  data-testid="button-submit"
                   disabled={!selectedPetId || !selectedDate || !selectedFacility || isPending}
                   style={{ backgroundColor: primaryColor }}
                   className="w-full text-white font-bold py-4 px-14 rounded-xl transition hover:opacity-90 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
@@ -260,6 +278,13 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
         input:focus, select:focus, textarea:focus {
           box-shadow: 0 0 0 4px ${focusRing};
           border-color: ${primaryColor} !important;
+        }
+        @keyframes progress {
+          0% { transform: scaleX(0); }
+          100% { transform: scaleX(1); }
+        }
+        .animate-progress {
+          animation: progress 4s linear forwards;
         }
       `}</style>
     </div>
