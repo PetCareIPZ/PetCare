@@ -11,7 +11,7 @@ import type { Category, CategoryUI, SavedArticle } from '~/types/knowledge-base'
 const categories: CategoryUI[] = [
   { id: "zdrowie", title: "Zdrowie i profilaktyka", description: "Informacje o szczepieniach, odrobaczaniu i typowych dolegliwościach.", icon: <HeartPulse className="w-8 h-8 text-red-500" /> },
   { id: "zywienie", title: "Żywienie", description: "Jak dobrać karmę i jakich produktów unikać w diecie pupila.", icon: <Utensils className="w-8 h-8 text-orange-500" /> },
-  { id: "trening", title: "Wychowanie i trening", description: "Porady dotyczące behawiorystyki, nauki czystości i komend.", icon: <GraduationCap className="w-8 h-8 text-blue-500" /> },
+  { id: "trening", title: "Wychowanie i trening", description: "Porady dotyczące behawiorystyki, nauki czystości i komend.", icon: <GraduationCap className="w-8 h-8 text-purple-500" /> },
   { id: "opieka", title: "Opieka ogólna", description: "ABC pielęgnacji sierści, pazurów oraz przygotowanie domu na zwierzaka.", icon: <BookOpen className="w-8 h-8 text-green-500" /> }
 ];
 
@@ -106,14 +106,14 @@ export default function KnowledgeBasePage() {
           
           <AnimatedSection delay={0.1}>
           <div className="relative max-w-2xl mx-auto group">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none group-focus-within:text-blue-500 transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none group-focus-within:text-purple-500 transition-colors">
               <Search className="h-5 w-5 text-gray-400" />
             </div>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all"
+              className="block w-full pl-10 pr-3 py-4 border border-gray-300 rounded-2xl bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm transition-all"
               placeholder="Szukaj porad (np. kleszcz, siad, karma...)"
             />
           </div>
@@ -123,10 +123,12 @@ export default function KnowledgeBasePage() {
       {savedArticles.length > 0 && !searchTerm && (
         <AnimatedSection delay={0.1}>
           <section className="mb-16">
-            <div className="flex items-center space-x-2 mb-6 text-blue-900">
-              <Bookmark className="w-5 h-5 fill-current" />
-              <h2 className="text-xl font-bold uppercase tracking-wider text-sm">Twoje zapisane porady ({savedArticles.length})</h2>
-            </div>
+            <div className="flex items-center space-x-2 mb-6">
+            <Bookmark className="w-5 h-5 fill-purple-600 text-purple-600" />
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+              Twoje zapisane porady ({savedArticles.length})
+            </h2>
+          </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {savedArticles.map((art) => (
                 <div 
@@ -135,7 +137,7 @@ export default function KnowledgeBasePage() {
                     setSearchTerm(art.title);
                     setActiveCategory(art.categorySlug);
                   }}
-                  className="group relative p-5 bg-blue-50/50 border border-blue-100 rounded-2xl cursor-pointer hover:bg-white hover:shadow-md transition-all border-l-4 border-l-blue-500"
+                  className="group p-5 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-all border-l-4 border-l-purple-500"
                 >
                   <button 
                     onClick={(e) => removeSaved(art.id, e)}
@@ -143,10 +145,10 @@ export default function KnowledgeBasePage() {
                   >
                     <X className="w-4 h-4" />
                   </button>
-                  <span className="text-[10px] font-bold text-blue-400 uppercase tracking-tight">{art.categoryTitle}</span>
-                  <h3 className="font-bold text-gray-900 mt-1 group-hover:text-blue-600 transition-colors line-clamp-1">{art.title}</h3>
+                  <span className="text-[10px] font-bold text-purple-400 uppercase tracking-tight">{art.categoryTitle}</span>
+                  <h3 className="font-bold text-gray-900 mt-1 group-hover:text-purple-600 transition-colors line-clamp-1">{art.title}</h3>
                   <p className="text-xs text-gray-500 mt-2 line-clamp-2 leading-relaxed">{art.content}</p>
-                  <div className="mt-3 flex items-center text-[10px] font-bold text-blue-600 uppercase">
+                  <div className="mt-3 flex items-center text-[10px] font-bold text-purple-600 uppercase">
                     Czytaj teraz <ArrowRight className="ml-1 w-3 h-3" />
                   </div>
                 </div>
@@ -170,9 +172,9 @@ export default function KnowledgeBasePage() {
                 {category.icon}
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">{category.title}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">{category.title}</h3>
                 <p className="text-gray-600 text-sm leading-relaxed">{category.description}</p>
-                {searchTerm && <p className="mt-3 text-[10px] text-blue-500 font-bold uppercase tracking-wider">Znaleziono pasujące treści</p>}
+                {searchTerm && <p className="mt-3 text-[10px] text-purple-500 font-bold uppercase tracking-wider">Znaleziono pasujące treści</p>}
               </div>
             </button>
           ))}
