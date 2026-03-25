@@ -85,30 +85,31 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
       </div>
 
       <div className="bg-white rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto overflow-hidden relative">
-        
       {isSuccess && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-500"
-          data-testid="success-modal"
-        >
-          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" />
-          
-          <div className="relative bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
-            <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
-              <CheckCircle2 className="w-12 h-12 animate-bounce" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Wizyta zarejestrowana!
-            </h2>
-            <p className="text-gray-500">
-              Dane zostały zapisane pomyślnie. Zaraz wrócisz do listy wizyt.
-            </p>
-            <div className="mt-6 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-green-500 animate-progress origin-left" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-500">
+          <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />
+            <div className="relative z-[10000] bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
+              <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <CheckCircle2 className="w-12 h-12 animate-bounce" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Wizyta zarejestrowana!
+              </h2>
+              <p className="text-gray-500">
+                Dane zostały zapisane pomyślnie. Zaraz nastąpi przekierowanie...
+              </p>
+              <div className="mt-6 h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full origin-left" 
+                  style={{ 
+                    backgroundColor: primaryColor,
+                    animation: 'progress 2s linear forwards' 
+                  }} 
+                  />
+                </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
         <div className="p-5 sm:p-8">
           {!mounted ? (
