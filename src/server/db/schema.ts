@@ -39,7 +39,7 @@ export const visits = pgTable("visits",{
   visitId: serial("visitId").primaryKey(),
   petId: integer("petId").notNull().references(() => pets.petId, {onDelete: 'cascade'}),
   facilityId: integer("facilityId").references(() => facilities.facilityId),
-  visitDate: date("visitDate").notNull(),
+  visitDate: timestamp("visitDate").notNull(),
   visitType: varchar("visitType", {length: 255}).notNull(),
   visitNote: text("visitNote"),
   visitAttachment: text("visitAttachment"),

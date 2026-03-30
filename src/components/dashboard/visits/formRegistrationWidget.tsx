@@ -147,10 +147,11 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex flex-col gap-2">
-                  <label className={labelStyle}>Data wizyty *</label>
+                  <label className={labelStyle}>Data i godzina wizyty *</label>
                   <input 
-                    type="date" 
+                    type="datetime-local" 
                     name="data" 
+                    step = "60"
                     data-testid="input-date"
                     className={inputStyle} 
                     required 
