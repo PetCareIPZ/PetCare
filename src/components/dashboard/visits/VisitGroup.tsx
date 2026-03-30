@@ -31,7 +31,7 @@ export default function VisitGroup({ petName, visits }: Props) {
                     {w.visitType}
                   </span>
                   <span className="text-sm font-medium text-gray-400">
-                    {w.visitDate}
+                    {new Date(w.visitDate).toLocaleDateString('pl-PL')}
                   </span>
                 </div>
 
