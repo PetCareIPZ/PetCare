@@ -16,11 +16,12 @@ export async function funt2(formData: FormData) {
     const facilityId = facilityIdAsString && facilityIdAsString !== "" 
       ? Number(facilityIdAsString) 
       : null;
-
+    
+    const dateString = formData.get("data") as string;
     await db.insert(visits).values({
       petId: Number(formData.get("petId")),
       facilityId: facilityId,
-      visitDate: formData.get("data") as string,
+      visitDate: new Date(dateString),
       visitType: formData.get("rodzaj_wizyty") as string,
       visitNote: formData.get("uwagi") as string,
       visitAttachment: formData.get("załączniki") as string

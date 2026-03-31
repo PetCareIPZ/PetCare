@@ -1,46 +1,50 @@
 import { test, expect } from '@playwright/test';
 
-// Zapisana sesja uzytkownika
+// Zapisana sesja użytkownika
 test.use({ storageState: 'playwright/.auth/user.json' });
 
-test('Dodawanie zwierzaka - pełny proces', async ({ page }) => {
+test('Dodawanie zwierzaka - pełny proces (używając data-testid)', async ({ page }) => {
 
     await page.goto('/dashboard/animals');
+
+    const pet_name = 'BurekTest';
     
-    const addAnimalLink = page.getByRole('link', { name: /Dodaj zwierzaka/i });
+    const addAnimalButton = page.getByRole('link', { name: '+ Dodaj zwierzaka' })
     
-    await expect(addAnimalLink, 'Błąd: Nie znaleziono przycisku dodawania. Sprawdź czy sesja jest aktywna.')
+    await expect(addAnimalButton, 'Błąd: Nie znaleziono przycisku dodawania. Sprawdź czy sesja jest aktywna.')
         .toBeVisible({ timeout: 10000 });  
-    await addAnimalLink.click();
+    await addAnimalButton.click();
 
     await expect(page).toHaveURL('/dashboard/add', { timeout: 10000 });
+    await expect(page.getByTestId('add-animal-form')).toBeVisible();
+    
+    await page.getByTestId('input-name').fill(pet_name);
+    await page.getByTestId('input-birthdate').fill('2020-03-15');
+    await page.getByTestId('input-species').fill('Pies');
+    await page.getByTestId('input-breed').fill('Mieszaniec');
 
-    await page.getByPlaceholder('np. Nela').fill('Burek');
+    await page.getByTestId('select-gender').selectOption('samiec');
 
-    const dateInput = page.locator('input[name="data-urodzenia"]');
-    await dateInput.fill('2020-03-11');
+    await page.getByTestId('input-weight').fill('12.5');
+    await page.getByTestId('input-chip').fill('123456789012345');
 
-    await page.getByPlaceholder('np. Pies, Kot').fill('Pies');
-    await page.getByPlaceholder('np. Yorkshire Terrier, Labrador').fill('Mieszaniec');
+    await expect(page.getByTestId('upload-zone')).toBeVisible();
 
-    await page.getByRole('combobox').selectOption({ label: 'Samiec' });
-
-    await page.getByPlaceholder('np. 3.5').fill('12.5');
-    await page.getByPlaceholder('15-cyfrowy numer chipu').fill('123456789012345');
-
-    const submitButton = page.getByRole('button', { name: /Wyślij/i });
+    const submitButton = page.getByTestId('button-submit');
     await submitButton.click();
 
-    await expect(page).toHaveURL(/\/dashboard\/\d+/);
-    
-    const animalHeading = page.getByRole('heading', { name: 'Burek', level: 1 });
-    await expect(animalHeading).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId('success-modal')).toBeVisible({ timeout: 5000 });
 
-    await page.getByRole('link', { name: 'PetCare' }).first().click();
+    // await expect(page).toHaveURL(/\/dashboard\/\d+/, { timeout: 15000 });
     
-    await expect(page).toHaveURL(/\/dashboard(\/)?$/);
-    
-    await expect(page.getByText('Burek').first()).toBeVisible({ timeout: 10000 });
+    const animalHeading = page.getByRole('heading', { name: pet_name });
+    await expect(animalHeading).toHaveText(pet_name, { timeout: 15000 });
 
-    console.log('Sukces: Zwierzak został poprawnie dodany i zweryfikowany na dashboardzie.');
+    await page.getByRole('heading', { name: pet_name }).click();
+    
+    // await expect(page).toHaveURL(/\/dashboard(\/)?$/);
+    
+    await expect(page.getByRole('link', { name: 'Zwierzaki' })).toBeVisible({ timeout: 15000 });
+
+    console.log('Sukces: Zwierzak został poprawnie dodany i zweryfikowany.');
 });

@@ -25,7 +25,7 @@ export interface SearchParams {
 
 export interface Visit {
   visitID: number;
-  visitDate: string;
+  visitDate: Date;
   visitType: string;
   visitAttachment?: string | null;
   visitNote?: string | null;

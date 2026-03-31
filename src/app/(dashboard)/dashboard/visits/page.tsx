@@ -50,9 +50,11 @@ export default async function wizyty() {
     }
     const idsZwierzakow=pet.map(z=>z.id);
     const allVisits = idsZwierzakow.length > 0 ? await Wizyta(idsZwierzakow) : [];
-    const today: string = new Date().toISOString().slice(0, 10);
-    const ids = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate >= today) as Visit[];
-    const pastIds = allVisits.filter(v => typeof v.visitDate === 'string' && v.visitDate < today) as Visit[];
+    // const today: string = new Date().toISOString().slice(0, 10);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const ids = allVisits.filter(v => {const vDate = new Date(v.visitDate); return vDate >= today}) as Visit[];
+    const pastIds = allVisits.filter(v => {const vDate = new Date(v.visitDate); return vDate < today;}) as Visit[];
     const {isAuthenticated}=await auth()
     if(!isAuthenticated || !userId){
 

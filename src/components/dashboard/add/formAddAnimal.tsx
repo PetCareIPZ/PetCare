@@ -45,9 +45,12 @@ export function AddAnimalFormWidget() {
   const inputStyle = "w-full p-3 border border-gray-300 rounded-lg outline-none transition focus:border-transparent";
 
   return (
-    <div className="w-full py-8 px-4">
+    <div className="w-full py-8 px-4" data-testid="add-animal-page">
       {isSuccess && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-500">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-500"
+          data-testid="success-modal"
+        >
           <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />
           <div className="relative z-[10000] bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
             <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -67,11 +70,16 @@ export function AddAnimalFormWidget() {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto mb-8 text-center">
+      <div className="max-w-2xl mx-auto mb-8 text-center"
+        data-testid="add-animal-button">
         <h1 className="text-3xl font-bold text-gray-900">Dodaj zwierzaka</h1>
       </div>
 
-      <form action={handleSubmit} className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-8">
+      <form 
+        action={handleSubmit} 
+        className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-8"
+        data-testid="add-animal-form"
+      >
         {!mounted ? (
           <div className="space-y-6 animate-pulse">
             <div className="h-12 bg-gray-100 rounded-lg w-full" />
@@ -82,29 +90,62 @@ export function AddAnimalFormWidget() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
               <div>
                 <label className={labelStyle}>Imię zwierzaka *</label>
-                <input name="imie" type="text" className={inputStyle} placeholder="np. Nela" required />
+                <input 
+                  name="imie" 
+                  type="text" 
+                  className={inputStyle} 
+                  placeholder="np. Nela" 
+                  required 
+                  data-testid="input-name"
+                />
               </div>
               <div>
                 <label className={labelStyle}>Data urodzenia *</label>
-                <input name="data-urodzenia" type="date" className={inputStyle} required />
+                <input 
+                  name="data-urodzenia" 
+                  type="date" 
+                  className={inputStyle} 
+                  required 
+                  data-testid="input-birthdate"
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
               <div>
                 <label className={labelStyle}>Gatunek *</label>
-                <input name="gatunek" type="text" className={inputStyle} placeholder="np. Pies" required />
+                <input 
+                  name="gatunek" 
+                  type="text" 
+                  className={inputStyle} 
+                  placeholder="np. Pies" 
+                  required 
+                  data-testid="input-species"
+                />
               </div>
               <div>
                 <label className={labelStyle}>Rasa *</label>
-                <input name="rasa" type="text" className={inputStyle} placeholder="np. Labrador" required />
+                <input 
+                  name="rasa" 
+                  type="text" 
+                  className={inputStyle} 
+                  placeholder="np. Labrador" 
+                  required 
+                  data-testid="input-breed"
+                />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 font-sans">
               <div>
                 <label className={labelStyle}>Płeć *</label>
-                <select name="plec" className={inputStyle} defaultValue="" required>
+                <select 
+                  name="plec" 
+                  className={inputStyle} 
+                  defaultValue="" 
+                  required
+                  data-testid="select-gender"
+                >
                   <option value="" disabled>-- Wybierz płeć --</option>
                   <option value="samiec">Samiec</option>
                   <option value="samica">Samica</option>
@@ -113,16 +154,32 @@ export function AddAnimalFormWidget() {
               </div>
               <div>
                 <label className={labelStyle}>Waga (kg) *</label>
-                <input name="waga" type="number" step="0.1" className={inputStyle} placeholder="np. 12.5" required />
+                <input 
+                  name="waga" 
+                  type="number" 
+                  step="0.1" 
+                  className={inputStyle} 
+                  placeholder="np. 12.5" 
+                  required 
+                  data-testid="input-weight"
+                />
               </div>
             </div>
 
             <div className="font-sans">
               <label className={labelStyle}>Numer chipu</label>
-              <input name="czip" type="text" className={inputStyle} placeholder="Opcjonalny 15-cyfrowy numer" maxLength={15} />
+              <input 
+                name="czip" 
+                type="text" 
+                className={inputStyle} 
+                placeholder="Opcjonalny 15-cyfrowy numer" 
+                maxLength={15} 
+                data-testid="input-chip"
+              />
             </div>
 
-            <div className="pt-2 font-sans">
+            {/* Założyłem, że UploadZoneWidget również akceptuje data-testid lub ma je wewnątrz */}
+            <div className="pt-2 font-sans" data-testid="upload-zone">
               <label className={labelStyle}>Zdjęcie pupila</label>
               <UploadZoneWidget existingImageUrl="/svg/no-image.svg" />
             </div>
@@ -131,6 +188,7 @@ export function AddAnimalFormWidget() {
               <Link 
                 href="/dashboard" 
                 className="w-full px-10 py-4 border border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition text-center"
+                data-testid="button-cancel"
               >
                 Anuluj
               </Link>
@@ -139,6 +197,7 @@ export function AddAnimalFormWidget() {
                 disabled={isPending}
                 style={{ backgroundColor: primaryColor }}
                 className="w-full text-white font-bold py-4 px-14 rounded-xl transition hover:opacity-90 shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                data-testid="button-submit"
               >
                 {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : "Zapisz dane"}
               </button>
