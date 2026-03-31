@@ -86,9 +86,9 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
 
       <div className="bg-white rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto overflow-hidden relative">
       {isSuccess && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center animate-in fade-in duration-500">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center animate-in fade-in duration-500">
           <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />
-            <div className="relative z-[10000] bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
+            <div className="relative z-[100000] bg-white rounded-3xl p-10 shadow-2xl text-center max-w-sm mx-4 animate-in zoom-in-95 duration-300">
               <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <CheckCircle2 className="w-12 h-12 animate-bounce" />
               </div>
@@ -193,7 +193,7 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                 </div>
               </div>
 
-              {showMap && (
+              {showMap && !isSuccess && (
                 <div className="space-y-4 animate-in slide-in-from-top-2 duration-300" data-testid="map-container">
                   {selectedFacility && (
                     <div 
