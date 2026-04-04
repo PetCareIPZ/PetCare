@@ -75,8 +75,8 @@ export function AddAnimalFormWidget() {
         <h1 className="text-3xl font-bold text-gray-900">Dodaj zwierzaka</h1>
       </div>
 
-      <form 
-        action={handleSubmit} 
+      <form  
+        onSubmit={(e) => { e.preventDefault(); void handleSubmit(new FormData(e.currentTarget)); }}
         className="bg-white p-5 sm:p-8 rounded-2xl shadow-md border border-gray-100 max-w-2xl mx-auto flex flex-col gap-8"
         data-testid="add-animal-form"
       >
