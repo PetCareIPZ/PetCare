@@ -73,12 +73,12 @@ export default function AnimalDetailContent({ animal }: { animal: Animal }) {
 
         {/* Nawigacja */}
         <div className="flex justify-between mb-6">
-          <Link href="/dashboard/animals" className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group">
+          <Link href="/dashboard/animals" className="inline-flex items-center px-4 py-2 text-blue-700 bg-blue-100 rounded-full font-medium hover:bg-blue-200 transition">
             <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
             <span>Powrót</span>
           </Link>
 
-          <Link href={`/dashboard/${animal.petId}/health-card`} className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors font-medium group">
+          <Link href={`/dashboard/${animal.petId}/health-card`} className="inline-flex items-center px-4 py-2 text-green-700 bg-green-100 rounded-full font-medium hover:bg-green-200 transition">
             <span>Karta Zdrowia</span>
             <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </Link>
