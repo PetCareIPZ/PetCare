@@ -35,6 +35,8 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
   const [selectedFacility, setSelectedFacility] = useState<Shop | null>(null);
   const [selectedDate, setSelectedDate] = useState<string>("");
 
+  const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
+
   const params = React.use(searchParams);
 
   const primaryColor = defaultColors.calendar;
@@ -50,6 +52,45 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
   useEffect(() => {
     if (params.petId) setSelectedPetId(parseInt(params.petId));
   }, [params.petId]);
+
+  const toggleFavorite = (id: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    const newFavorites = favoriteIds.includes(id) 
+      ? favoriteIds.filter(fId => fId !== id) 
+      : [...favoriteIds, id];
+    
+    setFavoriteIds(newFavorites);
+    localStorage.setItem('favoriteFacilities', JSON.stringify(newFavorites));
+    window.dispatchEvent(new Event('storage'));
+  };
+
+  useEffect(() => {
+  const saved = localStorage.getItem('favoriteFacilities');
+  if (saved) {
+    try { 
+      const parsedIds = JSON.parse(saved) as number[];
+      setFavoriteIds(parsedIds); 
+    } catch (e) { 
+      console.error("Błąd odczytu ulubionych:", e); 
+    }
+  }
+}, []);
+  
+  useEffect(() => {
+  const rawId = params.facilityId;
+  const facilityIdStr = Array.isArray(rawId) ? rawId[0] : rawId;
+  
+  if (facilityIdStr && facilities.length > 0) {
+    const idToSelect = parseInt(facilityIdStr);
+    const found = facilities.find(f => f.facilityId === idToSelect);
+    
+    if (found) {
+      setSelectedFacility(found as unknown as Shop);
+      setSelectedType(found.facilityType);
+      setShowMap(true);
+    }
+  }
+}, [params.facilityId, facilities]);
 
   async function handleSubmit(formData: FormData) {
     setIsPending(true);
@@ -201,15 +242,29 @@ export default function FormRegistrationWidget({ searchParams }: { searchParams:
                       style={{ backgroundColor: lightBg, borderColor: primaryColor }} 
                       className="border p-4 rounded-xl flex justify-between items-center"
                     >
+                      <div className="flex items-center gap-3">
+                        <button 
+                          type="button"
+                          onClick={(e) => toggleFavorite(selectedFacility.facilityId, e)}
+                          className="p-2 rounded-full hover:bg-white/50 transition-colors"
+                        >
+                          <Icon 
+                            name="heart" 
+                            color={favoriteIds.includes(selectedFacility.facilityId) ? "#ef4444" : "#9ca3af"} 
+                          />
+                      </button>
+                        
                       <div>
                         <p className="text-sm font-bold" style={{ color: primaryColor }}>Wybrano: {selectedFacility.name}</p>
                         <p className="text-xs opacity-80" style={{ color: primaryColor }}>{selectedFacility.street}, {selectedFacility.city}</p>
+                        </div>
                       </div>
                       <button type="button" onClick={() => setSelectedFacility(null)} style={{ color: primaryColor }}>
                         <Icon name="xmark" color={primaryColor} />
                       </button>
                     </div>
                   )}
+
                   <div className="h-72 rounded-xl overflow-hidden border border-gray-300 shadow-inner">
                     <ShopsMapClient shops={filteredFacilities} onSelectShop={(f) => setSelectedFacility(f)} selectedShopId={selectedFacility?.facilityId} />
                   </div>
