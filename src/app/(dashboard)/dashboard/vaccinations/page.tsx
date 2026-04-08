@@ -98,6 +98,10 @@ export default async function HistoriaSzczepien() {
                                     
                                     <ul className="space-y-4">
                                         {petVaccines.map((v) => (
+                                            <Link 
+                                            href={`/dashboard/vaccinations/edit?id=${v.vaccinationId}`} 
+                                            key={v.vaccinationId}
+                                            >
                                             <li key={v.vaccinationId} className="bg-green-50/50 rounded-lg p-4 border-l-4 border-green-500">
                                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                                                     <div>
@@ -120,6 +124,7 @@ export default async function HistoriaSzczepien() {
                                                     </div>
                                                 </div>
                                             </li>
+                                            </Link>
                                         ))}
                                     </ul>
                                 </div>

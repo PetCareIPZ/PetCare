@@ -7,6 +7,7 @@ import { db } from "~/server/db";
 import { pets, visits, drugs, vaccinations } from "~/server/db/schema";
 import { eq, inArray, count } from "drizzle-orm";
 import SavedArticlesPreview from "~/app/(dashboard)/dashboard/SavedArticlesPreview";
+import FavouriteFacilitiesPreview from "~/app/(dashboard)/dashboard/FavouriteFacilitiesPreview";
 import { NotificationInitializer } from "~/components/notifications/NotificationInit";
 import { userAgent } from "next/server";
 import type { userDev } from "~/types/userDev";
@@ -161,6 +162,11 @@ export default async function DashboardPage() {
 
       <AnimatedSection delay={0.05}>
          <SavedArticlesPreview />
+      </AnimatedSection>
+
+      
+      <AnimatedSection delay={0.05}>
+         <FavouriteFacilitiesPreview />
       </AnimatedSection>
 
       <AnimatedSection delay={0.2}>

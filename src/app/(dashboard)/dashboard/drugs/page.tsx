@@ -98,6 +98,12 @@ export default async function HistoriaLekow() {
                                     
                                     <ul className="space-y-4">
                                         {petDrugs.map((d) => (
+                                            <Link 
+                                            href={`/dashboard/drugs/edit?id=${d.drugId}`} 
+                                            key={d.drugId} 
+                                            className="block group"
+                                            >
+        
                                             <li key={d.drugId} className="bg-blue-50/50 rounded-lg p-4 border-l-4 border-blue-500">
                                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                                                     <div>
@@ -120,6 +126,7 @@ export default async function HistoriaLekow() {
                                                     </div>
                                                 </div>
                                             </li>
+                                            </Link>
                                         ))}
                                     </ul>
                                 </div>

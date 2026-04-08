@@ -30,6 +30,7 @@ export interface Visit {
   visitAttachment?: string | null;
   visitNote?: string | null;
   petID: number;
+  facilityId?: number | null;
 }
 
 export interface Props {
