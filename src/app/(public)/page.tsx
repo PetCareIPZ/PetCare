@@ -1,25 +1,20 @@
-'use client';
+'use server';
 
-import { useEffect} from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
-
+// import { useEffect} from 'react';
+// import { useRouter } from 'next/navigation';
+// import { useAuth } from '@clerk/nextjs';
 import Hero from '~/components/public/sections/Hero';
 import About from '~/components/public/sections/About';
 import Proccess from '~/components/public/sections/Proccess';
+import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
   
-export default function HomePage() {
-  const router = useRouter();
-  const { isSignedIn } = useAuth();
+export default async function HomePage() {
+  const { isAuthenticated } = await auth();
 
-  useEffect(() => {
-    if (isSignedIn) {
-      router.push('/dashboard');
-    }
-  }, [isSignedIn, router]);
-
-  if (isSignedIn) return null;
-
+  if (isAuthenticated){
+    redirect("/dashboard")
+  }
   return (
     <main className="pt-16">
       <Hero />

@@ -7,8 +7,13 @@ import { db } from "~/server/db";
 import { pets, visits, drugs, vaccinations } from "~/server/db/schema";
 import { eq, inArray, count } from "drizzle-orm";
 import SavedArticlesPreview from "~/app/(dashboard)/dashboard/SavedArticlesPreview";
+import FavouriteFacilitiesPreview from "~/app/(dashboard)/dashboard/FavouriteFacilitiesPreview";
 import { NotificationInitializer } from "~/components/notifications/NotificationInit";
+import { userAgent } from "next/server";
+import type { userDev } from "~/types/userDev";
 
+import { UAParser } from 'ua-parser-js'
+import { headers } from "next/headers";
 export default async function DashboardPage() {
   const { isAuthenticated } = await auth();
   const user = isAuthenticated ? await currentUser() : null;
@@ -60,10 +65,21 @@ export default async function DashboardPage() {
       console.error("Error fetching stats:", error);
     }
   }
+  
+  const uaString = (await headers()).get('user-agent') ?? '';
+
+  const ua = UAParser(uaString);
+  const userDevData = {
+    type: ua.device.type,
+    model: ua.device.model,
+    vendor: ua.device.vendor,
+    os: ua.os.name,
+    engine: ua.engine.name,
+  } as userDev
 
   return (
     <>
-      <NotificationInitializer />
+      <NotificationInitializer userDevData={userDevData} />
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-gray-800">
         <Icon name="chart" /> Podsumowanie
       </h1>
@@ -146,6 +162,11 @@ export default async function DashboardPage() {
 
       <AnimatedSection delay={0.05}>
          <SavedArticlesPreview />
+      </AnimatedSection>
+
+      
+      <AnimatedSection delay={0.05}>
+         <FavouriteFacilitiesPreview />
       </AnimatedSection>
 
       <AnimatedSection delay={0.2}>

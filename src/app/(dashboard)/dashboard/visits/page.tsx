@@ -6,6 +6,7 @@ import { visits } from "~/server/db/schema";
 import { pets } from "~/server/db/schema";
 import AnimatedSection from "~/components/public/ui/AnimatedSection";
 import VisitGroup from "~/components/dashboard/visits/VisitGroup";
+import FavoriteFacilities from "~/components/dashboard/visits/FavoriteFacilities";
 import type { Visit } from "~/types/visits";
 import Icon from "~/components/Icon";
 
@@ -105,6 +106,12 @@ export default async function wizyty() {
           </Link>
         </div>
       </AnimatedSection>
+
+      <AnimatedSection delay={0.05}>
+            <div className="mb-10">
+              <FavoriteFacilities />
+            </div>
+          </AnimatedSection>
 
       <AnimatedSection delay={0.1}>
        <section className="mb-8">

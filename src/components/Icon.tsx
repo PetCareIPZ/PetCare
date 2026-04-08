@@ -15,6 +15,8 @@ import {
   faBars,
   faXmark,
   faSyringe,
+  faHeart,
+  faPhone,
 } from '@fortawesome/free-solid-svg-icons';
 
 const icons = {
@@ -33,6 +35,8 @@ const icons = {
   bars: faBars,
   xmark: faXmark,
   syringe: faSyringe,
+  heart: faHeart,
+  phone: faPhone,
 };
 
 type IconName = keyof typeof icons;
@@ -53,6 +57,8 @@ export const defaultColors: Record<IconName, string> = {
   bars: "rgba(75,85,99,1)",
   xmark: "rgba(75,85,99,1)",
   syringe: "rgb(193, 68, 239)",
+  heart: "rgba(239,68,68,1)",
+  phone: "rgba(59,130,246,1)",
 };
 
 interface IconProps {
