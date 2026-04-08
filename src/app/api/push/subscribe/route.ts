@@ -10,16 +10,22 @@ export async function POST(req: Request): Promise<Response> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const subscription = await req.json();
+  const payload = await req.json();
 
-  const { endpoint, keys } = subscription;
+  const { endpoint, keys } = payload.subscription;
+  const {type, model, vendor, os, engine} = payload.userDevData;
 
   await db.insert(pushSubscriptions)
     .values({
       userId,
       endpoint,
       p256dh: keys.p256dh,
-      auth: keys.auth
+      auth: keys.auth,
+      type: type ?? "",
+      model: model ?? "",
+      vendor: vendor ?? "",
+      os: os ?? "",
+      engine: engine ?? "", 
     })
     .onConflictDoUpdate({
       target: pushSubscriptions.endpoint,

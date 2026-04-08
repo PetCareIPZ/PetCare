@@ -72,5 +72,10 @@ export const pushSubscriptions = pgTable("push_subscriptions", {
   endpoint: text("endpoint").notNull().unique(),
   p256dh: text("p256dh").notNull(),
   auth: text("auth").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  type: text("type").notNull(),
+  model: text("model").notNull(),
+  vendor: text("vendor").notNull(),
+  os: text("os").notNull(),
+  engine: text("engine").notNull(),
 });
