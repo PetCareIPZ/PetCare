@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "~/server/db";
 import { visits, pets, pushSubscriptions, notificationSettings } from "~/server/db/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, sql,lt, gte } from "drizzle-orm";
 import { sendPush } from "~/lib/push";
 import { createPushPayload } from "~/lib/pushPayload";
 import { clerkClient } from "@clerk/nextjs/server";
@@ -25,7 +25,8 @@ export async function GET(req: Request): Promise<Response> {
     .innerJoin(pets, eq(visits.petId, pets.petId))
     .where(
       and(
-        eq(visits.visitDate, sql`CURRENT_DATE + INTERVAL '1 day'`),
+        gte(visits.visitDate, sql`CURRENT_DATE + INTERVAL '1 day'`),
+        lt(visits.visitDate, sql`CURRENT_DATE + INTERVAL '2 day'`),
         eq(visits.isNotified, false)
       )
     );
