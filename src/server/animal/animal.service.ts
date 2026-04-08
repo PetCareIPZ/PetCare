@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "~/server/db/index";
-import { drugs, pets, vaccinations } from "~/server/db/schema";
+import {visits, drugs, pets, vaccinations } from "~/server/db/schema";
 import { and, eq } from 'drizzle-orm';
 import type { AddAnimalData, UpdateAnimalData, AddDrugData, UpdateDrugData, AddVaccData, UpdateVaccData } from "~/types/services";
 
@@ -91,6 +91,23 @@ export async function getDrugById(drugId: number, petId: number){
         )
     );
 }
+export async function getDrugForUser(drugId: number, userId: string) {
+    const result = await db
+        .select({
+            drug: drugs,
+        })
+        .from(drugs)
+        .innerJoin(pets, eq(drugs.petId, pets.petId)) // Łączymy leki ze zwierzakami
+        .where(
+            and(
+                eq(drugs.drugId, drugId),
+                eq(pets.userId, userId) // Sprawdzamy właściciela
+            )
+        )
+        .limit(1);
+
+    return result[0]?.drug; // Zwraca lek tylko jeśli należy do użytkownika
+}
 
 export async function updateDrug(drugData: UpdateDrugData){
     await db.update(drugs).set({
@@ -99,12 +116,32 @@ export async function updateDrug(drugData: UpdateDrugData){
         drugDose: drugData.drugDose,
         drugNote: drugData.drugNote
     }).where(
-        and(
-            eq(drugs.drugId, drugData.drugId),
-            eq(drugs.petId, drugData.petId)
-        )
+        // and(
+        //     eq(drugs.drugId, drugData.drugId),
+        //     eq(drugs.petId, drugData.petId)
+        // )
+        eq(drugs.drugId, drugData.drugId)
     );
 }   
+
+
+export async function getVaccForUser(vaccId: number, userId: string) {
+    const result = await db
+        .select({
+            vaccination: vaccinations,
+        })
+        .from(vaccinations)
+        .innerJoin(pets, eq(vaccinations.petId, pets.petId))
+        .where(
+            and(
+                eq(vaccinations.vaccinationId, vaccId),
+                eq(pets.userId, userId)
+            )
+        )
+        .limit(1);
+
+    return result[0]?.vaccination;
+}
 
 export async function addVacc(vaccData: AddVaccData){
     await db.insert(vaccinations).values({
@@ -123,10 +160,12 @@ export async function updateVacc(vaccData: UpdateVaccData){
         vaccinationDose: vaccData.vaccDose,
         vaccinationNote: vaccData.vaccNote
     }).where(
-        and(
-            eq(vaccinations.vaccinationId, vaccData.vaccId),
-            eq(vaccinations.petId, vaccData.petId)
-        )
+
+        eq(vaccinations.vaccinationId, vaccData.vaccId)
+        // and(
+        //     eq(vaccinations.vaccinationId, vaccData.vaccId),
+        //     eq(vaccinations.petId, vaccData.petId)
+        // )
     );
 }
 
@@ -150,4 +189,42 @@ export async function getVaccById(vaccId: number, petId: number){
             eq(vaccinations.petId, petId)
         )
     );
+}
+
+
+export async function getVisitForUser(visitId: number, userId: string) {
+  try {
+    const result = await db
+      .select({
+        visitID: visits.visitId,
+        petID: visits.petId,
+        facilityId: visits.facilityId,
+        visitDate: visits.visitDate,
+        visitType: visits.visitType,
+        visitNote: visits.visitNote,
+        visitAttachment: visits.visitAttachment,
+      })
+      .from(visits)
+      // Łączymy z tabelą pets, żeby sprawdzić, czy zwierzak należy do użytkownika
+      .innerJoin(pets, eq(visits.petId, pets.petId))
+      .where(
+        and(
+          eq(visits.visitId, visitId),
+          eq(pets.userId, userId)
+        )
+      )
+      .limit(1);
+
+    return result[0] ?? null;
+  } catch (error) {
+    console.error("Error fetching visit:", error);
+    return null;
+  }
+}
+
+export async function getPetsForUser(userId: string) {
+  return db
+    .select()
+    .from(pets)
+    .where(eq(pets.userId, userId));
 }

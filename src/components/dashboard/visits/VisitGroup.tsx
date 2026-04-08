@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Icon from '~/components/Icon';
 import type { Props } from '~/types/visits';
+import Link from "next/link";
 
 export default function VisitGroup({ petName, visits }: Props) {
   const [expanded, setExpanded] = useState(false);
@@ -22,9 +23,11 @@ export default function VisitGroup({ petName, visits }: Props) {
         <>
           <div className="space-y-4">
             {displayed.map((w) => (
-              <div
+              <Link
+              href={`/dashboard/visits/edit?id=${w.visitID}`}
                 key={w.visitID}
-                className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-blue-300 transition-all"
+                // className="p-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-blue-300 transition-all"
+                className="block p-4 rounded-xl border border-gray-100 bg-gray-50 hover:border-blue-300 transition-all hover:shadow-sm"
               >
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-bold text-blue-600 uppercase text-xs tracking-wider">
@@ -47,7 +50,7 @@ export default function VisitGroup({ petName, visits }: Props) {
                     </div>
                   )}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -62,5 +65,6 @@ export default function VisitGroup({ petName, visits }: Props) {
         </>
       )}
     </div>
+    
   );
 }
