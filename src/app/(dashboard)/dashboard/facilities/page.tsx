@@ -109,7 +109,7 @@ function isOpenAtNow(openingHours: string | null, now: Date = new Date()) {
     const segment = rawSegment.trim();
     if (!segment) continue;
 
-    const match = segment.match(timeRangeRegex);
+    const match = timeRangeRegex.exec(segment);
     if (!match) continue;
 
     const startHour = Number(match[1]);
