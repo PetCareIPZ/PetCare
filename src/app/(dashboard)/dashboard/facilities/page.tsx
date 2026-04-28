@@ -6,10 +6,157 @@ import ShopsMapClient from "~/components/dashboard/facilities/ShopsMapClient";
 import Icon from "~/components/Icon";
 import type { Shop } from "~/types/shop";
 
+const ALL_DAYS = new Set([0, 1, 2, 3, 4, 5, 6]);
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function getDayNumber(label: string): number | null {
+  const dayMap: Record<string, number> = {
+    pn: 1,
+    pon: 1,
+    monday: 1,
+    wt: 2,
+    wto: 2,
+    wtorek: 2,
+    tue: 2,
+    tuesday: 2,
+    sr: 3,
+    sroda: 3,
+    wed: 3,
+    wednesday: 3,
+    czw: 4,
+    czwartek: 4,
+    thu: 4,
+    thursday: 4,
+    pt: 5,
+    piatek: 5,
+    fri: 5,
+    friday: 5,
+    sob: 6,
+    sobota: 6,
+    sat: 6,
+    saturday: 6,
+    nd: 0,
+    niedz: 0,
+    niedziela: 0,
+    sun: 0,
+    sunday: 0,
+  };
+
+  return dayMap[label] ?? null;
+}
+
+function getDaySet(segmentPrefix: string, inheritedDays: Set<number> | null): Set<number> {
+  const normalizedPrefix = normalizeText(segmentPrefix);
+  const matches = normalizedPrefix.match(
+    /\b(pn|pon|wt|wto|wtorek|sr|sroda|czw|czwartek|pt|piatek|sob|sobota|nd|niedz|niedziela|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)\b/g,
+  );
+
+  if (!matches || matches.length === 0) {
+    return inheritedDays ?? ALL_DAYS;
+  }
+
+  const days = matches
+    .map((label) => getDayNumber(label))
+    .filter((day): day is number => day !== null);
+
+  if (days.length === 0) {
+    return inheritedDays ?? ALL_DAYS;
+  }
+
+  const hasRangeSeparator = normalizedPrefix.includes("-") || normalizedPrefix.includes(" do ");
+  if (hasRangeSeparator && days.length >= 2) {
+    const start = days[0]!;
+    const end = days[1]!;
+    const rangeDays = new Set<number>();
+
+    for (let current = start; ; current = (current + 1) % 7) {
+      rangeDays.add(current);
+      if (current === end) break;
+    }
+
+    return rangeDays;
+  }
+
+  return new Set(days);
+}
+
+function isOpenAtNow(openingHours: string | null, now: Date = new Date()) {
+  if (!openingHours) return false;
+
+  const normalized = normalizeText(openingHours);
+  if (
+    normalized.includes("24/7") ||
+    normalized.includes("24h") ||
+    normalized.includes("calodobowo") ||
+    normalized.includes("non stop")
+  ) {
+    return true;
+  }
+
+  const currentDay = now.getDay();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const segments = openingHours.split(/[;,]/);
+  const timeRangeRegex = /(\d{1,2})(?::(\d{2}))?\s*[-–]\s*(\d{1,2})(?::(\d{2}))?/;
+  let inheritedDays: Set<number> | null = null;
+
+  for (const rawSegment of segments) {
+    const segment = rawSegment.trim();
+    if (!segment) continue;
+
+    const match = timeRangeRegex.exec(segment);
+    if (!match) continue;
+
+    const startHour = Number(match[1]);
+    const startMinute = Number(match[2] ?? "0");
+    const endHour = Number(match[3]);
+    const endMinute = Number(match[4] ?? "0");
+
+    if (
+      Number.isNaN(startHour) ||
+      Number.isNaN(startMinute) ||
+      Number.isNaN(endHour) ||
+      Number.isNaN(endMinute)
+    ) {
+      continue;
+    }
+
+    const prefix = segment.slice(0, match.index ?? 0);
+    const segmentDays = getDaySet(prefix, inheritedDays);
+    inheritedDays = segmentDays;
+
+    if (!segmentDays.has(currentDay)) {
+      continue;
+    }
+
+    const startTotal = startHour * 60 + startMinute;
+    const endTotal = endHour * 60 + endMinute;
+
+    if (startTotal <= endTotal) {
+      if (currentMinutes >= startTotal && currentMinutes <= endTotal) {
+        return true;
+      }
+      continue;
+    }
+
+    if (currentMinutes >= startTotal || currentMinutes <= endTotal) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export default function SkllepyPage() {
   const [shops, setShops] = useState<Shop[]>([]);
   const [selectedShopId, setSelectedShopId] = useState<number | null>(null);
   const [filterType, setFilterType] = useState<string>("all");
+  const [showOpenNow, setShowOpenNow] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,8 +175,17 @@ export default function SkllepyPage() {
     void fetchShops();
   }, []);
 
-  const filteredShops = filterType === "all" ? shops : shops.filter((s) => s.facilityType === filterType);
+  const filteredByType = filterType === "all" ? shops : shops.filter((s) => s.facilityType === filterType);
+  const filteredShops = showOpenNow ? filteredByType.filter((shop) => isOpenAtNow(shop.openingHours)) : filteredByType;
   const shopTypes = Array.from(new Set(shops.map((s) => s.facilityType)));
+
+  useEffect(() => {
+    if (!selectedShopId) return;
+    const selectedStillVisible = filteredShops.some((shop) => shop.facilityId === selectedShopId);
+    if (!selectedStillVisible) {
+      setSelectedShopId(null);
+    }
+  }, [filteredShops, selectedShopId]);
 
   return (
     <>
@@ -68,13 +224,23 @@ export default function SkllepyPage() {
           <div className="bg-white rounded-2xl shadow-md p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Placówki Blisko Ciebie</h2>
-              <div className="mt-3 md:mt-0 w-full md:w-1/3">
+              <div className="mt-3 md:mt-0 w-full md:w-auto flex flex-col sm:flex-row sm:items-center gap-3">
+                <label className="inline-flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={showOpenNow}
+                    onChange={(e) => setShowOpenNow(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                  />
+                  Otwarte teraz
+                </label>
+
                 <label className="sr-only" htmlFor="facility-filter">Filtruj po rodzaju</label>
                 <select
                   id="facility-filter"
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-gray-800"
+                  className="w-full sm:w-72 px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-gray-800"
                 >
                   <option value="all">Wszystkie ({shops.length})</option>
                   {shopTypes.map((type) => (
